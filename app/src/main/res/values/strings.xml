@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">AndroidProject</string>
+    <string name="title_activity_example">ExampleActivity</string>
+    <string name="title_activity_signup">SignupActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="my_address_setting">지번, 도로명, 건물명을\n입력하세요</string>
+    <string name="address_hint">원천동 월드컵로 206</string>
+    <string name="please_detail_address">상세주소를 입력하세요(건물명, 동/호수) </string>
+</resources>
