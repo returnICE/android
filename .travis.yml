@@ -1,5 +1,5 @@
 language: android
-sudo: required
+sudo: false
 dist: trusty
 android:
   components:
@@ -26,4 +26,9 @@ android:
 before_install:
     - chmod +x gradlew
     - chmod +rx app 
+before_script:
+  - echo no | android create avd --force -n test -t android-28 --abi armeabi-v7a
+  - emulator -avd test -no-skin -no-audio -no-window &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
 skip_cleanup: true
