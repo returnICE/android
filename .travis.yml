@@ -13,6 +13,7 @@ android:
 
     # The SDK version used to compile your project
     - android-28
+    - android-26
 
     # Additional components
     - extra-google-google_play_services
@@ -23,16 +24,19 @@ android:
     # Specify at least one system image,
     # if you need to run emulator(s) during your tests
     - sys-img-x86-android-28
+    - sys-img-armeabi-v7a-google_apis-26
 
 before_install:
     - chmod +x gradlew
     - chmod +rx app
-    - yes | sdkmanager "platforms;android-${COMPILE_SDK_VERION}"
+    - sudo apt-get -qq update
+    - sudo apt-get install -y pax
+    - yes | sdkmanager "platforms;android-28"
 
 before_script:
-    - echo "y" | android update sdk -a --no-ui --filter android-${EMULATOR_SDK_VERSION}
-    - echo "y" | android update sdk -a --no-ui --filter sys-img-armeabi-v7a-android-${EMULATOR_SDK_VERSION}
-    - echo no | android create avd --force -n test -t android-${EMULATOR_SDK_VERSION} --abi armeabi-v7a
+    - echo "y" | android update sdk -a --no-ui --filter android-26
+    - echo "y" | android update sdk -a --no-ui --filter sys-img-armeabi-v7a-android-26
+    - echo no | android create avd --force -n test -t android-26 --abi armeabi-v7a
     - emulator -avd test -no-window &
     - android-wait-for-emulator
     - adb shell input keyevent 82 &
