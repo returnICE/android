@@ -40,3 +40,6 @@ before_script:
 script:
   - ./gradlew clean build
   - ./gradlew test
+  
+notifications:
+  slack: swcapreturnice:SCNXdO39nRhhJ5kAVwUM3jHJ
