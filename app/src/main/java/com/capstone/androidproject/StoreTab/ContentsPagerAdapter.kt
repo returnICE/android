@@ -1,9 +1,8 @@
-package com.capstone.androidproject.HomeTab
+package com.capstone.androidproject.StoreTab
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import com.capstone.androidproject.Fragment.HomeFragment
 import com.capstone.androidproject.Response.ItemData
 import android.os.Parcelable
 
@@ -22,15 +21,15 @@ class ContentsPagerAdapter(fm: FragmentManager, pageCount : Int) : FragmentState
 
         when (position) {
             0 -> {
-                return TabPopularFragment(items)
+                return TabInfoFragment(items)
             }
             1 -> {
-                return TabNewFragment()
+                return TabMenuFragment()
             }
             2 -> {
-                return TabDeadlineFragment()
+                return TabServiceFragment()
             }
-            else -> return TabPopularFragment(items)
+            else -> return TabInfoFragment(items)
         }
     }
 

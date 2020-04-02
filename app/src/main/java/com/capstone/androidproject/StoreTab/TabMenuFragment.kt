@@ -1,4 +1,4 @@
-package com.capstone.androidproject.HomeTab
+package com.capstone.androidproject.StoreTab
 
 
 import android.os.Bundle
@@ -9,7 +9,7 @@ import android.view.ViewGroup
 
 import com.capstone.androidproject.R
 
-class TabNewFragment : Fragment() {
+class TabMenuFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

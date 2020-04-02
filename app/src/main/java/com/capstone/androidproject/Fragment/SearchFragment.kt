@@ -24,6 +24,7 @@ class SearchFragment : Fragment() {
     fun setActionBar(){// 액션 바 설정
         activity!!.titleText.setText("검색(EditText들어가야됨)")
         activity!!.locationIcon.visibility = View.GONE
+        activity!!.titleText.isClickable = false
     }
 
 }
