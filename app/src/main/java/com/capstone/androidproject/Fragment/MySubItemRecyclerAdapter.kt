@@ -1,4 +1,4 @@
-package com.capstone.androidproject.HomeTab
+package com.capstone.androidproject.Fragment
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +9,8 @@ import com.capstone.androidproject.R
 import com.capstone.androidproject.Response.ItemData
 import kotlinx.android.synthetic.main.item_view.view.*
 
-class ItemRecyclerAdapter(private val items: ArrayList<ItemData>) :
-    RecyclerView.Adapter<ItemRecyclerAdapter.ViewHolder>() {
+class MySubItemRecyclerAdapter(private val items: ArrayList<ItemData>) :
+    RecyclerView.Adapter<MySubItemRecyclerAdapter.ViewHolder>() {
 
     override fun getItemCount() = items.size
 
