@@ -33,10 +33,13 @@ class LoginActivity : AppCompatActivity() {
         }
 
         //테스트용 버튼
+        /*
         btnTest.setOnClickListener{
             val testIntent = Intent(this@LoginActivity, ItemRegisterActivity::class.java)
             startActivity(testIntent)
         }
+
+         */
     }
 
     fun login(id: String, pw: String) {

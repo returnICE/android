@@ -3,31 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".SignupActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/login_background"
+        >
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:orientation="vertical"
-            android:background="@color/colorPrimary"
             >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Sign Up"
-                android:textColor="#ffffff"
-                android:textSize="30dp"
-                android:textStyle="bold"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                />
         </LinearLayout>
 
         <LinearLayout
@@ -61,7 +52,7 @@
                     android:textSize="15dp"
                     android:textStyle="bold"
                     android:background="@color/colorPrimary"
-                    android:text="Check ID"
+                    android:text="중복 확인"
                     android:layout_gravity="center"
                     android:id="@+id/btnCheckId"
                     android:textColor="#ffffff"/>
@@ -86,7 +77,7 @@
                 android:inputType="textPassword"
                 android:layout_width="280dp"
                 android:layout_height="wrap_content"
-                android:hint="Password Confirm"
+                android:hint="Password 확인"
                 android:layout_gravity="center"
                 android:padding="10dp"
                 android:textColor="#000000"
@@ -95,17 +86,13 @@
                 android:layout_marginTop="10dp"
                 />
 
-            <Button
+            <ImageView
                 android:layout_width="280dp"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:textColor="#ffffff"
-                android:background="@color/colorPrimary"
-                android:text="Next"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center"
                 android:id="@+id/btnNext"
+                app:srcCompat="@drawable/btn_next"
                 />
 
         </LinearLayout>
