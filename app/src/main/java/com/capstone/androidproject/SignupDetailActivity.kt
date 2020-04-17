@@ -57,21 +57,20 @@ class SignupDetailActivity : AppCompatActivity() {
 
             var name= textName.text.toString()
             var birth = textBirth.text.toString()
-            var address = textAddress.text.toString()
             var phone = textPhone.text.toString()
 
-            //Toast.makeText(this@SignupDetailActivity, id + pw + name + birth + address + phone, Toast.LENGTH_SHORT).show()
-            signup(id, pw, name, birth, address, phone)
+            //Toast.makeText(this@SignupDetailActivity, id + pw + name + birth + phone, Toast.LENGTH_SHORT).show()
+            signup(id, pw, name, phone, birth)
         }
 
     }
 
 
-    fun signup(id: String, pw: String, name: String, birth: String, address: String, phone: String) {
+    fun signup(id: String, pw: String, name: String, phone: String, birth: String) {
         val serverConnect = ServerConnect(this)
         val server = serverConnect.conn()
 
-        server.postSignupRequest(id, pw, name, birth, address, phone).enqueue(object:
+        server.postSignupRequest(id, pw, name, phone, birth).enqueue(object:
 
             Callback<SignupResponse> {
             override fun onFailure(call: Call<SignupResponse>, t: Throwable) {

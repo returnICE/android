@@ -82,7 +82,6 @@ class LoginActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(this@LoginActivity, "로그인 성공", Toast.LENGTH_SHORT).show()
                     App.prefs.name = user?.name.toString()
-                    App.prefs.address = user?.address.toString()
 
                     startActivity<MainActivity>()
                     finish()

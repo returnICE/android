@@ -19,9 +19,8 @@ interface HttpService {
     fun postSignupRequest(@Field("ID")ID: String,
                           @Field("PW")PW: String,
                           @Field("name")name: String,
-                          @Field("birth")birth: String,
-                          @Field("address")address: String,
-                          @Field("phone")phone: String
+                          @Field("phone")phone: String,
+                          @Field("birth")birth: String
                           )
             :Call<SignupResponse>
 

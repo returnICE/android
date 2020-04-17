@@ -7,15 +7,15 @@ data class UserData (
         @SerializedName("ID")
         val ID: String = "",
 
+        @SerializedName("PW")
+        val PW: String = "",
+
         @SerializedName("name")
         val name: String = "",
 
-        @SerializedName("birth")
-        val birth: String = "",
-
-        @SerializedName("address")
-        val address: String = "",
-
         @SerializedName("phone")
-        val phone: String = ""
+        val phone: String = "",
+
+        @SerializedName("birth")
+        val birth: String = ""
 )
