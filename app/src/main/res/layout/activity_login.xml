@@ -10,24 +10,49 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/login_background">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/colorPrimary"
             >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="LOG IN"
-                android:textColor="#ffffff"
-                android:textSize="30dp"
-                android:textStyle="bold"
+            <LinearLayout
+                android:layout_width="280dp"
+                android:layout_height="100dp"
+                android:orientation="horizontal"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                />
+                android:layout_gravity="center"
+                >
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="280dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="280dp"
+                    android:layout_height="260dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="0dp"
+                    app:srcCompat="@drawable/logo_transparent" />
+
+            </LinearLayout>
+
+
         </LinearLayout>
 
         <LinearLayout
@@ -35,16 +60,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="280dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="50dp"
-                android:layout_gravity="center"
-                >
 
-
-            </LinearLayout>
             <EditText
                 android:inputType="text"
                 android:layout_width="280dp"
@@ -69,42 +85,32 @@
                 android:id="@+id/textPassword"
                 android:layout_marginTop="10dp"
                 />
-            <Button
+
+            <LinearLayout
                 android:layout_width="280dp"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:textColor="#ffffff"
-                android:background="@color/colorPrimary"
-                android:text="Log In"
+                android:orientation="horizontal"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center"
-                android:id="@+id/btnLogin"
-                />
-            <Button
-                android:layout_width="280dp"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:textColor="#ffffff"
-                android:background="@color/colorPrimary"
-                android:text="Sign Up"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center"
-                android:id="@+id/btnSignup"
-                />
-            <Button
-                android:layout_width="280dp"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:textColor="#ffffff"
-                android:background="@color/colorPrimary"
-                android:text="register test"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center"
-                android:id="@+id/btnTest"
-                />
+                >
+                <ImageView
+                    android:id="@+id/btnLogin"
+                    android:layout_width="135dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="0dp"
+                    app:srcCompat="@drawable/btn_login" />
+
+                <ImageView
+                    android:id="@+id/btnSignup"
+                    android:layout_width="135dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="0dp"
+                    app:srcCompat="@drawable/btn_signup" />
+            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
