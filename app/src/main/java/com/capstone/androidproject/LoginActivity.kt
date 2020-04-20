@@ -27,9 +27,9 @@ class LoginActivity : AppCompatActivity() {
             startActivity(signupIntent)
         }
         btnLogin.setOnClickListener {
-            val id = textId.text.toString()
+            val customerId = textId.text.toString()
             val pw = textPassword.text.toString()
-            login(id, pw)
+            login(customerId, pw)
         }
 
         //테스트용 버튼
@@ -42,11 +42,11 @@ class LoginActivity : AppCompatActivity() {
          */
     }
 
-    fun login(id: String, pw: String) {
+    fun login(customerId: String, pw: String) {
         val serverConnect = ServerConnect(this)
         val server = serverConnect.conn()
 
-        server.postLoginRequest(id, pw).enqueue(object : Callback<TokenResponse> {
+        server.postLoginRequest(customerId, pw).enqueue(object : Callback<TokenResponse> {
             override fun onFailure(call: Call<TokenResponse>?, t: Throwable?) {
                 Toast.makeText(this@LoginActivity, "로그인 실패1", Toast.LENGTH_SHORT).show()
             }

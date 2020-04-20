@@ -25,30 +25,30 @@ class SignupActivity : AppCompatActivity() {
 
         btnNext.setOnClickListener{
 
-            var id = textId.text.toString()
+            var customerId = textId.text.toString()
             var pw = textPassword.text.toString()
             val nextIntent = Intent(this@SignupActivity, SignupDetailActivity::class.java)
 
             //다음 activity로 id, pw 전송
-            nextIntent.putExtra("id", id)
+            nextIntent.putExtra("customerId", customerId)
             nextIntent.putExtra("pw", pw)
             startActivity(nextIntent)
         }
         btnCheckId.setOnClickListener(){
-            var id = textId.text.toString()
-            checkId(id)
+            var customerId = textId.text.toString()
+            checkId(customerId)
         }
     }
 
 
-    fun checkId(id: String){
+    fun checkId(customerId: String){
         val serverConnect = ServerConnect(this)
         val server = serverConnect.conn()
-        if(id == ""){
+        if(customerId == ""){
             Toast.makeText(this@SignupActivity, "id를 입력해 주세요", Toast.LENGTH_SHORT).show()
         }
         else {
-            server.getCheckRequest(id).enqueue(object
+            server.getCheckRequest(customerId).enqueue(object
                 : Callback<Success> {
                 override fun onFailure(call: Call<Success>, t: Throwable) {
                     Toast.makeText(this@SignupActivity, "중복체크 실패1", Toast.LENGTH_SHORT).show()
