@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.DatePicker
 import android.widget.TextView
 import android.widget.Toast
@@ -51,26 +52,29 @@ class SignupDetailActivity : AppCompatActivity() {
 
         btnRegister.setOnClickListener() {
 
+
+            Log.d("taggg","t1")
             //SignupActivity에서 id,pw 가져오기
-            var id = intent.getStringExtra("id")
+            var customerId = intent.getStringExtra("customerId")
             var pw = intent.getStringExtra("pw")
 
             var name= textName.text.toString()
             var birth = textBirth.text.toString()
             var phone = textPhone.text.toString()
 
-            //Toast.makeText(this@SignupDetailActivity, id + pw + name + birth + phone, Toast.LENGTH_SHORT).show()
-            signup(id, pw, name, phone, birth)
+            Log.d("taggg",customerId + pw + name + birth + phone)
+            signup(customerId, pw, name, phone, birth)
+            Toast.makeText(this@SignupDetailActivity, "???", Toast.LENGTH_SHORT).show()
         }
 
     }
 
 
-    fun signup(id: String, pw: String, name: String, phone: String, birth: String) {
+    fun signup(customerId: String, pw: String, name: String, phone: String, birth: String) {
         val serverConnect = ServerConnect(this)
         val server = serverConnect.conn()
 
-        server.postSignupRequest(id, pw, name, phone, birth).enqueue(object:
+        server.postSignupRequest(customerId, pw, name, phone, birth).enqueue(object:
 
             Callback<SignupResponse> {
             override fun onFailure(call: Call<SignupResponse>, t: Throwable) {
@@ -83,14 +87,13 @@ class SignupDetailActivity : AppCompatActivity() {
                 response: Response<SignupResponse>
             ) {
                 val success = response?.body()?.success
-                val user = response?.body()?.user
-                println(user?.ID)
+                val customer = response?.body()?.Customer
 
                 if (success == false) {
                     Toast.makeText(this@SignupDetailActivity, "회원가입 실패2", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this@SignupDetailActivity, "회원가입 성공", Toast.LENGTH_SHORT).show()
-                    App.prefs.name = user?.name.toString() // 로그인 성공하면 shared_Preference에 유저정보 저장
+                    App.prefs.name = customer?.name.toString() // 로그인 성공하면 shared_Preference에 유저정보 저장
                     val nextIntent = Intent(this@SignupDetailActivity, LoginActivity::class.java)
                     startActivity(nextIntent)
                 }

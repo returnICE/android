@@ -7,6 +7,6 @@ class SignupResponse {
     @SerializedName("success")
     val success:Boolean = false
 
-    @SerializedName("user")
-    val user = UserData()
+    @SerializedName("Customer")
+    val Customer = UserData()
 }

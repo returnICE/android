@@ -9,15 +9,15 @@ data class ResponseEX(val result:String? = null)
 interface HttpService {
 
     @FormUrlEncoded
-    @POST("/login")
-    fun postLoginRequest(@Field("ID")ID: String,
-                        @Field("PW")PW: String)
+    @POST("/users/login")
+    fun postLoginRequest(@Field("customerId")customerId: String,
+                        @Field("pw")pw: String)
             :Call<TokenResponse>
 
     @FormUrlEncoded
     @POST("/users")
-    fun postSignupRequest(@Field("ID")ID: String,
-                          @Field("PW")PW: String,
+    fun postSignupRequest(@Field("customerId")customerId: String,
+                          @Field("pw")pw: String,
                           @Field("name")name: String,
                           @Field("phone")phone: String,
                           @Field("birth")birth: String
