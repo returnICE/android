@@ -1,18 +1,14 @@
 package com.capstone.androidproject.Fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.RecyclerView
 import com.capstone.androidproject.R
-import com.capstone.androidproject.AddressSetting.MyAddressSettingActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.startActivity
-import com.capstone.androidproject.MainActivity
-import com.capstone.androidproject.Response.ItemData
+
 
 
 class HomeFragment : Fragment() {
@@ -25,44 +21,17 @@ class HomeFragment : Fragment() {
 
         val v:View = inflater.inflate(R.layout.fragment_home, container, false)
 
-
-        val _items = ArrayList<ItemData>()
-        _items.add(ItemData("2020-02-18","2020-02-20","광어","싱싱합니다.","30000","10000"))
-        _items.add(ItemData("2020-02-15","2020-02-18","우럭","맛있읍니다.","20000","15000"))
-        _items.add(ItemData("2020-02-10","2020-02-29","초밥","노맛","15000","5000"))
-        _items.add(ItemData("2020-03-01","2020-03-02","도시락","유통기한 지남.","9000","500"))
-        _items.add(ItemData("2020-02-29","2020-03-03","생수","물","800","50"))
-
-        val address = arguments?.getString("myAddress")!!
-        val items = _items
-
-        setActionBar(address)
-        //setMyInfo(v)
-        setContent(v, items)
+        setActionBar()
 
         return v
     }
 
-    fun setActionBar(address:String){// 액션 바 설정
-        activity!!.titleText.setText(address)
-        activity!!.locationIcon.visibility = View.VISIBLE
-        activity!!.titleText.setOnClickListener {
-            activity!!.startActivity<MyAddressSettingActivity>()
-            (context as MainActivity).overridePendingTransition(R.anim.slide_up, R.anim.slide_stay)
-        }
+    fun setActionBar(){// 액션 바 설정
+        activity!!.titleText.setText("구독 목록")
+        activity!!.locationIcon.visibility = View.GONE
+        activity!!.titleText.isClickable = false
     }
 
-    fun setContent(v:View, items:ArrayList<ItemData>){ // 상품 정보들
-
-        val adapter = MySubItemRecyclerAdapter(items)
-        val rv : RecyclerView = v.findViewById(R.id.recyclerViewPopular)
-        rv.adapter = adapter
-
-        rv.addItemDecoration(
-            DividerItemDecoration(activity!!.applicationContext, DividerItemDecoration.VERTICAL)
-        )
-        // https://codechacha.com/ko/android-recyclerview/   <- 리사이클러뷰 설명
-    }
 }
 
 /*val mTabLayout:TabLayout = v.findViewById(R.id.layout_tab)
