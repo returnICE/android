@@ -1,4 +1,4 @@
-package com.capstone.androidproject.Fragment
+package com.capstone.androidproject.StoreInfo
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,11 +6,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.androidproject.R
-import com.capstone.androidproject.Response.ItemData
-import kotlinx.android.synthetic.main.item_view.view.*
+import com.capstone.androidproject.Response.MenuData
+import kotlinx.android.synthetic.main.item_view_menu.view.*
 
-class MySubItemRecyclerAdapter(private val items: ArrayList<ItemData>) :
-    RecyclerView.Adapter<MySubItemRecyclerAdapter.ViewHolder>() {
+class MenuListRecyclerAdapter(private val items: ArrayList<MenuData>) :
+    RecyclerView.Adapter<MenuListRecyclerAdapter.ViewHolder>() {
 
     override fun getItemCount() = items.size
 
@@ -20,8 +20,9 @@ class MySubItemRecyclerAdapter(private val items: ArrayList<ItemData>) :
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        val listener = View.OnClickListener {it ->
-            Toast.makeText(it.context, "Clicked: ${item.type}", Toast.LENGTH_SHORT).show()
+        val listener = View.OnClickListener { it ->
+
+            Toast.makeText(it.context, "Clicked: ${item.menuName}", Toast.LENGTH_SHORT).show()
         }
         holder.apply {
             bind(listener, item)
@@ -35,7 +36,7 @@ class MySubItemRecyclerAdapter(private val items: ArrayList<ItemData>) :
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
             ViewHolder {
-        val inflatedView = LayoutInflater.from(parent.context).inflate(R.layout.item_view, parent, false)
+        val inflatedView = LayoutInflater.from(parent.context).inflate(R.layout.item_view_menu, parent, false)
 
         return ViewHolder(inflatedView)
     }
@@ -45,11 +46,10 @@ class MySubItemRecyclerAdapter(private val items: ArrayList<ItemData>) :
      */
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         private var view: View = v
-        fun bind(listener: View.OnClickListener, item: ItemData) {
-            view.imgItem.setImageResource(R.drawable.example_img)
-            view.itemName.setText(item.type)
-            view.originPrice.setText(item.originprice)
-            view.salePrice.setText(item.saleprice)
+        fun bind(listener: View.OnClickListener, item: MenuData) {
+
+            view.menuName.setText(item.menuName)
+            view.price.setText(item.price.toString()+"원")
 
             view.setOnClickListener(listener)
         }

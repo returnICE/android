@@ -52,6 +52,17 @@ interface HttpService {
     @GET("/login")
     fun getGetUserRequest(@Header("x-access-token")token: String): Call<LoginResponse>
 
+    @FormUrlEncoded
+    @POST("/search")
+    fun postSellerRequest(@Field("lat")lat: Double,
+                          @Field("lon")lon: Double,
+                          @Field("page")page: Int)
+            : Call<SellerDataResponse>
+
+    @GET("/search/{sellerId}")
+    fun getSellerInfoRequest(@Path("sellerId")sellerId:String)
+            :Call<SellerInfoResponse>
+
     /*
     @GET("/경로")
     fun getRequest(@Query("name")name: String):Call<ResponseEX>
