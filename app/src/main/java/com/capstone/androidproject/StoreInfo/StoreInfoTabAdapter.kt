@@ -1,18 +1,10 @@
 package com.capstone.androidproject.StoreInfo
 
-import android.os.AsyncTask
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import android.os.Parcelable
 import com.capstone.androidproject.Response.MenuData
-import com.capstone.androidproject.Response.SellerData
-import com.capstone.androidproject.Response.SellerInfoResponse
-import com.capstone.androidproject.Response.SubItem
-import com.capstone.androidproject.ServerConfig.ServerConnect
-import com.capstone.androidproject.StoreActivity
-import java.io.IOException
-import java.lang.ref.WeakReference
 
 class StoreInfoTabAdapter(fm: FragmentManager, pageCount : Int,
                           var sublist:MutableList<SubsListRecyclerAdapter.Item>,

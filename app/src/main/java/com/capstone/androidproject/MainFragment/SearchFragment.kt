@@ -1,12 +1,12 @@
-package com.capstone.androidproject.Fragment
+package com.capstone.androidproject.MainFragment
 
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,11 +15,16 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.capstone.androidproject.AddressSetting.GpsTracker
 import com.capstone.androidproject.AddressSetting.MyAddressSettingActivity
 import com.capstone.androidproject.MainActivity
+import com.capstone.androidproject.MainFragment.StoreList.EndlessRecyclerViewScrollListener
+import com.capstone.androidproject.MainFragment.StoreList.FindToMapActivity
+import com.capstone.androidproject.MainFragment.StoreList.LinearLayoutManagerWrapper
+import com.capstone.androidproject.MainFragment.StoreList.StoreListRecyclerAdapter
 import com.capstone.androidproject.R
 import com.capstone.androidproject.Response.SellerData
 import com.capstone.androidproject.Response.SellerDataResponse
 import com.capstone.androidproject.ServerConfig.ServerConnect
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_search.*
 import org.jetbrains.anko.startActivity
 import retrofit2.Call
 import retrofit2.Callback
@@ -41,10 +46,20 @@ class SearchFragment : Fragment() {
 
         val v:View = inflater.inflate(R.layout.fragment_search, container, false)
 
-        val address = arguments?.getString("myAddress")!!
-        setActionBar(address)
+        var mylocate = Location("cur_loc")
+        val lon = arguments?.getDouble("address_lon")
+        val lat = arguments?.getDouble("address_lat")
+        if(lon != null && lat != null){
+            mylocate.longitude = lon
+            mylocate.latitude = lat
+        }
+        else {
+            mylocate = getMyLocation()
+        } // 좌표 가져오기
 
-        val mylocate = getMyLocation()
+
+        val address = arguments?.getString("myAddress")!!
+        setActionBar(address+"abcd", mylocate) // 상단바 주소 등록
 
         val _sellers = arguments?.getSerializable("sellers")!! as ArrayList<SellerData>
         sellers = _sellers
@@ -52,14 +67,24 @@ class SearchFragment : Fragment() {
         initRecyclerView(v,mylocate)
         setContent()
 
+        val findMap:ImageView = v.findViewById(R.id.findMap)
+        findMap.setOnClickListener {
+            activity!!.startActivity<FindToMapActivity>(
+                "lat" to mylocate.latitude,
+                "lon" to mylocate.longitude)
+            (context as MainActivity).overridePendingTransition(R.anim.slide_up, R.anim.slide_stay)
+        }
+
         return v
     }
 
-    fun setActionBar(address:String){// 액션 바 설정
+    fun setActionBar(address:String, mylocate:Location){// 액션 바 설정
         activity!!.titleText.setText(address)
         activity!!.locationIcon.visibility = View.VISIBLE
         activity!!.titleText.setOnClickListener {
-            activity!!.startActivity<MyAddressSettingActivity>()
+            activity!!.startActivity<MyAddressSettingActivity>(
+                "lat" to mylocate.latitude,
+                "lon" to mylocate.longitude)
             (context as MainActivity).overridePendingTransition(R.anim.slide_up, R.anim.slide_stay)
         }
     }
@@ -70,7 +95,12 @@ class SearchFragment : Fragment() {
 
         rv = v.findViewById(R.id.recyclerViewSearch)
 
-        val linearLayoutManagerWrapper = LinearLayoutManagerWrapper(activity!!.applicationContext, LinearLayoutManager.VERTICAL, false)
+        val linearLayoutManagerWrapper =
+            LinearLayoutManagerWrapper(
+                activity!!.applicationContext,
+                LinearLayoutManager.VERTICAL,
+                false
+            )
 
         rv.layoutManager = linearLayoutManagerWrapper
 
@@ -81,7 +111,8 @@ class SearchFragment : Fragment() {
         }
         rv.addOnScrollListener(scrollListener)
 
-        val adapter = StoreListRecyclerAdapter(sellers)
+        val adapter =
+            StoreListRecyclerAdapter(sellers)
         rv.adapter = adapter
     }
 
@@ -133,7 +164,7 @@ class SearchFragment : Fragment() {
         val serverConnect = ServerConnect(activity!!.applicationContext)
         val server = serverConnect.conn()
 
-        server.postSellerRequest(mylocate.latitude, mylocate.longitude, page).enqueue(object :
+        server.postSellerRequest(mylocate.latitude, mylocate.longitude, page, -1f).enqueue(object :
             Callback<SellerDataResponse> {
             override fun onFailure(call: Call<SellerDataResponse>?, t: Throwable?) {
                 Toast.makeText(activity, "통신 실패", Toast.LENGTH_SHORT).show()

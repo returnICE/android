@@ -1,4 +1,4 @@
-package com.capstone.androidproject.Fragment
+package com.capstone.androidproject.MainFragment
 
 import android.content.Context
 import android.os.Bundle

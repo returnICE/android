@@ -1,14 +1,11 @@
 package com.capstone.androidproject.StoreInfo
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.androidproject.R
-import com.capstone.androidproject.Response.SubItem
-import com.capstone.androidproject.StoreActivity
 import kotlinx.android.synthetic.main.item_view_menu.view.*
 import kotlinx.android.synthetic.main.item_view_menu.view.price
 import kotlinx.android.synthetic.main.item_view_subs.view.*

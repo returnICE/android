@@ -56,7 +56,8 @@ interface HttpService {
     @POST("/search")
     fun postSellerRequest(@Field("lat")lat: Double,
                           @Field("lon")lon: Double,
-                          @Field("page")page: Int)
+                          @Field("page")page: Int,
+                          @Field("zoom")zoom: Float)
             : Call<SellerDataResponse>
 
     @GET("/search/{sellerId}")
