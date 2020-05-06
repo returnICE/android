@@ -17,8 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".StoreActivity"
-            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".MainFragment.StoreList.FindToMapActivity"></activity>
+        <activity
+            android:name=".StoreInfo.StoreActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".AddressSetting.DetailAddressActivity"
             android:parentActivityName=".AddressSetting.MyAddressSettingActivity" />

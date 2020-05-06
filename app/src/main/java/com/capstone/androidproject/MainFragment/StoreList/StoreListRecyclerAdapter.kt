@@ -1,18 +1,14 @@
-package com.capstone.androidproject.Fragment
+package com.capstone.androidproject.MainFragment.StoreList
 
-import android.content.Context
-import android.content.Intent
-import android.util.Log
+import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.capstone.androidproject.MainActivity
 import com.capstone.androidproject.R
 import com.capstone.androidproject.Response.SellerData
-import com.capstone.androidproject.SignupDetailActivity
-import com.capstone.androidproject.StoreActivity
+import com.capstone.androidproject.StoreInfo.StoreActivity
 import kotlinx.android.synthetic.main.item_view_seller.view.*
 import org.jetbrains.anko.startActivity
 
@@ -48,7 +44,9 @@ class StoreListRecyclerAdapter(private val items: ArrayList<SellerData>) :
             ViewHolder {
         val inflatedView = LayoutInflater.from(parent.context).inflate(R.layout.item_view_seller, parent, false)
 
-        return ViewHolder(inflatedView)
+        return ViewHolder(
+            inflatedView
+        )
     }
 
     /*  Class ViewHolder
@@ -58,7 +56,7 @@ class StoreListRecyclerAdapter(private val items: ArrayList<SellerData>) :
         private var view: View = v
         fun bind(listener: View.OnClickListener, item: SellerData) {
             view.imgItem.setImageResource(R.drawable.example_img)
-            view.imgItem.setColorFilter(R.color.imgTint)
+            view.imgItem.setColorFilter(R.color.imgTint,PorterDuff.Mode.DARKEN)
 
             lateinit var distance:String
             if(item.distance < 10000) {

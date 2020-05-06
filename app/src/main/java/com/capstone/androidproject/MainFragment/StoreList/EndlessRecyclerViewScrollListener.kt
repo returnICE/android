@@ -1,6 +1,5 @@
-package com.capstone.androidproject.Fragment
+package com.capstone.androidproject.MainFragment.StoreList
 
-import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 

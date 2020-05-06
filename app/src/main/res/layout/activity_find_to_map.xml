@@ -18,43 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <ImageView
-            android:id="@+id/customMarker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_location_on_blue_24dp"/>
-
-        <ImageView
-            android:id="@+id/imgTextAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/btnSelectAddress"
-            android:layout_centerInParent="true"
-            android:layout_marginBottom="20dp"
-            app:srcCompat="@drawable/text_address" />
-
-        <TextView
-            android:id="@+id/textAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@id/imgTextAddress"
-            android:layout_alignTop="@id/imgTextAddress"
-            android:layout_alignEnd="@id/imgTextAddress"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:textColor="@color/textBlack"
-            android:maxLines="1"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/btnSelectAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/select_address"/>
 
         <ImageView
             android:id="@+id/btnBackArrow"
@@ -64,7 +27,44 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
+            android:visibility="gone"
             app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
+
+        <ImageView
+            android:id="@+id/imgTextSeller"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            app:srcCompat="@drawable/text_seller"/>
+
+        <TextView
+            android:id="@+id/textSellerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_alignStart="@id/imgTextSeller"
+            android:layout_alignTop="@id/imgTextSeller"
+            android:layout_alignEnd="@id/imgTextSeller"
+            android:textSize="40sp" />
+        <TextView
+            android:id="@+id/textSubCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/imgTextSeller"
+            android:layout_alignEnd="@id/imgTextSeller"
+            android:layout_below="@id/textSellerName"/>
+        <TextView
+            android:id="@+id/textMinPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/imgTextSeller"
+            android:layout_alignEnd="@id/imgTextSeller"
+            android:layout_below="@id/textSubCount"
+            android:textSize="20sp" />
+
+
 
 
     </RelativeLayout>

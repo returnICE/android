@@ -1,23 +1,17 @@
-package com.capstone.androidproject
+package com.capstone.androidproject.StoreInfo
 
-import android.location.Location
-import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.viewpager.widget.ViewPager
+import com.capstone.androidproject.R
 import com.capstone.androidproject.Response.*
 import com.capstone.androidproject.ServerConfig.ServerConnect
-import com.capstone.androidproject.StoreInfo.StoreInfoTabAdapter
-import com.capstone.androidproject.StoreInfo.SubsListRecyclerAdapter
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_store.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.IOException
-import java.lang.ref.WeakReference
 
 class StoreActivity : AppCompatActivity() {
 

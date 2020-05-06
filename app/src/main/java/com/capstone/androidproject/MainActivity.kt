@@ -1,33 +1,25 @@
 package com.capstone.androidproject
 
-import android.content.Intent
 import android.location.Location
-import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 import com.capstone.androidproject.AddressSetting.GpsTracker
-import com.capstone.androidproject.Fragment.*
+import com.capstone.androidproject.MainFragment.*
 import com.capstone.androidproject.Response.SellerData
 import com.capstone.androidproject.Response.SellerDataResponse
 import com.capstone.androidproject.ServerConfig.ServerConnect
 import com.capstone.androidproject.SharedPreferenceConfig.App
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.iid.InstanceIdResult
 import kotlinx.android.synthetic.main.activity_main.*
-import android.content.Context
 import android.widget.Toast
-import com.capstone.androidproject.Response.TokenResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.IOException
-import java.lang.ref.WeakReference
 
 
 
@@ -47,6 +39,8 @@ class MainActivity : AppCompatActivity() {
 
     var sellers: ArrayList<SellerData> = ArrayList()
     var page = 0
+
+    var _mylocate=Location("alive")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,6 +67,7 @@ class MainActivity : AppCompatActivity() {
             myAddress = App.prefs.address
         }
 
+
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         val ab = supportActionBar
@@ -91,7 +86,18 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        val mylocate = getMyLocation()
+        var mylocate=Location("mylocate")
+        if(intent.hasExtra("address_lat")){
+            mylocate.latitude = intent.getDoubleExtra("address_lat",37.279)
+            mylocate.longitude = intent.getDoubleExtra("address_lon",127.043)
+        }
+        else {
+            mylocate = getMyLocation()
+        }
+        Log.d("maplocation_MainActivity",mylocate.latitude.toString())
+        Log.d("maplocation_MainActivity",mylocate.longitude.toString())
+        _mylocate=mylocate
+
         getSeller(mylocate, page)
 
         setFrag(0) // 첫 프래그먼트 화면 지정
@@ -109,6 +115,8 @@ class MainActivity : AppCompatActivity() {
                 val bundle = Bundle()
                 bundle.putSerializable("sellers", sellers)
                 bundle.putString("myAddress", myAddress)
+                bundle.putDouble("address_lat", _mylocate.latitude)
+                bundle.putDouble("address_lon", _mylocate.longitude)
 
                 frag2.arguments = bundle
 
@@ -145,7 +153,7 @@ class MainActivity : AppCompatActivity() {
         val serverConnect = ServerConnect(this)
         val server = serverConnect.conn()
 
-        server.postSellerRequest(mylocate.latitude, mylocate.longitude, page).enqueue(object : Callback<SellerDataResponse> {
+        server.postSellerRequest(mylocate.latitude, mylocate.longitude, page,-1f).enqueue(object : Callback<SellerDataResponse> {
             override fun onFailure(call: Call<SellerDataResponse>?, t: Throwable?) {
                 Toast.makeText(this@MainActivity, "통신 실패", Toast.LENGTH_SHORT).show()
             }

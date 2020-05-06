@@ -1,53 +1,66 @@
-package com.capstone.androidproject.AddressSetting
+package com.capstone.androidproject.MainFragment.StoreList
 
+import android.Manifest
+import android.content.DialogInterface
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
-import android.os.Bundle
-import android.view.WindowManager
-import androidx.appcompat.app.AppCompatActivity
-import com.capstone.androidproject.R
-import com.google.android.gms.maps.*
-import android.content.pm.PackageManager
-import android.Manifest.permission.ACCESS_COARSE_LOCATION
-import androidx.core.app.ActivityCompat
-import android.Manifest.permission.ACCESS_FINE_LOCATION
-import android.content.DialogInterface
-import android.content.Intent
 import android.location.LocationManager
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.CameraUpdateFactory
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.capstone.androidproject.MainActivity
+import com.capstone.androidproject.R
+import com.capstone.androidproject.Response.SellerData
+import com.capstone.androidproject.Response.SellerDataResponse
+import com.capstone.androidproject.ServerConfig.ServerConnect
 import com.google.android.gms.location.*
-import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_detail_address.*
+import kotlinx.android.synthetic.main.activity_find_to_map.*
 import org.jetbrains.anko.startActivity
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.IOException
 import java.util.*
 
-
-class DetailAddressActivity : AppCompatActivity(), OnMapReadyCallback,
-    ActivityCompat.OnRequestPermissionsResultCallback{
+class FindToMapActivity : AppCompatActivity(), OnMapReadyCallback,
+    ActivityCompat.OnRequestPermissionsResultCallback, GoogleMap.OnMarkerClickListener{
 
     val TAG="Address"
 
     var mGoogleMap: GoogleMap? = null
-    var currentMarker:Marker? = null
+    var currentMarker: Marker? = null
 
-    lateinit var DEFAULT_LOCATION:LatLng
+    val ZOOM = 17f
+
+    lateinit var DEFAULT_LOCATION: LatLng
 
     private val PERMISSIONS_REQUEST_CODE = 100
     private val GPS_ENABLE_REQUEST_CODE = 2001
-    val REQUIRED_PERMISSIONS:Array<String> = arrayOf(ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION)
+    val REQUIRED_PERMISSIONS:Array<String> = arrayOf(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
 
     var mMoveMapByUser = true
     var mMoveMapByAPI = true
@@ -55,13 +68,16 @@ class DetailAddressActivity : AppCompatActivity(), OnMapReadyCallback,
 
     var currentPosition: LatLng? = null
 
-    lateinit var _location:Location
-    lateinit var mCurrentLocatiion:Location
+    lateinit var _location: Location
+    lateinit var mCurrentLocatiion: Location
     lateinit var locationRequest: LocationRequest
     private lateinit var mfusedLocationClient: FusedLocationProviderClient
 
     lateinit var mLayout: View
     lateinit var imm: InputMethodManager
+
+    var sellers: ArrayList<SellerData> = ArrayList()
+    var makerlist:ArrayList<MarkerOptions> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,26 +85,17 @@ class DetailAddressActivity : AppCompatActivity(), OnMapReadyCallback,
         getWindow().setFlags(
             WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
             WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        setContentView(R.layout.activity_detail_address)
+        setContentView(R.layout.activity_find_to_map)
 
         mLayout = findViewById(R.id.layout_map)
         imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-
-        btnSelectAddress.setOnClickListener {
-            val result:String = textAddress.text.toString()
-
-            startActivity<MainActivity>("myAddress" to result,
-            "address_lat" to _location.latitude,
-            "address_lon" to _location.longitude)
-            finishAffinity()
-        }
 
         btnBackArrow.setOnClickListener {
             onBackPressed()
         }
 
         locationRequest = LocationRequest()
-            .setPriority(PRIORITY_HIGH_ACCURACY)
+            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
             .setNumUpdates(1)
 
         val builder = LocationSettingsRequest.Builder()
@@ -104,6 +111,7 @@ class DetailAddressActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onMapReady(googleMap: GoogleMap) {
         mGoogleMap = googleMap
 
+        mGoogleMap?.setOnMarkerClickListener(this)
         DEFAULT_LOCATION = LatLng(intent.getDoubleExtra("lat",37.279), intent.getDoubleExtra("lon",127.043))
 
         //지도의 초기위치로 이동
@@ -111,9 +119,11 @@ class DetailAddressActivity : AppCompatActivity(), OnMapReadyCallback,
 
         //위치 퍼미션을 가지고 있는지 체크
         val hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
-                ACCESS_FINE_LOCATION)
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
         val hasCoarseLocationPermission = ContextCompat.checkSelfPermission(this,
-                ACCESS_COARSE_LOCATION)
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
 
         if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
             hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED   ) {
@@ -122,9 +132,9 @@ class DetailAddressActivity : AppCompatActivity(), OnMapReadyCallback,
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])) {
 
                 Snackbar.make(mLayout, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.",
-                    Snackbar.LENGTH_INDEFINITE).setAction("확인",object:View.OnClickListener {
-                        override fun onClick(view:View) {
-                        ActivityCompat.requestPermissions( this@DetailAddressActivity, REQUIRED_PERMISSIONS,
+                    Snackbar.LENGTH_INDEFINITE).setAction("확인",object: View.OnClickListener {
+                    override fun onClick(view: View) {
+                        ActivityCompat.requestPermissions( this@FindToMapActivity, REQUIRED_PERMISSIONS,
                             PERMISSIONS_REQUEST_CODE)
                     }
                 }).show()
@@ -134,39 +144,40 @@ class DetailAddressActivity : AppCompatActivity(), OnMapReadyCallback,
             }
         }
         mGoogleMap?.getUiSettings()!!.isMyLocationButtonEnabled = false
-        mGoogleMap?.animateCamera(CameraUpdateFactory.zoomTo(15f))
+        mGoogleMap?.animateCamera(CameraUpdateFactory.zoomTo(ZOOM))
 
-        mGoogleMap?.setOnMyLocationButtonClickListener(object:GoogleMap.OnMyLocationButtonClickListener { // 현재 위치 찾아가기
+        mGoogleMap?.setOnMyLocationButtonClickListener(object: GoogleMap.OnMyLocationButtonClickListener { // 현재 위치 찾아가기
             override fun onMyLocationButtonClick(): Boolean {
                 setDefaultLocation()
                 return true
             }
         })
 
-        mGoogleMap?.setOnCameraMoveStartedListener(object:GoogleMap.OnCameraMoveStartedListener {
+        mGoogleMap?.setOnCameraMoveStartedListener(object: GoogleMap.OnCameraMoveStartedListener {
             override fun onCameraMoveStarted(p0: Int) {
                 mMoveMapByUser = false
                 mMoveMapByAPI = false
+
+
+                imgTextSeller.visibility = View.GONE
+                textSellerName.setText("")
+                textSubCount.setText("")
+                textMinPrice.setText("")
             }
         })
 
-        mGoogleMap?.setOnCameraMoveListener(object:GoogleMap.OnCameraMoveListener {
+        mGoogleMap?.setOnCameraMoveListener(object: GoogleMap.OnCameraMoveListener {
             override fun onCameraMove() {
                 if(mMoveMapByAPI == true) {
                     mMoveMapByUser = false
-
-                    customMarker.visibility = View.GONE
                 }
                 else {
                     mMoveMapByUser = true
-
-                    currentMarker?.remove()
-                    customMarker.visibility = View.VISIBLE
                 }
                 Log.d(TAG,"Move")
             }
         })
-        mGoogleMap?.setOnCameraIdleListener(object:GoogleMap.OnCameraIdleListener{
+        mGoogleMap?.setOnCameraIdleListener(object: GoogleMap.OnCameraIdleListener{
             override fun onCameraIdle() {
                 if(mMoveMapByUser == true ) {
                     Log.d(TAG, "onCameraIdle")
@@ -190,8 +201,8 @@ class DetailAddressActivity : AppCompatActivity(), OnMapReadyCallback,
         })
     }
 
-    var locationCallback:LocationCallback = object:LocationCallback() {
-        override fun onLocationResult(locationResult:LocationResult) {
+    var locationCallback: LocationCallback = object: LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
             super.onLocationResult(locationResult)
             val locationList = locationResult.getLocations()
             if (locationList.size > 0)
@@ -212,12 +223,14 @@ class DetailAddressActivity : AppCompatActivity(), OnMapReadyCallback,
             showDialogForLocationServiceSetting()
         } else {
             val hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
-                    ACCESS_FINE_LOCATION)
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
             val hasCoarseLocationPermission = ContextCompat.checkSelfPermission(this,
-                    ACCESS_COARSE_LOCATION)
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
 
             if (hasFineLocationPermission != PackageManager.PERMISSION_GRANTED ||
-                    hasCoarseLocationPermission != PackageManager.PERMISSION_GRANTED   ) {
+                hasCoarseLocationPermission != PackageManager.PERMISSION_GRANTED   ) {
 
                 Log.d(TAG, "startLocationUpdates : 퍼미션 안가지고 있음")
                 return
@@ -291,30 +304,24 @@ class DetailAddressActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
     fun checkLocationServicesStatus():Boolean {
-        val locationManager:LocationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+        val locationManager: LocationManager = getSystemService(LOCATION_SERVICE) as LocationManager
 
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
                 || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
     }
 
-    fun setCurrentLocation(location:Location, address:String) {
+    fun setCurrentLocation(location: Location, address:String) {
         if (currentMarker != null)
             currentMarker?.remove()
 
-        customMarker.visibility = View.GONE
-
         val currentLatLng = LatLng(location.getLatitude(), location.getLongitude())
-        val markerOptions = MarkerOptions()
-        markerOptions.position(currentLatLng)
-        markerOptions.draggable(true)
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-        currentMarker = mGoogleMap?.addMarker(markerOptions)
-
-        textAddress.setText(address)
 
         val cameraUpdate = CameraUpdateFactory.newLatLng(currentLatLng)
         mGoogleMap?.moveCamera(cameraUpdate)
         mMoveMapByAPI = true
+
+        getSeller(location,-1,mGoogleMap?.cameraPosition!!.zoom)
+
     }
 
     fun setDefaultLocation() {
@@ -323,8 +330,6 @@ class DetailAddressActivity : AppCompatActivity(), OnMapReadyCallback,
 
         if (currentMarker != null)
             currentMarker?.remove()
-
-        customMarker.visibility = View.GONE
 
         val markerOptions = MarkerOptions()
         markerOptions.position(DEFAULT_LOCATION)
@@ -335,20 +340,20 @@ class DetailAddressActivity : AppCompatActivity(), OnMapReadyCallback,
         Log.d("maplocation_DetailAddress",DEFAULT_LOCATION.latitude.toString())
         Log.d("maplocation_DetailAddress",DEFAULT_LOCATION.longitude.toString())
 
-        textAddress.setText(address)
-
-        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(DEFAULT_LOCATION, 15f)
+        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(DEFAULT_LOCATION, ZOOM)
         mGoogleMap?.moveCamera(cameraUpdate)
     }
 
     private fun checkPermission():Boolean  {
         val hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
-                ACCESS_FINE_LOCATION)
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
         val hasCoarseLocationPermission = ContextCompat.checkSelfPermission(this,
-                ACCESS_COARSE_LOCATION)
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
 
         if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
-                hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED   ) {
+            hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED   ) {
             return true
         }
         return false
@@ -404,15 +409,15 @@ class DetailAddressActivity : AppCompatActivity(), OnMapReadyCallback,
         builder.setMessage("앱을 사용하기 위해서는 위치 서비스가 필요합니다.\n"
                 + "위치 설정을 수정하시겠습니까?")
         builder.setCancelable(true)
-        builder.setPositiveButton("설정", object:DialogInterface.OnClickListener {
-            override fun onClick(dialog:DialogInterface, id:Int) {
+        builder.setPositiveButton("설정", object: DialogInterface.OnClickListener {
+            override fun onClick(dialog: DialogInterface, id:Int) {
                 val callGPSSettingIntent
-                        = Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                        = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                 startActivityForResult(callGPSSettingIntent, GPS_ENABLE_REQUEST_CODE)
             }
         })
-        builder.setNegativeButton("취소", object:DialogInterface.OnClickListener {
-            override fun onClick(dialog:DialogInterface, id:Int) {
+        builder.setNegativeButton("취소", object: DialogInterface.OnClickListener {
+            override fun onClick(dialog: DialogInterface, id:Int) {
                 dialog.cancel()
             }
         })
@@ -434,6 +439,86 @@ class DetailAddressActivity : AppCompatActivity(), OnMapReadyCallback,
         }
     }
 
+    fun getSeller( mylocate: Location, page: Int,zoom:Float) {
+        val serverConnect = ServerConnect(this)
+        val server = serverConnect.conn()
+
+        server.postSellerRequest(mylocate.latitude, mylocate.longitude, page, zoom).enqueue(object :
+            Callback<SellerDataResponse> {
+            override fun onFailure(call: Call<SellerDataResponse>?, t: Throwable?) {
+                Toast.makeText(this@FindToMapActivity, "통신 실패", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onResponse(call: Call<SellerDataResponse>, response: Response<SellerDataResponse>) {
+                val success = response.body()!!.success
+                val sellerdata = response.body()!!.sellerdata
+                sellers.clear()
+
+                if (!success) {
+                    Toast.makeText(this@FindToMapActivity, "새로고침 실패", Toast.LENGTH_SHORT).show()
+                } else {
+                    for (seller in sellerdata) {
+                        val sellerlocate = Location("myLoc")
+                        sellerlocate.longitude = seller.lon
+                        sellerlocate.latitude = seller.lat
+                        val distance = mylocate.distanceTo(sellerlocate).toDouble()
+
+                        sellers.add(
+                            SellerData(
+                                seller.sellerId,
+                                seller.name,
+                                "",
+                                "",
+                                seller.totalSubs,
+                                seller.lat,
+                                seller.lon,
+                                distance,
+                                seller.imgURL,
+                                "hihi",
+                                seller.type,
+                                seller.minPrice
+                            )
+                        )
+                    }
+
+                    setMarker()
+                }
+            }
+        })
+    }
+
+    fun setMarker(){
+        mGoogleMap?.clear()
+        for(seller in sellers){
+            val markerOptions = MarkerOptions()
+            markerOptions.position(LatLng(seller.lat,seller.lon))
+
+            when(seller.type){
+                "cafe" -> {
+                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                }
+                "dinner" -> {
+                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                }
+                "bar" -> {
+                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                }
+            }
+            val marker:Marker = mGoogleMap?.addMarker(markerOptions)!!
+            marker.tag = seller
+
+        }
+    }
+
+    override fun onMarkerClick(p0: Marker?): Boolean {
+        val seller = p0?.tag as SellerData
+        imgTextSeller.visibility = View.VISIBLE
+        textSellerName.setText(seller.name)
+        textSubCount.setText(seller.totalSubs.toString())
+        textMinPrice.setText(seller.minPrice.toString())
+
+        return true
+    }
 //https://webnautes.tistory.com/1249
 // https://link2me.tistory.com/1703
 }
