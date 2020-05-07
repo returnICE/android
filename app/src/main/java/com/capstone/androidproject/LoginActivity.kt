@@ -3,6 +3,7 @@ package com.capstone.androidproject
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import com.capstone.androidproject.Response.LoginResponse
@@ -53,15 +54,16 @@ class LoginActivity : AppCompatActivity() {
 
             override fun onResponse(call: Call<TokenResponse>?, response: Response<TokenResponse>) {
                 val success = response.body()?.success
-                val token = response.body()!!.token
+                val token = response.body()!!.data
                 println(token)
 
                 if (success == false) {
                     Toast.makeText(this@LoginActivity, "로그인 실패2", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this@LoginActivity, "로그인 성공", Toast.LENGTH_SHORT).show()
-                    App.prefs.token = token.toString()// 로그인 성공하면 shared_Preference에 유저정보 저장
+                    App.prefs.data = token.toString()// 로그인 성공하면 shared_Preference에 유저정보 저장
 
+                    Log.d("test", "Token Login" +token.toString())
                     getUserInfo(server, token)
                 }
             }

@@ -21,6 +21,7 @@ class StoreListRecyclerAdapter(private val items: ArrayList<SellerData>) :
     *   View가 생성되면 호출
     *   생성된 View에 보여줄 데이터를 설정
      */
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
         val listener = View.OnClickListener {it ->
@@ -35,6 +36,7 @@ class StoreListRecyclerAdapter(private val items: ArrayList<SellerData>) :
             itemView.tag = item
         }
     }
+
 
     /*  onCreateViewHolder
     *   RecyclerView가 초기화 될 때 호출
