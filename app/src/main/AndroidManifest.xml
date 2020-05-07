@@ -25,6 +25,9 @@
             android:name=".AddressSetting.DetailAddressActivity"
             android:parentActivityName=".AddressSetting.MyAddressSettingActivity" />
         <activity
+            android:name=".AddressSetting.WebViewFindTextAddressActivity"
+            android:parentActivityName=".AddressSetting.MyAddressSettingActivity" />
+        <activity
             android:name=".AddressSetting.MyAddressSettingActivity"
             android:parentActivityName=".MainActivity" />
         <activity

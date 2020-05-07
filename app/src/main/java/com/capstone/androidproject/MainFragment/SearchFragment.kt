@@ -1,5 +1,6 @@
 package com.capstone.androidproject.MainFragment
 
+import android.content.Intent
 import android.location.Location
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +25,9 @@ import com.capstone.androidproject.R
 import com.capstone.androidproject.Response.SellerData
 import com.capstone.androidproject.Response.SellerDataResponse
 import com.capstone.androidproject.ServerConfig.ServerConnect
+import com.capstone.androidproject.SharedPreferenceConfig.App
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_my_address_setting.*
 import kotlinx.android.synthetic.main.fragment_search.*
 import org.jetbrains.anko.startActivity
 import retrofit2.Call
@@ -37,6 +41,7 @@ class SearchFragment : Fragment() {
     lateinit var rv : RecyclerView
     lateinit var scrollListener : EndlessRecyclerViewScrollListener
     var sellers: ArrayList<SellerData> = ArrayList()
+    private val SEARCH_ADDRESS_ACTIVITY = 10000
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,8 +63,11 @@ class SearchFragment : Fragment() {
         } // 좌표 가져오기
 
 
-        val address = arguments?.getString("myAddress")!!
-        setActionBar(address+"abcd", mylocate) // 상단바 주소 등록
+        var address = App.prefs.address
+        if(address == ""){
+            address = "주소를 입력해주세요"
+        }
+        setActionBar(address, mylocate) // 상단바 주소 등록
 
         val _sellers = arguments?.getSerializable("sellers")!! as ArrayList<SellerData>
         sellers = _sellers
@@ -82,10 +90,27 @@ class SearchFragment : Fragment() {
         activity!!.titleText.setText(address)
         activity!!.locationIcon.visibility = View.VISIBLE
         activity!!.titleText.setOnClickListener {
-            activity!!.startActivity<MyAddressSettingActivity>(
-                "lat" to mylocate.latitude,
-                "lon" to mylocate.longitude)
+            val intent = Intent(context, MyAddressSettingActivity::class.java)
+            intent.putExtra("lat",mylocate.latitude)
+            intent.putExtra("lon",mylocate.longitude)
+            startActivityForResult(intent, SEARCH_ADDRESS_ACTIVITY)
+
             (context as MainActivity).overridePendingTransition(R.anim.slide_up, R.anim.slide_stay)
+        }
+    }
+
+    override fun onActivityResult( requestCode: Int, resultCode: Int, intent: Intent?) {
+        super.onActivityResult(requestCode, resultCode, intent)
+
+        when (requestCode) {
+            SEARCH_ADDRESS_ACTIVITY ->
+                if (resultCode == AppCompatActivity.RESULT_OK) {
+                    val data = intent?.extras!!.getString("address")
+                    if (data != null) {
+                        activity!!.titleText.setText(data)
+                        App.prefs.address = data
+                    }
+                }
         }
     }
 
