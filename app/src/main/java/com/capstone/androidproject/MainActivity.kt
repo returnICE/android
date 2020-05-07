@@ -61,13 +61,6 @@ class MainActivity : AppCompatActivity() {
 //        val token =  FirebaseInstanceId.getInstance().getInstanceId()
 //        Log.d("test1",token.toString()) // firebase 토큰 확인
 
-        if (intent.hasExtra("myAddress")) {
-            myAddress = intent.getStringExtra("myAddress")
-        } else {
-            myAddress = App.prefs.address
-        }
-
-
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         val ab = supportActionBar
@@ -114,7 +107,6 @@ class MainActivity : AppCompatActivity() {
             1 -> {
                 val bundle = Bundle()
                 bundle.putSerializable("sellers", sellers)
-                bundle.putString("myAddress", myAddress)
                 bundle.putDouble("address_lat", _mylocate.latitude)
                 bundle.putDouble("address_lon", _mylocate.longitude)
 

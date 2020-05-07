@@ -12,6 +12,7 @@ import android.content.pm.PackageManager
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import androidx.core.app.ActivityCompat
 import android.Manifest.permission.ACCESS_FINE_LOCATION
+import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.location.LocationManager
@@ -77,10 +78,12 @@ class DetailAddressActivity : AppCompatActivity(), OnMapReadyCallback,
         btnSelectAddress.setOnClickListener {
             val result:String = textAddress.text.toString()
 
-            startActivity<MainActivity>("myAddress" to result,
-            "address_lat" to _location.latitude,
-            "address_lon" to _location.longitude)
-            finishAffinity()
+            val extra = Bundle()
+            val intent = Intent()
+            extra.putString("data", result)
+            intent.putExtras(extra)
+            setResult(Activity.RESULT_OK, intent)
+            finish()
         }
 
         btnBackArrow.setOnClickListener {

@@ -42,27 +42,28 @@
             android:singleLine="true" />
 
         <ImageView
-            android:id="@+id/btnSearchAddress"
+            android:id="@+id/btnFindTextAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/textAddress"
+            app:srcCompat="@drawable/btn_find_address" />
+        <ImageView
+            android:id="@+id/btnSearchAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnFindTextAddress"
             android:layout_marginStart="15dp"
             app:srcCompat="@drawable/search_address" />
 
-        <TextView
-            android:id="@+id/lastSearch"
+        <ImageView
+            android:id="@+id/btnAddressDecide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:textSize="20sp"
-            android:text="최근찾은 주소"
-            android:layout_below="@id/btnSearchAddress"/>
+            android:layout_toRightOf="@id/btnFindTextAddress"
+            android:layout_below="@id/textAddress"
+            app:srcCompat="@drawable/btn_address_decide" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/lastSearchRecyclerView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/lastSearch" />
+
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
