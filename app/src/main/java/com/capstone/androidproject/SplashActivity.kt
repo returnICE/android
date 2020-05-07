@@ -17,8 +17,8 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (App.prefs.token != "") {
-            login(App.prefs.token)
+        if (App.prefs.data != "") {
+            login(App.prefs.data)
             SystemClock.sleep(300)
         }
         //로그인 돼있으면 바로 로그인

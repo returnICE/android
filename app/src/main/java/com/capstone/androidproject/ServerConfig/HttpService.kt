@@ -64,6 +64,11 @@ interface HttpService {
     fun getSellerInfoRequest(@Path("sellerId")sellerId:String)
             :Call<SellerInfoResponse>
 
+
+    @GET("users/myinfo")
+    fun getCustomerInfoRequest(@Header("x-access-token")customerId: String)
+            :Call<UserInfoResponse>
+
     /*
     @GET("/경로")
     fun getRequest(@Query("name")name: String):Call<ResponseEX>

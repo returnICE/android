@@ -111,8 +111,8 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="0dp"
                     app:srcCompat="@drawable/btn_signup" />
-            </LinearLayout>
 
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
