@@ -43,7 +43,7 @@ class SplashActivity : AppCompatActivity() {
             override fun onResponse(call: Call<LoginResponse>?, response: Response<LoginResponse>?) {
                 val success = response?.body()?.success
 
-                if (success == false) {
+                if (success == null) {
                     Toast.makeText(this@SplashActivity, "로그인 실패2", Toast.LENGTH_SHORT).show()
                     startActivity<LoginActivity>()
                     finish()
