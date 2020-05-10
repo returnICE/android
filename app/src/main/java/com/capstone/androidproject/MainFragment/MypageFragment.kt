@@ -64,8 +64,9 @@ class MypageFragment() : Fragment() {
             logout(context!!.applicationContext)
         }
 
-        getname(context!!.applicationContext)
+        //getname(context!!.applicationContext)
 
+        textMypageName.setText(App.prefs.name)
         setContent(v)
 
         return v
