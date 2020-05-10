@@ -9,8 +9,8 @@ data class SubedItemData (
     @SerializedName("customerId")
     val customerId: String = "",
 
-    @SerializedName("subId")
-    val subId: String = "",
+    @SerializedName("subedId")
+    val subedId: Int  = 0,
 
     @SerializedName("startDate")
     val startDate: String = "",
@@ -30,6 +30,19 @@ data class SubedItemData (
     @SerializedName("usedTimes")
     val usedTimes: Int = 0,
 
-    @SerializedName("subedId")
-    val subedId: String = ""
-):Parcelable
+    @SerializedName("subId")
+    val subId: Int = 0,
+
+    @SerializedName("subName")
+    val subName: String = "",
+
+    @SerializedName("sellerId")
+    val sellerId: String = "",
+
+    @SerializedName("name")
+    val name: String = "",
+
+    @SerializedName("imgURL")
+    val imgURL: String = ""
+
+    ):Parcelable
