@@ -1,14 +1,12 @@
 package com.capstone.androidproject.MainFragment
 
 import android.content.Context
-import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.HorizontalScrollView
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -17,10 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.androidproject.LoginActivity
 import com.capstone.androidproject.MainFragment.Mypage.MypageRecyclerAdapter
-import com.capstone.androidproject.MainFragment.StoreList.EndlessRecyclerViewScrollListener
 import com.capstone.androidproject.R
-import com.capstone.androidproject.Response.SellerData
-import com.capstone.androidproject.Response.SellerDataResponse
 import com.capstone.androidproject.Response.Success
 import com.capstone.androidproject.Response.UserInfoResponse
 import com.capstone.androidproject.ServerConfig.ServerConnect
@@ -38,17 +33,7 @@ class MypageFragment() : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-    //SellerData -> SubedItemData
-    var subedItemData = arrayListOf<SellerData>(
-
-        SellerData("","","","",0,0.0,0.0,0.0,"","","",0),
-        SellerData("","","","",0,0.0,0.0,0.0,"","","",0),
-        SellerData("","","","",0,0.0,0.0,0.0,"","","",0),
-        SellerData("","","","",0,0.0,0.0,0.0,"","","",0),
-        SellerData("","","","",0,0.0,0.0,0.0,"","","",0),
-        SellerData("","","","",0,0.0,0.0,0.0,"","","",0)
-
-    )
+    var subeds: ArrayList<SubedItemData> = ArrayList()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -66,7 +51,11 @@ class MypageFragment() : Fragment() {
 
         getname(context!!.applicationContext)
 
-        setContent(v)
+        val _subeds = arguments?.getSerializable("subeds")!! as ArrayList<SubedItemData>
+        subeds = _subeds
+        Log.d("test", "subeds Mypage" + subeds)
+        setContent(v, subeds)
+        Log.d("test", "subeds Mypage2" + subeds)
 
         return v
     }
@@ -131,67 +120,16 @@ class MypageFragment() : Fragment() {
 
     }
 
-    fun setContent(v:View){
+    fun setContent(v:View, subeds:ArrayList<SubedItemData>) {
 
-        val adapter = MypageRecyclerAdapter(subedItemData)
-        val rv : RecyclerView = v.findViewById(R.id.recyclerViewMypage)
-        Toast.makeText(context, "리사이클려뷰 테스트", Toast.LENGTH_SHORT).show()
+        val adapter = MypageRecyclerAdapter(subeds)
+        val rv: RecyclerView = v.findViewById(R.id.recyclerViewMypage)
+        Toast.makeText(context, "리사이클러뷰 테스트", Toast.LENGTH_SHORT).show()
         rv.adapter = adapter
         rv.addItemDecoration(
             DividerItemDecoration(activity!!.applicationContext, DividerItemDecoration.HORIZONTAL)
         )
-        val lm = LinearLayoutManager(context,HORIZONTAL, false)
-        rv.layoutManager =  lm
-/*
-    fun getSeller(v:View, mylocate: Location, page: Int, fresh:Boolean) {
-        val serverConnect = ServerConnect(activity!!.applicationContext)
-        val server = serverConnect.conn()
-
-        server.postSellerRequest(mylocate.latitude, mylocate.longitude, page, -1f).enqueue(object :
-            Callback<SellerDataResponse> {
-            override fun onFailure(call: Call<SellerDataResponse>?, t: Throwable?) {
-                Toast.makeText(activity, "통신 실패", Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onResponse(call: Call<SellerDataResponse>, response: Response<SellerDataResponse>) {
-                val success = response.body()!!.success
-                val sellerdata = response.body()!!.sellerdata
-
-                if (!success) {
-                    Toast.makeText(activity, "새로고침 실패", Toast.LENGTH_SHORT).show()
-                } else {
-                    if(fresh){
-                        subedItemData.clear()
-                    }
-                    for (seller in sellerdata) {
-                        val sellerlocate = Location("myLoc")
-                        sellerlocate.longitude = seller.lon
-                        sellerlocate.latitude = seller.lat
-                        val distance = mylocate.distanceTo(sellerlocate).toDouble()
-
-                        subedItemData.add(
-                            SellerData(
-                                seller.sellerId,
-                                seller.name,
-                                "",
-                                "",
-                                seller.totalSubs,
-                                seller.lat,
-                                seller.lon,
-                                distance,
-                                seller.imgURL,
-                                "hihi",
-                                seller.type,
-                                seller.minPrice
-                            )
-                        )
-                    }
-                    subedItemData.sortWith(compareBy({ it.distance }))
-
-                    setContent(v)
-                }
-            }
-        })
-        */
+        val lm = LinearLayoutManager(context, HORIZONTAL, false)
+        rv.layoutManager = lm
     }
 }

@@ -17,6 +17,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.activity_main.*
 import android.widget.Toast
+import com.capstone.androidproject.Response.SubedItemData
+import com.capstone.androidproject.Response.SubedItmeDataResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -38,6 +40,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var myAddress: String
 
     var sellers: ArrayList<SellerData> = ArrayList()
+    var subeds: ArrayList<SubedItemData> = ArrayList()
     var page = 0
 
     var _mylocate=Location("alive")
@@ -92,6 +95,7 @@ class MainActivity : AppCompatActivity() {
         _mylocate=mylocate
 
         getSeller(mylocate, page)
+        getSubedItem()
 
         setFrag(0) // 첫 프래그먼트 화면 지정
     }
@@ -101,8 +105,12 @@ class MainActivity : AppCompatActivity() {
         val ft = fm.beginTransaction()
         when (n) {
             0 -> {
+                val bundle = Bundle()
+                bundle.putSerializable("subeds", subeds)
+                frag1.arguments = bundle
                 ft.replace(R.id.Main_Frame, frag1)
                 ft.commit()
+
             }
             1 -> {
                 val bundle = Bundle()
@@ -120,6 +128,11 @@ class MainActivity : AppCompatActivity() {
                 ft.commit()
             }
             3 -> {
+                val bundle = Bundle()
+                bundle.putSerializable("subeds", subeds)
+                Log.d("test","subeds Main" + subeds)
+
+                frag4.arguments = bundle
                 ft.replace(R.id.Main_Frame, frag4)
                 ft.commit()
             }
@@ -141,6 +154,52 @@ class MainActivity : AppCompatActivity() {
     }
     //https://webnautes.tistory.com/1315
 
+    fun getSubedItem(){
+        val serverConnect = ServerConnect(this)
+        val server = serverConnect.conn()
+
+        server.getSubedItemRequest(App.prefs.data).enqueue(object: Callback<SubedItmeDataResponse>{
+            override fun onFailure(call: Call<SubedItmeDataResponse>, t: Throwable) {
+                Toast.makeText(this@MainActivity, "통신 실패", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onResponse(
+                call: Call<SubedItmeDataResponse>,
+                response: Response<SubedItmeDataResponse>
+            ) {
+                val success = response.body()!!.success
+                val subdata = response.body()!!.subdata
+
+                if(!success){
+                    Toast.makeText(this@MainActivity, "목록가져오기 실패", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    for (subed in subdata) {
+
+                        subeds.add(
+                            SubedItemData(
+                              "",
+                                subed.subedId,
+                                subed.startDate,
+                                subed.endDate,
+                                subed.term,
+                                subed.limitTimes,
+                                subed.autoPay,
+                                subed.usedTimes,
+                                subed.subId,
+                                subed.subName,
+                                subed.sellerId,
+                                subed.name,
+                                ""
+                            )
+                        )
+                    }
+                }
+            }
+
+        })
+
+    }
     fun getSeller(mylocate: Location, page: Int) {
         val serverConnect = ServerConnect(this)
         val server = serverConnect.conn()
