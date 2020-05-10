@@ -49,7 +49,7 @@ class MypageFragment() : Fragment() {
             logout(context!!.applicationContext)
         }
 
-        getname(context!!.applicationContext)
+        //getname(context!!.applicationContext)
 
         val _subeds = arguments?.getSerializable("subeds")!! as ArrayList<SubedItemData>
         subeds = _subeds
