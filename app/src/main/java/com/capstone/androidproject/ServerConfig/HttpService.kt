@@ -47,6 +47,10 @@ interface HttpService {
     fun getSubedItemRequest(@Header("x-access-token")token: String)
             : Call<SubedItmeDataResponse>
 
+    @GET("/users/sub/{subedId}")
+    fun getServiceRequest(@Path("subedId")subedId:Int)
+            :Call<ServiceDataResponse>
+
     @GET("/users/check")
     fun getCheckRequest(@Query("ID")ID: String):Call<Success>
 

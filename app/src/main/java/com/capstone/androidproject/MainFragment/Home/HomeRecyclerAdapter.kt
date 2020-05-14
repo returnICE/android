@@ -1,6 +1,7 @@
 package com.capstone.androidproject.MainFragment.Home
 
 import android.graphics.PorterDuff
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,8 +9,10 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.androidproject.R
 import com.capstone.androidproject.Response.SubedItemData
+import com.capstone.androidproject.ServiceInfo.ServiceActivity
 import kotlinx.android.synthetic.main.item_view_home.view.*
 import kotlinx.android.synthetic.main.item_view_mypage_subeditem.view.*
+import org.jetbrains.anko.startActivity
 
 class HomeRecyclerAdapter(private val items: ArrayList<SubedItemData>) :
         RecyclerView.Adapter<HomeRecyclerAdapter.ViewHolder>(){
@@ -55,8 +58,13 @@ class HomeRecyclerAdapter(private val items: ArrayList<SubedItemData>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
+        Log.d("testing","1")
         val listener = View.OnClickListener { it ->
-
+            Log.d("testing",item.subedId.toString())
+            it.context.startActivity<ServiceActivity>(
+                "subedId" to item.subedId,
+                "name" to item.name
+            )
             Toast.makeText(it.context, "Clicked: ${item.name}", Toast.LENGTH_SHORT).show()
         }
         holder.apply {

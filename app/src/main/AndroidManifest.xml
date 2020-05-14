@@ -22,6 +22,9 @@
             android:name=".StoreInfo.StoreActivity"
             android:parentActivityName=".MainActivity" />
         <activity
+            android:name=".ServiceInfo.ServiceActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".AddressSetting.DetailAddressActivity"
             android:parentActivityName=".AddressSetting.MyAddressSettingActivity" />
         <activity
