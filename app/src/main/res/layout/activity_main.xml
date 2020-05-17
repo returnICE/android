@@ -56,8 +56,8 @@
         app:labelVisibilityMode="unlabeled"
 
         app:itemBackground="@color/bottomNavigationBackground"
-        app:itemIconTint="@drawable/bottom_select_color"
-        app:itemTextColor="@drawable/bottom_select_color"
+        app:itemIconTint="@drawable/selector_navi_color"
+        app:itemTextColor="@drawable/selector_navi_color"
 
         app:layout_behavior="tech.thdev.app.view.BottomNavigationBehavior"
         app:layout_constraintBottom_toBottomOf="parent"

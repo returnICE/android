@@ -1,5 +1,6 @@
 package com.capstone.androidproject
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,10 +9,12 @@ import android.widget.Button
 import android.widget.Toast
 import com.capstone.androidproject.Response.LoginResponse
 import com.capstone.androidproject.Response.TokenResponse
+import com.capstone.androidproject.Response.UserInfoResponse
 import com.capstone.androidproject.ServerConfig.HttpService
 import com.capstone.androidproject.ServerConfig.ServerConnect
 import com.capstone.androidproject.SharedPreferenceConfig.App
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.fragment_mypage.*
 import org.jetbrains.anko.startActivity
 import retrofit2.Call
 import retrofit2.Callback
@@ -32,15 +35,6 @@ class LoginActivity : AppCompatActivity() {
             val pw = textPassword.text.toString()
             login(customerId, pw)
         }
-
-        //테스트용 버튼
-        /*
-        btnTest.setOnClickListener{
-            val testIntent = Intent(this@LoginActivity, ItemRegisterActivity::class.java)
-            startActivity(testIntent)
-        }
-
-         */
     }
 
     fun login(customerId: String, pw: String) {
@@ -61,7 +55,7 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this@LoginActivity, "로그인 실패2", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this@LoginActivity, "로그인 성공", Toast.LENGTH_SHORT).show()
-                    App.prefs.data = token.toString()// 로그인 성공하면 shared_Preference에 유저정보 저장
+                    App.prefs.token = token.toString()// 로그인 성공하면 shared_Preference에 유저정보 저장
 
                     Log.d("test", "Token Login" +token.toString())
                     getUserInfo(server, token)
@@ -69,21 +63,26 @@ class LoginActivity : AppCompatActivity() {
             }
         })
     }
+
     fun getUserInfo(server:HttpService, token: String){
-        server.getGetUserRequest(token).enqueue(object : Callback<LoginResponse> {
-            override fun onFailure(call: Call<LoginResponse>?, t: Throwable?) {
-                Toast.makeText(this@LoginActivity, "로그인 실패1", Toast.LENGTH_SHORT).show()
+        server.getCustomerInfoRequest(token).enqueue(object : Callback<UserInfoResponse>{
+            override fun onFailure(call: Call<UserInfoResponse>, t: Throwable) {
+                Toast.makeText(this@LoginActivity, "사용자 이름 받아오기 실패", Toast.LENGTH_SHORT).show()
             }
+            override fun onResponse(
+                call: Call<UserInfoResponse>,
+                response: Response<UserInfoResponse>
+            ) {
+                val succ = response.body()?.success
+                val userinfo = response.body()?.data
 
-            override fun onResponse(call: Call<LoginResponse>?, response: Response<LoginResponse>) {
-                val success = response.body()?.success
-                val user = response.body()?.user
-
-                if (success == false) {
-                    Toast.makeText(this@LoginActivity, "로그인 실패2", Toast.LENGTH_SHORT).show()
+                if (succ == false) {
+                    Toast.makeText(this@LoginActivity, "사용자 이름 받아오기 실패 2", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this@LoginActivity, "로그인 성공", Toast.LENGTH_SHORT).show()
-                    App.prefs.name = user?.name.toString()
+                    Toast.makeText(this@LoginActivity, "사용자 이름 받아오기 성공", Toast.LENGTH_SHORT).show()
+
+                    App.prefs.name = userinfo?.name.toString()
+                    App.prefs.id = userinfo?.customerId.toString()
 
                     startActivity<MainActivity>()
                     finish()
@@ -91,11 +90,10 @@ class LoginActivity : AppCompatActivity() {
             }
         })
     }
-
 }
 
 
-// 토큰인증방식은 아직 안함. 어렵더라ㅅㅂ
+// 토큰인증방식은 아직 안함.
 // https://kimch3617.tistory.com/entry/Retrofit%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%9C-%ED%86%A0%ED%81%B0-%EC%9D%B8%EC%A6%9D-%EB%B0%A9%EC%8B%9D-%EA%B5%AC%ED%98%84
 
 // 이건 쿠키/세션 유지

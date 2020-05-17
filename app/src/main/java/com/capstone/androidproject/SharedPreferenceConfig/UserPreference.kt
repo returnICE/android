@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 class UserPreference (context: Context){
     val PREFS_FILENAME = "user"
     val PREF_KEY_ID="ID"
-    val PREF_KEY_PW="PW"
     val PREF_KEY_NAME="name"
     val PREF_KEY_BIRTH="birth"
     val PREF_KEY_ADDRESS="address"
@@ -22,9 +21,12 @@ class UserPreference (context: Context){
     var address: String
         get() = prefs.getString(PREF_KEY_ADDRESS,"")
         set(value) = prefs.edit().putString(PREF_KEY_ADDRESS,value).apply()
-    var data: String
+    var token: String
         get() = prefs.getString(PREF_KEY_TOKEN,"")
         set(value) = prefs.edit().putString(PREF_KEY_TOKEN,value).apply()
+    var id: String
+        get() = prefs.getString(PREF_KEY_ID,"")
+        set(value) = prefs.edit().putString(PREF_KEY_ID,value).apply()
 
     fun clear(){
         prefs.edit().clear().apply()

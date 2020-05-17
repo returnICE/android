@@ -1,16 +1,15 @@
 package com.capstone.androidproject.StoreInfo
 
+import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.util.keyIterator
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.androidproject.R
 import kotlinx.android.synthetic.main.item_view_menu.view.*
 import kotlinx.android.synthetic.main.item_view_menu.view.price
 import kotlinx.android.synthetic.main.item_view_subs.view.*
-
-
 
 
 class SubsListRecyclerAdapter(private var items: MutableList<Item>) :
@@ -21,6 +20,18 @@ class SubsListRecyclerAdapter(private var items: MutableList<Item>) :
         val CHILD = 1
     }
 
+    interface OnItemClickListener {
+        fun onItemClick(v: View, pos: Int)
+    }
+
+    private var mListener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        mListener = listener
+    }
+
+    private var mSelectedItems: SparseBooleanArray = SparseBooleanArray(0)
+
     override fun getItemCount() = items.size
     override fun getItemViewType(position: Int) = items.get(position).type
 
@@ -30,25 +41,22 @@ class SubsListRecyclerAdapter(private var items: MutableList<Item>) :
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        val listener = View.OnClickListener { it ->
-            Toast.makeText(it.context, "Clicked: ${item.type}", Toast.LENGTH_SHORT).show()
-        }
 
         when(item.type){
             HEADER ->{
                 holder.apply {
-                    headerBind(listener, item)
+                    headerBind(item)
                     itemView.tag = item
+                    itemView.isSelected = isItemSelected(position)
                 }
             }
             CHILD ->{
                 holder.apply {
-                    childBind(listener, item)
+                    childBind(item)
                     itemView.tag = item
                 }
             }
         }
-
     }
 
     /*  onCreateViewHolder
@@ -78,10 +86,11 @@ class SubsListRecyclerAdapter(private var items: MutableList<Item>) :
         private var view: View = v
         lateinit var referalItem: Item
 
-        fun headerBind(listener: View.OnClickListener, item: Item) {
+        fun headerBind(item: Item) {
             referalItem = item
 
             if (item.e is StoreActivity.SubInfo) {
+                view.subsId.setText(item.e.subId.toString())
                 view.subsName.setText(item.e.subName)
                 view.price.setText(item.e.price.toString() + "원")
             }
@@ -115,17 +124,49 @@ class SubsListRecyclerAdapter(private var items: MutableList<Item>) :
                     item.invisibleChildren = null
                 }
             }
-            view.setOnClickListener(listener)
+            view.setOnClickListener{ it ->
+                val pos = adapterPosition
+                if (pos != RecyclerView.NO_POSITION) {
+                    mListener?.onItemClick(it, pos)
+                }
+                toggleItemSelected(pos)
+            }
         }
-        fun childBind(listener: View.OnClickListener, item: Item) {
+        fun childBind(item: Item) {
             if(item.e is StoreActivity.MenuInfo) {
                 view.menuName.setText(item.e.menuName)
                 view.price.setText(item.e.price.toString() + "원")
             }
-
-            view.setOnClickListener(listener)
         }
     } //https://dreamaz.tistory.com/223
+
+    private fun isItemSelected(position:Int):Boolean {
+        return mSelectedItems.get(position, false)
+    }
+
+    private fun toggleItemSelected(position:Int) {
+        if (mSelectedItems.get(position, false)) {
+            mSelectedItems.delete(position)
+            clearSelectedItem()
+            notifyItemChanged(position)
+        } else {
+            clearSelectedItem()
+            mSelectedItems.put(position, true)
+            notifyItemChanged(position)
+        }
+    }
+    fun clearSelectedItem() {
+        var position = 0
+
+        var i=0
+        for (i in mSelectedItems.keyIterator()) {
+            position = i
+            mSelectedItems.put(position, false)
+            notifyItemChanged(position)
+        }
+
+        mSelectedItems.clear()
+    }
 
     class Item(val type:Int,val e:Any){
         var invisibleChildren:MutableList<Item>? = null
