@@ -14,7 +14,6 @@ class StoreInfoTabAdapter(fm: FragmentManager, pageCount : Int,
 
     override fun getItem(position: Int): Fragment {
 
-        // 서버에서 item,항공,숙박 받아오는 작업 필요
         when (position) {
             0 -> {
                 return TabSubsFragment(sublist)

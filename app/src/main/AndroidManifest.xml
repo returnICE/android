@@ -17,7 +17,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".MainFragment.StoreList.FindToMapActivity"></activity>
+        <activity android:name=".SubPayActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="payment" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".MainFragment.StoreList.FindToMapActivity" />
         <activity
             android:name=".StoreInfo.StoreActivity"
             android:parentActivityName=".MainActivity" />
@@ -61,7 +71,16 @@
 
         <activity android:name=".SignupDetailActivity" />
         <activity android:name=".ItemRegisterActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:host="main" android:scheme="leteatgo" />
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

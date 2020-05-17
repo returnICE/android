@@ -1,5 +1,6 @@
 package com.capstone.androidproject.StoreInfo
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -7,6 +8,7 @@ import androidx.viewpager.widget.ViewPager
 import com.capstone.androidproject.R
 import com.capstone.androidproject.Response.*
 import com.capstone.androidproject.ServerConfig.ServerConnect
+import com.capstone.androidproject.SubPayActivity
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_store.*
 import retrofit2.Call
@@ -26,13 +28,12 @@ class StoreActivity : AppCompatActivity() {
         val sellerId = intent.getStringExtra("sellerId")
         val name = intent.getStringExtra("name")
 
-        storeName.setText(name)
-
         getSellerInfo(sellerId)
+
+
     }
 
     fun setContent(){
-
 
         val mTabLayout: TabLayout = findViewById(R.id.layout_tab)
         mTabLayout.addTab(mTabLayout.newTab().setText("구독 상품"))
@@ -43,6 +44,7 @@ class StoreActivity : AppCompatActivity() {
 
         for(s in subItem){
             var subinfo = SubInfo()
+            subinfo.subId = s.subId
             subinfo.subName = s.subName
             subinfo.price = s.price
             subinfo.limitTimes = s.limitTimes
@@ -100,6 +102,8 @@ class StoreActivity : AppCompatActivity() {
                     sellerdetaildata = sellerinfo.sellerdetaildata
                     menudata = sellerinfo.menudata
                     subItem = sellerinfo.subItem
+
+                    storeName.setText(sellerdetaildata.name)
 
                     setContent()
                 }

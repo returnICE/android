@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,23 +40,21 @@ class MypageFragment() : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        var v:View = inflater.inflate(R.layout.fragment_mypage, container, false)
+        val v:View = inflater.inflate(R.layout.fragment_mypage, container, false)
 
         setActionBar()
+        val customername = v.findViewById(R.id.textMypageName) as TextView
+        customername.setText(App.prefs.name)
 
-        var btnlogout: ImageView = v.findViewById(R.id.btnLogout)
+        val btnlogout: ImageView = v.findViewById(R.id.btnLogout)
         btnlogout.setOnClickListener {
             App.prefs.clear()
             logout(context!!.applicationContext)
         }
 
-        //getname(context!!.applicationContext)
-
         val _subeds = arguments?.getSerializable("subeds")!! as ArrayList<SubedItemData>
         subeds = _subeds
-        Log.d("test", "subeds Mypage" + subeds)
         setContent(v, subeds)
-        Log.d("test", "subeds Mypage2" + subeds)
 
         return v
     }
@@ -89,42 +88,11 @@ class MypageFragment() : Fragment() {
         })
     }
 
-    fun getname(ctx: Context){
-        val serverConnect = ServerConnect(ctx)
-        val server = serverConnect.conn()
-
-        Log.d("test", "token Mypage : " + App.prefs.data)
-        server.getCustomerInfoRequest(App.prefs.data).enqueue(object : Callback<UserInfoResponse>{
-            override fun onFailure(call: Call<UserInfoResponse>, t: Throwable) {
-                Toast.makeText(ctx, "사용자 이름 받아오기 실패", Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onResponse(
-                call: Call<UserInfoResponse>,
-                response: Response<UserInfoResponse>
-            ) {
-                val succ = response.body()?.success
-                val userinfo = response.body()?.data
-
-                if (succ == false) {
-                    Toast.makeText(ctx, "사용자 이름 받아오기 실패 2", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(ctx, "사용자 이름 받아오기 성공", Toast.LENGTH_SHORT).show()
-                    Log.d("test", "name Mypage : " + userinfo?.name)
-                    textMypageName.setText(userinfo?.name + "님")
-
-                }
-            }
-
-        })
-
-    }
 
     fun setContent(v:View, subeds:ArrayList<SubedItemData>) {
 
         val adapter = MypageRecyclerAdapter(subeds)
         val rv: RecyclerView = v.findViewById(R.id.recyclerViewMypage)
-        Toast.makeText(context, "리사이클러뷰 테스트", Toast.LENGTH_SHORT).show()
         rv.adapter = adapter
         rv.addItemDecoration(
             DividerItemDecoration(activity!!.applicationContext, DividerItemDecoration.HORIZONTAL)

@@ -130,7 +130,6 @@ class MainActivity : AppCompatActivity() {
             3 -> {
                 val bundle = Bundle()
                 bundle.putSerializable("subeds", subeds)
-                Log.d("test","subeds Main" + subeds)
 
                 frag4.arguments = bundle
                 ft.replace(R.id.Main_Frame, frag4)
@@ -158,7 +157,7 @@ class MainActivity : AppCompatActivity() {
         val serverConnect = ServerConnect(this)
         val server = serverConnect.conn()
 
-        server.getSubedItemRequest(App.prefs.data).enqueue(object: Callback<SubedItmeDataResponse>{
+        server.getSubedItemRequest(App.prefs.token).enqueue(object: Callback<SubedItmeDataResponse>{
             override fun onFailure(call: Call<SubedItmeDataResponse>, t: Throwable) {
                 Toast.makeText(this@MainActivity, "통신 실패", Toast.LENGTH_SHORT).show()
             }
