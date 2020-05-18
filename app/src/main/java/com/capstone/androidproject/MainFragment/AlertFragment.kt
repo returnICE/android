@@ -26,7 +26,6 @@ class AlertFragment : Fragment() {
 
     fun setActionBar(){// 액션 바 설정
         activity!!.titleText.setText("알람")
-        activity!!.locationIcon.visibility = View.GONE
         activity!!.titleText.isClickable = false
     }
 
