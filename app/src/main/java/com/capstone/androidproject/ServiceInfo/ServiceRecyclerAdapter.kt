@@ -1,14 +1,20 @@
 package com.capstone.androidproject.ServiceInfo
 
 import android.util.Log
+import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.util.keyIterator
 import androidx.recyclerview.widget.RecyclerView
+import com.capstone.androidproject.AcceptRequest.AcceptActivity
 import com.capstone.androidproject.R
+import kotlinx.android.synthetic.main.activity_service.view.*
 import kotlinx.android.synthetic.main.item_view_menu.view.*
+import kotlinx.android.synthetic.main.item_view_mypage_subeditem.view.*
 import kotlinx.android.synthetic.main.item_view_subeds.view.*
+import org.jetbrains.anko.startActivity
 
 class ServiceRecyclerAdapter(private var items: MutableList<Item>)
     : RecyclerView.Adapter<ServiceRecyclerAdapter.ViewHolder>(){
@@ -17,6 +23,19 @@ class ServiceRecyclerAdapter(private var items: MutableList<Item>)
         val HEADER = 0
         val CHILD = 1
     }
+
+    interface OnItemClickListener {
+        fun onItemClick(v: View, pos: Int)
+    }
+
+    private var mListener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        mListener = listener
+    }
+
+    private var mSelectedItems: SparseBooleanArray = SparseBooleanArray(0)
+
 
     override fun getItemCount() = items.size
     override fun getItemViewType(position: Int) = items.get(position).type
@@ -42,6 +61,7 @@ class ServiceRecyclerAdapter(private var items: MutableList<Item>)
                 holder.apply {
                     childBind(listener, item)
                     itemView.tag = item
+                    itemView.isSelected = isItemSelected(position)
                 }
             }
         }
@@ -74,13 +94,15 @@ class ServiceRecyclerAdapter(private var items: MutableList<Item>)
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         private var view: View = v
         lateinit var referalItem: Item
+        private var serviceName = ""
+        private var sellerName = ""
 
         fun headerBind(listener: View.OnClickListener, item: Item) {
             referalItem = item
 
             if (item.e is ServiceActivity.SubInfo) {
                 Log.d("testing", "subinfo data 확인")
-                view.textServiceName.setText(item.e.subName)
+
                 var usableTimes = item.e.limitTimes - item.e.usedTimes //사용가능 횟수
                 Log.d("testing", "usableTimes 확인"+ usableTimes.toString())
                 view.textUsableTime.setText("잔여 횟수 " + usableTimes.toString() + " 회")
@@ -117,17 +139,61 @@ class ServiceRecyclerAdapter(private var items: MutableList<Item>)
                     item.invisibleChildren = null
                 }
             }
-            view.setOnClickListener(listener)
         }
         fun childBind(listener: View.OnClickListener, item: Item) {
             if(item.e is ServiceActivity.MenuInfo) {
                 view.menuName.setText(item.e.menuName)
                 view.price.setText(item.e.price.toString() + "원")
+                view.setOnClickListener{ it ->
+                    val pos = adapterPosition
+                    if (pos != RecyclerView.NO_POSITION) {
+                        mListener?.onItemClick(it, pos)
+                    }
+                    toggleItemSelected(pos)
+                }
+            /*
+            view.setOnClickListener(){ it ->
+                it.context.startActivity<AcceptActivity>(
+                    "menuName" to view.menuName.text,
+                    "price" to view.price.text,
+                    "serviceName" to ServiceActivity.SubInfo().subName,
+                    "sellerName" to ServiceActivity.SubInfo().name
+                )
+                Log.d("testing","menu click : " + view.menuName.text)
+
+             */
             }
 
-            view.setOnClickListener(listener)
         }
     } //https://dreamaz.tistory.com/223
+
+    private fun isItemSelected(position:Int):Boolean {
+        return mSelectedItems.get(position, false)
+    }
+
+    private fun toggleItemSelected(position:Int) {
+        if (mSelectedItems.get(position, false)) {
+            mSelectedItems.delete(position)
+            clearSelectedItem()
+            notifyItemChanged(position)
+        } else {
+            clearSelectedItem()
+            mSelectedItems.put(position, true)
+            notifyItemChanged(position)
+        }
+    }
+    fun clearSelectedItem() {
+        var position = 0
+
+        var i=0
+        for (i in mSelectedItems.keyIterator()) {
+            position = i
+            mSelectedItems.put(position, false)
+            notifyItemChanged(position)
+        }
+
+        mSelectedItems.clear()
+    }
 
     class Item(val type:Int,val e:Any){
         var invisibleChildren:MutableList<Item>? = null
