@@ -40,7 +40,6 @@ class HomeFragment : Fragment() {
 
     fun setActionBar(){// 액션 바 설정
         activity!!.titleText.setText("구독 목록")
-        activity!!.locationIcon.visibility = View.GONE
         activity!!.titleText.isClickable = false
     }
     fun setContent(v:View, subeds:ArrayList<SubedItemData>) {

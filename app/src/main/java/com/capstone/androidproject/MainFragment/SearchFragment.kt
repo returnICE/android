@@ -88,7 +88,6 @@ class SearchFragment : Fragment() {
 
     fun setActionBar(address:String, mylocate:Location){// 액션 바 설정
         activity!!.titleText.setText(address)
-        activity!!.locationIcon.visibility = View.VISIBLE
         activity!!.titleText.setOnClickListener {
             val intent = Intent(context, MyAddressSettingActivity::class.java)
             intent.putExtra("lat",mylocate.latitude)

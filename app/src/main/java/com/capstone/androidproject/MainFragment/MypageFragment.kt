@@ -61,7 +61,6 @@ class MypageFragment() : Fragment() {
 
     fun setActionBar(){// 액션 바 설정
         activity!!.titleText.setText("마이페이지")
-        activity!!.locationIcon.visibility = View.GONE
         activity!!.titleText.isClickable = false
     }
 

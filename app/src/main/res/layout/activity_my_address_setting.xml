@@ -29,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/my_address_setting"
+            android:fontFamily="@font/bmhanna"
             android:textSize="35sp" />
 
         <EditText
@@ -38,7 +39,9 @@
             android:layout_below="@id/textView"
             android:layout_marginTop="1dp"
             android:ellipsize="start"
+            android:enabled="false"
             android:hint="@string/address_hint"
+            android:fontFamily="@font/bmhanna"
             android:singleLine="true" />
 
         <ImageView
