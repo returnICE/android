@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/ELdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:background="#FFFFFF"
+        android:text="사용 날짜"
+        android:textSize="15sp" />
+    <TextView
+        android:id="@+id/ELmenuName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="#FFFFFF"
+        android:text="메뉴 이름"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/ELprice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/ELmenuName"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="#FFFFFF"
+        android:text="가격"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/ELscore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/ELprice"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="#FFFFFF"
+        android:text="평점"
+        android:textSize="15sp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
