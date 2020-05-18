@@ -1,18 +1,23 @@
 package com.capstone.androidproject.ServiceInfo
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.capstone.androidproject.AcceptRequest.AcceptActivity
 import com.capstone.androidproject.R
 import com.capstone.androidproject.Response.ServiceData
 import com.capstone.androidproject.Response.ServiceDataResponse
 import com.capstone.androidproject.ServerConfig.ServerConnect
 import kotlinx.android.synthetic.main.activity_service.*
+import org.jetbrains.anko.startActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,6 +25,9 @@ import retrofit2.Response
 class ServiceActivity : AppCompatActivity() {
 
     lateinit var subItem: ServiceData
+    private val SUBED_REQ_CODE = 9000
+    var MenuName:String = ""
+    var Price:String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -31,10 +39,21 @@ class ServiceActivity : AppCompatActivity() {
         Log.d("testing", "subedId?")
         val name = intent.getStringExtra("name")
 
-        SMtext_storeName.setText(name)
-
+        SEtextStoreName.setText(name)
 
         getServiceInfo(subedId)
+
+        SEbtnCertification.setOnClickListener(){
+            val intent = Intent(this, AcceptActivity::class.java)
+            intent.putExtra("sellerName",subItem.name)
+            intent.putExtra("serviceName", subItem.subName)
+            intent.putExtra("menuName", MenuName)
+            intent.putExtra("price", Price)
+
+
+            startActivityForResult(intent,SUBED_REQ_CODE)
+        }
+
     }
 
     fun setContent() {
@@ -69,6 +88,15 @@ class ServiceActivity : AppCompatActivity() {
         rv.addItemDecoration(
             DividerItemDecoration(this!!.applicationContext, DividerItemDecoration.VERTICAL)
         )
+        adapter.setOnItemClickListener(object : ServiceRecyclerAdapter.OnItemClickListener{
+            override fun onItemClick(v: View, pos:Int){
+                val price = v.findViewById(R.id.price) as TextView
+                val menuName = v.findViewById(R.id.menuName) as TextView
+                Price = price.text.toString()
+                MenuName = menuName.text.toString()
+
+            }
+        })
         val lm = LinearLayoutManager(this@ServiceActivity, LinearLayoutManager.VERTICAL, false)
         rv.layoutManager = lm
     }
@@ -126,6 +154,22 @@ class ServiceActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
+        super.onActivityResult(requestCode, resultCode, intent)
+
+        when (requestCode) {
+            SUBED_REQ_CODE ->
+                if (resultCode == AppCompatActivity.RESULT_OK) {
+                    val data = intent?.extras!!.getString("result")
+                    if (data != null) {
+                        val i = Intent(this, AcceptActivity::class.java)
+
+                        startActivity(i)
+                    }
+                }
+        }
     }
 
 

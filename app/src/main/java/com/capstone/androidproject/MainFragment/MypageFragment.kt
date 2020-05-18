@@ -44,7 +44,7 @@ class MypageFragment() : Fragment() {
 
         setActionBar()
         val customername = v.findViewById(R.id.textMypageName) as TextView
-        customername.setText(App.prefs.name)
+        customername.setText(App.prefs.name + "님")
 
         val btnlogout: ImageView = v.findViewById(R.id.btnLogout)
         btnlogout.setOnClickListener {
