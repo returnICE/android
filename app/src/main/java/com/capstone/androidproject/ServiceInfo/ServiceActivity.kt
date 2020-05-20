@@ -28,6 +28,7 @@ class ServiceActivity : AppCompatActivity() {
     private val SUBED_REQ_CODE = 9000
     var MenuName:String = ""
     var Price:String = ""
+    var MenuId:String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -44,14 +45,21 @@ class ServiceActivity : AppCompatActivity() {
         getServiceInfo(subedId)
 
         SEbtnCertification.setOnClickListener(){
-            val intent = Intent(this, AcceptActivity::class.java)
-            intent.putExtra("sellerName",subItem.name)
-            intent.putExtra("serviceName", subItem.subName)
-            intent.putExtra("menuName", MenuName)
-            intent.putExtra("price", Price)
+            if(subItem.limitTimes <= subItem.usedTimes){
+                Toast.makeText(this@ServiceActivity, "사용 횟수를 모두 소진 하셨습니다.", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                val intent = Intent(this, AcceptActivity::class.java)
+                intent.putExtra("sellerName", subItem.name)
+                intent.putExtra("serviceName", subItem.subName)
+                intent.putExtra("menuName", MenuName)
+                intent.putExtra("price", Price)
+                intent.putExtra("menuId", MenuId)
+                intent.putExtra("subedId", subItem.subedId)
 
 
-            startActivityForResult(intent,SUBED_REQ_CODE)
+                startActivityForResult(intent, SUBED_REQ_CODE)
+            }
         }
 
     }
@@ -66,6 +74,8 @@ class ServiceActivity : AppCompatActivity() {
         subinfo.usedTimes = subItem.usedTimes
         subinfo.price = subItem.price
         subinfo.sellerId = subItem.sellerId
+        subinfo.subedId = subItem.subedId
+        Log.d("testing","subedId in ServiceActivity : " + subinfo.subedId)
         subinfo.subId = subItem.subId
         subinfo.term = subItem.term
         subinfo.name = subItem.name
@@ -79,6 +89,7 @@ class ServiceActivity : AppCompatActivity() {
             menuinfo.menuName = m.menuName
             menuinfo.price = m.price
             menuinfo.avgScore = m.avgScore
+            menuinfo.menuId = m.menuId
             sublist.add(ServiceRecyclerAdapter.Item(ServiceRecyclerAdapter.CHILD, menuinfo))
         }
 
@@ -92,8 +103,12 @@ class ServiceActivity : AppCompatActivity() {
             override fun onItemClick(v: View, pos:Int){
                 val price = v.findViewById(R.id.price) as TextView
                 val menuName = v.findViewById(R.id.menuName) as TextView
+                val menuId = v.findViewById(R.id.menuId) as TextView
                 Price = price.text.toString()
                 MenuName = menuName.text.toString()
+                MenuId = menuId.text.toString()
+                Log.d("testing","MenuId in ServiceActivity" + MenuId)
+
 
             }
         })
@@ -182,14 +197,16 @@ class ServiceActivity : AppCompatActivity() {
         var subName: String = "",
         var sellerId: String = "",
         var price: Int = 0,
-        var name: String = ""
+        var name: String = "",
+        var subedId: Int = 0
     )
 
 
     data class MenuInfo(
         var menuName: String = "",
         var price: Int = 0,
-        var avgScore: Double = 0.0
+        var avgScore: Double = 0.0,
+        var menuId: Int = 0
     )
 
 }

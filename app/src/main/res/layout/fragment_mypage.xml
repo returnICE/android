@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_check_eatenlog"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/btnCheckPaylog"
+                app:layout_constraintRight_toLeftOf="@id/btnCheckEatenlog"
                 app:layout_constraintTop_toBottomOf="@id/textMypageName" />
             <ImageView
                 android:id="@+id/btnCheckPaylog"
@@ -54,7 +54,7 @@
                 android:background="@drawable/btn_check_paylog"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintLeft_toRightOf="@id/btnCheckEatenlog"
+                app:layout_constraintLeft_toRightOf="@id/btnCheckPaylog"
                 app:layout_constraintTop_toBottomOf="@id/textMypageName" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

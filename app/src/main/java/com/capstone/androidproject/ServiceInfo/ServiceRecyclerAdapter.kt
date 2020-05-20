@@ -144,6 +144,7 @@ class ServiceRecyclerAdapter(private var items: MutableList<Item>)
             if(item.e is ServiceActivity.MenuInfo) {
                 view.menuName.setText(item.e.menuName)
                 view.price.setText(item.e.price.toString() + "원")
+                view.menuId.setText(item.e.menuId.toString())
                 view.setOnClickListener{ it ->
                     val pos = adapterPosition
                     if (pos != RecyclerView.NO_POSITION) {
