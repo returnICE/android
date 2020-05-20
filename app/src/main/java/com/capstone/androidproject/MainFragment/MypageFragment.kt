@@ -1,6 +1,7 @@
 package com.capstone.androidproject.MainFragment
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -15,10 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.androidproject.LoginActivity
+import com.capstone.androidproject.MainFragment.Mypage.EatenLogActivity
 import com.capstone.androidproject.MainFragment.Mypage.MypageRecyclerAdapter
 import com.capstone.androidproject.R
 import com.capstone.androidproject.Response.Success
-import com.capstone.androidproject.Response.UserInfoResponse
 import com.capstone.androidproject.ServerConfig.ServerConnect
 import com.capstone.androidproject.SharedPreferenceConfig.App
 import kotlinx.android.synthetic.main.activity_main.*
@@ -51,6 +52,13 @@ class MypageFragment() : Fragment() {
             App.prefs.clear()
             logout(context!!.applicationContext)
         }
+
+        val btnCheckEatenlog: ImageView = v.findViewById(R.id.btnCheckEatenlog)
+        btnCheckEatenlog.setOnClickListener{
+            activity?.startActivity<EatenLogActivity>()
+
+        }
+
 
         val _subeds = arguments?.getSerializable("subeds")!! as ArrayList<SubedItemData>
         subeds = _subeds

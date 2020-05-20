@@ -38,6 +38,12 @@
             android:name=".AcceptRequest.AcceptActivity"
             android:parentActivityName=".ServiceInfo.ServiceActivity" />
         <activity
+            android:name=".AcceptRequest.ReviewActivity"
+            android:parentActivityName=".AcceptRequest.AcceptActivity" />
+        <activity
+            android:name=".MainFragment.Mypage.EatenLogActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".AddressSetting.DetailAddressActivity"
             android:parentActivityName=".AddressSetting.MyAddressSettingActivity" />
         <activity

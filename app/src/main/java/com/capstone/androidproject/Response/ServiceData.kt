@@ -18,6 +18,9 @@ data class ServiceData(
     @SerializedName("usedTimes")
     val usedTimes: Int = 0,
 
+    @SerializedName("subedId")
+    val subedId: Int = 0,
+
     @SerializedName("subId")
     val subId: Int = 0,
 

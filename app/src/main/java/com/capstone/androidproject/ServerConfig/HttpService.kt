@@ -9,6 +9,18 @@ data class ResponseEX(val result:String? = null)
 interface HttpService {
 
     @FormUrlEncoded
+    @POST("/accepts/customer")
+    fun postAcceptRequest(@Header("x-access-token")token: String,
+                          @Field("subedId")subedId: Int,
+                          @Field("menuId")menuId: Int): Call<EatenLogDataResponse>
+
+    @FormUrlEncoded
+    @POST("/accepts/score")
+    fun postReviewRequest(@Header("x-access-token")token: String,
+                          @Field("eatenId")eatenId: Int,
+                          @Field("score")score: Int): Call<Success>
+
+    @FormUrlEncoded
     @POST("/users/login")
     fun postLoginRequest(@Field("customerId")customerId: String,
                         @Field("pw")pw: String)
@@ -60,6 +72,11 @@ interface HttpService {
     @GET("/login")
     fun getGetUserRequest(@Header("x-access-token")token: String): Call<LoginResponse>
 
+
+    @GET("users/myinfo")
+    fun getCustomerInfoRequest(@Header("x-access-token")customerId: String)
+            :Call<UserInfoResponse>
+
     @FormUrlEncoded
     @POST("/search")
     fun postSellerRequest(@Field("lat")lat: Double,
@@ -72,10 +89,6 @@ interface HttpService {
     fun getSellerInfoRequest(@Path("sellerId")sellerId:String)
             :Call<SellerInfoResponse>
 
-
-    @GET("users/myinfo")
-    fun getCustomerInfoRequest(@Header("x-access-token")customerId: String)
-            :Call<UserInfoResponse>
 
     /*
     @GET("/경로")
