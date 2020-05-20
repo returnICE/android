@@ -49,7 +49,6 @@ class LoginActivity : AppCompatActivity() {
             override fun onResponse(call: Call<TokenResponse>?, response: Response<TokenResponse>) {
                 val success = response.body()?.success
                 val token = response.body()!!.data
-                println(token)
 
                 if (success == false) {
                     Toast.makeText(this@LoginActivity, "로그인 실패2", Toast.LENGTH_SHORT).show()
