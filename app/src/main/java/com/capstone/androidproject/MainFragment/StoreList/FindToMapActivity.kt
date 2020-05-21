@@ -30,10 +30,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_find_to_map.*
 import org.jetbrains.anko.startActivity
@@ -116,6 +113,7 @@ class FindToMapActivity : AppCompatActivity(), OnMapReadyCallback,
 
         //지도의 초기위치로 이동
         setDefaultLocation()
+        imgTextSeller.visibility = View.GONE
 
         //위치 퍼미션을 가지고 있는지 체크
         val hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
@@ -337,9 +335,6 @@ class FindToMapActivity : AppCompatActivity(), OnMapReadyCallback,
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
         currentMarker = mGoogleMap?.addMarker(markerOptions)
 
-        Log.d("maplocation_DetailAddress",DEFAULT_LOCATION.latitude.toString())
-        Log.d("maplocation_DetailAddress",DEFAULT_LOCATION.longitude.toString())
-
         val cameraUpdate = CameraUpdateFactory.newLatLngZoom(DEFAULT_LOCATION, ZOOM)
         mGoogleMap?.moveCamera(cameraUpdate)
     }
@@ -495,13 +490,13 @@ class FindToMapActivity : AppCompatActivity(), OnMapReadyCallback,
 
             when(seller.type){
                 "cafe" -> {
-                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_cafe))
                 }
                 "dinner" -> {
-                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_dinner))
                 }
                 "bar" -> {
-                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_bar))
                 }
             }
             val marker:Marker = mGoogleMap?.addMarker(markerOptions)!!

@@ -17,7 +17,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginTop="20dp"
             android:background="@drawable/round_corner"
-            app:layout_constraintTop_toBottomOf="@id/btnLogout">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/textMypageName"
@@ -66,10 +66,12 @@
             android:id="@+id/btnLogout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
+            android:layout_gravity="center"
             android:src="@drawable/button_logout"
+            android:layout_marginBottom="30dp"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <TextView
             android:id="@+id/textSub"

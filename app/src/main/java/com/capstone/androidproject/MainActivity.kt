@@ -22,8 +22,11 @@ import com.capstone.androidproject.Response.SubedItmeDataResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
-
+import androidx.core.os.HandlerCompat.postDelayed
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.os.Handler
 
 
 class MainActivity : AppCompatActivity() {
@@ -37,10 +40,8 @@ class MainActivity : AppCompatActivity() {
     private val frag4: MypageFragment =
         MypageFragment()
 
-    lateinit var myAddress: String
-
     var sellers: ArrayList<SellerData> = ArrayList()
-    var subeds: ArrayList<SubedItemData> = ArrayList()
+    var subeds: ArrayList<SubedItemData> ?= ArrayList()
     var page = 0
 
     var _mylocate=Location("alive")
@@ -90,14 +91,12 @@ class MainActivity : AppCompatActivity() {
         else {
             mylocate = getMyLocation()
         }
-        Log.d("maplocation_MainActivity",mylocate.latitude.toString())
-        Log.d("maplocation_MainActivity",mylocate.longitude.toString())
         _mylocate=mylocate
 
-        getSeller(mylocate, page)
         getSubedItem()
 
-        setFrag(0) // 첫 프래그먼트 화면 지정
+        getSeller(mylocate, page)
+
     }
 
     private fun setFrag(n: Int) {
@@ -153,52 +152,6 @@ class MainActivity : AppCompatActivity() {
     }
     //https://webnautes.tistory.com/1315
 
-    fun getSubedItem(){
-        val serverConnect = ServerConnect(this)
-        val server = serverConnect.conn()
-
-        server.getSubedItemRequest(App.prefs.token).enqueue(object: Callback<SubedItmeDataResponse>{
-            override fun onFailure(call: Call<SubedItmeDataResponse>, t: Throwable) {
-                Toast.makeText(this@MainActivity, "통신 실패", Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onResponse(
-                call: Call<SubedItmeDataResponse>,
-                response: Response<SubedItmeDataResponse>
-            ) {
-                val success = response.body()!!.success
-                val subdata = response.body()!!.subdata
-
-                if(!success){
-                    Toast.makeText(this@MainActivity, "목록가져오기 실패", Toast.LENGTH_SHORT).show()
-                }
-                else{
-                    for (subed in subdata) {
-
-                        subeds.add(
-                            SubedItemData(
-                              "",
-                                subed.subedId,
-                                subed.startDate,
-                                subed.endDate,
-                                subed.term,
-                                subed.limitTimes,
-                                subed.autoPay,
-                                subed.usedTimes,
-                                subed.subId,
-                                subed.subName,
-                                subed.sellerId,
-                                subed.name,
-                                ""
-                            )
-                        )
-                    }
-                }
-            }
-
-        })
-
-    }
     fun getSeller(mylocate: Location, page: Int) {
         val serverConnect = ServerConnect(this)
         val server = serverConnect.conn()
@@ -242,5 +195,62 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    fun getSubedItem(){
+        val serverConnect = ServerConnect(this)
+        val server = serverConnect.conn()
+
+        server.getSubedItemRequest(App.prefs.token).enqueue(object:
+            Callback<SubedItmeDataResponse> {
+            override fun onFailure(call: Call<SubedItmeDataResponse>, t: Throwable) {
+                Toast.makeText(this@MainActivity, "통신 실패", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onResponse(
+                call: Call<SubedItmeDataResponse>,
+                response: Response<SubedItmeDataResponse>
+            ) {
+                val success = response.body()!!.success
+                val subdata = response.body()!!.subdata
+
+                if(!success){
+                    Toast.makeText(this@MainActivity, "목록가져오기 실패", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    subeds?.clear()
+                    for (subed in subdata) {
+                        if(subedCheck(subed))
+                            continue
+                        subeds?.add(
+                            SubedItemData(
+                                "",
+                                subed.subedId,
+                                subed.startDate,
+                                subed.endDate,
+                                subed.term,
+                                subed.limitTimes,
+                                subed.autoPay,
+                                subed.usedTimes,
+                                subed.subId,
+                                subed.subName,
+                                subed.sellerId,
+                                subed.name,
+                                ""
+                            )
+                        )
+                    }
+                    setFrag(0) // 첫 프래그먼트 화면 지정
+                }
+            }
+        })
+    }
+
+    fun subedCheck(sub:SubedItemData):Boolean{
+        for(s in subeds!!.iterator()){
+            if(s.name == sub.name)
+                return true
+        }
+        return false
     }
 }

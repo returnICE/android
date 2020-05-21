@@ -1,20 +1,23 @@
 package com.capstone.androidproject
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.SystemClock
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.capstone.androidproject.Response.LoginResponse
+import com.capstone.androidproject.Response.SubedItemData
+import com.capstone.androidproject.Response.SubedItmeDataResponse
 import com.capstone.androidproject.Response.UserInfoResponse
 import com.capstone.androidproject.ServerConfig.ServerConnect
 import com.capstone.androidproject.SharedPreferenceConfig.App
-import com.google.gson.reflect.TypeToken
 import org.jetbrains.anko.startActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class SplashActivity : AppCompatActivity() {
+
+    var subeds: ArrayList<SubedItemData> = ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -50,8 +53,6 @@ class SplashActivity : AppCompatActivity() {
                     startActivity<LoginActivity>()
                     finish()
                 } else {
-                    Toast.makeText(this@SplashActivity, "로그인 성공", Toast.LENGTH_SHORT).show()
-
                     App.prefs.name = userinfo?.name.toString()
                     App.prefs.id = userinfo?.customerId.toString()
 

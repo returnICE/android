@@ -17,6 +17,7 @@ import com.capstone.androidproject.MainActivity
 import com.capstone.androidproject.R
 import com.capstone.androidproject.Response.EatenLogDataResponse
 import com.capstone.androidproject.ServerConfig.ServerConnect
+import com.capstone.androidproject.ServiceInfo.ServiceActivity
 import com.capstone.androidproject.SharedPreferenceConfig.App
 import kotlinx.android.synthetic.main.activity_accept.*
 import retrofit2.Call
@@ -81,6 +82,7 @@ class AcceptActivity : AppCompatActivity() {
                     createNotificationChannel()
                     val nextIntent = Intent(this@AcceptActivity, MainActivity::class.java)
                     startActivity(nextIntent)
+                    finishAffinity()
                 }
             }
         })

@@ -1,5 +1,6 @@
 package com.capstone.androidproject.MainFragment
 
+import android.animation.Animator
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
@@ -27,12 +28,11 @@ import com.capstone.androidproject.Response.SellerDataResponse
 import com.capstone.androidproject.ServerConfig.ServerConnect
 import com.capstone.androidproject.SharedPreferenceConfig.App
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_my_address_setting.*
-import kotlinx.android.synthetic.main.fragment_search.*
 import org.jetbrains.anko.startActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import com.capstone.androidproject.RecyclerDecoration
 
 
 class SearchFragment : Fragment() {
@@ -128,16 +128,34 @@ class SearchFragment : Fragment() {
 
         rv.layoutManager = linearLayoutManagerWrapper
 
+        rv.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                val findmap=v.findViewById(R.id.findMap) as ImageView
+                if(rv.canScrollVertically(-1)){
+                    findmap.animate().translationY(findmap.height.toFloat())
+                }
+                else {
+                    findmap.animate().translationY(0.toFloat())
+                }
+            }
+        })
+
         scrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManagerWrapper) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                 getSeller(v,mylocate,page,false)
             }
         }
+
         rv.addOnScrollListener(scrollListener)
 
         val adapter =
             StoreListRecyclerAdapter(sellers)
         rv.adapter = adapter
+
+        val spaceDecoration = RecyclerDecoration(20)
+        rv.addItemDecoration(spaceDecoration)
     }
 
     fun setContent(){ // 상품 정보들
@@ -205,6 +223,8 @@ class SearchFragment : Fragment() {
                         sellers.clear()
                     }
                     for (seller in sellerdata) {
+                        if(sellerCheck(seller))
+                            continue
                         val sellerlocate = Location("myLoc")
                         sellerlocate.longitude = seller.lon
                         sellerlocate.latitude = seller.lat
@@ -233,5 +253,13 @@ class SearchFragment : Fragment() {
                 }
             }
         })
+    }
+
+    fun sellerCheck(seller:SellerData):Boolean{
+        for(sell in sellers){
+            if(sell.name == seller.name)
+                return true
+        }
+        return false
     }
 }

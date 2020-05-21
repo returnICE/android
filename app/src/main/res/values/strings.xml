@@ -9,6 +9,11 @@
     <string name="address_hint">원천동 월드컵로 206</string>
     <string name="please_detail_address">상세주소를 입력하세요(건물명, 동/호수) </string>
 
+    <string name="address_select">이 위치로 주소 설정</string>
+    <string name="find_address_map">지도로 주소 찾기</string>
+    <string name="find_address_text">주소 찾기</string>
+    <string name="address_decide">확인</string>
+
     <string name="bottom_navi_home">구독중</string>
     <string name="bottom_navi_search">찾기</string>
     <string name="bottom_navi_alert">알람</string>

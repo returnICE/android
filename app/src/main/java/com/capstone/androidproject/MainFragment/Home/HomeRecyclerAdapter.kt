@@ -24,7 +24,7 @@ class HomeRecyclerAdapter(private val items: ArrayList<SubedItemData>) :
 
 
             view.imgHomePhoto.setImageResource(R.drawable.example_img)
-            view.imgHomePhoto.setColorFilter(R.color.imgTint, PorterDuff.Mode.DARKEN)
+            view.imgHomePhoto.setColorFilter(R.color.imgTint,PorterDuff.Mode.DARKEN)
 
             /*var image_mypage_subeditem: URL2Bitmap = URL2Bitmap()
             image_mypage_subeditem = URL2Bitmap().apply {
@@ -40,7 +40,7 @@ class HomeRecyclerAdapter(private val items: ArrayList<SubedItemData>) :
 
             view.textHomeSellerName.setText(item.name)
             view.textHomeServices.setText(item.subName)
-            view.textHomeEndTime.setText("유효기한  ~" + item.endDate)
+            view.textHomeEndTime.setText("유효기한  ~" + item.endDate.substring(5))
             view.textHomeTimes.setText(item.usedTimes.toString() + "/" + item.limitTimes.toString())
 
             view.setOnClickListener(listener)

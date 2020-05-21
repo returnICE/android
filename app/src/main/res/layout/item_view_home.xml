@@ -10,46 +10,52 @@
         android:id="@+id/imgHomePhoto"
         android:layout_width="match_parent"
         android:layout_height="140dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:srcCompat="@mipmap/ic_launcher_round" />
 
     <TextView
         android:id="@+id/textHomeSellerName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:textSize="25sp"
-        android:textStyle="bold"
+        android:textColor="@color/textWhite"
+        android:textSize="30sp"
+        android:fontFamily="@font/bmhanna"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:text="restaurant"/>
-
-    <TextView
-        android:id="@+id/textHomeEndTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:text="유효기한 ~?/?" />
-
-    <TextView
-        android:id="@+id/textHomeTimes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/textHomeEndTime"
-        tools:text="?/?" />
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView
         android:id="@+id/textHomeServices"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/textWhite"
         android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="@+id/textHomeEndTime"
-        app:layout_constraintBottom_toTopOf="@+id/textHomeEndTime"
-        tools:text="service" />
+        android:fontFamily="@font/bmhanna"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintRight_toLeftOf="@+id/textHomeTimes"
+        app:layout_constraintBottom_toTopOf="@+id/textHomeEndTime" />
+
+    <TextView
+        android:id="@+id/textHomeTimes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/textWhite"
+        android:textSize="20sp"
+        android:fontFamily="@font/bmhanna"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textHomeEndTime" />
+
+    <TextView
+        android:id="@+id/textHomeEndTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/textWhite"
+        android:textSize="20sp"
+        android:fontFamily="@font/bmhanna"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

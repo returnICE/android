@@ -1,27 +1,22 @@
 package com.capstone.androidproject
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import android.widget.Toast
-import com.capstone.androidproject.Response.LoginResponse
-import com.capstone.androidproject.Response.TokenResponse
-import com.capstone.androidproject.Response.UserInfoResponse
+import com.capstone.androidproject.Response.*
 import com.capstone.androidproject.ServerConfig.HttpService
 import com.capstone.androidproject.ServerConfig.ServerConnect
 import com.capstone.androidproject.SharedPreferenceConfig.App
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.fragment_mypage.*
-import org.jetbrains.anko.startActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
 
+    var subeds: ArrayList<SubedItemData> = ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -56,7 +51,6 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this@LoginActivity, "로그인 성공", Toast.LENGTH_SHORT).show()
                     App.prefs.token = token.toString()// 로그인 성공하면 shared_Preference에 유저정보 저장
 
-                    Log.d("test", "Token Login" +token.toString())
                     getUserInfo(server, token)
                 }
             }
@@ -83,7 +77,6 @@ class LoginActivity : AppCompatActivity() {
                     App.prefs.name = userinfo?.name.toString()
                     App.prefs.id = userinfo?.customerId.toString()
 
-                    startActivity<MainActivity>()
                     finish()
                 }
             }
