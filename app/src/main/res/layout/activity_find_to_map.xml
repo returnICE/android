@@ -27,7 +27,6 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
-            android:visibility="gone"
             app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
 
         <ImageView
@@ -36,14 +35,15 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="20dp"
-            app:srcCompat="@drawable/text_seller"/>
+            app:srcCompat="@drawable/seller_info"/>
 
         <TextView
             android:id="@+id/textSellerName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:fontFamily="@font/bmhanna"
+            android:textColor="@color/textBlack"
             android:layout_alignStart="@id/imgTextSeller"
             android:layout_alignTop="@id/imgTextSeller"
             android:layout_alignEnd="@id/imgTextSeller"
@@ -51,7 +51,9 @@
         <TextView
             android:id="@+id/textSubCount"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:fontFamily="@font/bmhanna"
+            android:textColor="@color/textBlack"
             android:layout_alignStart="@id/imgTextSeller"
             android:layout_alignEnd="@id/imgTextSeller"
             android:layout_below="@id/textSellerName"/>
@@ -59,6 +61,8 @@
             android:id="@+id/textMinPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/bmhanna"
+            android:textColor="@color/textBlack"
             android:layout_alignStart="@id/imgTextSeller"
             android:layout_alignEnd="@id/imgTextSeller"
             android:layout_below="@id/textSubCount"

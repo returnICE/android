@@ -44,27 +44,37 @@
             android:fontFamily="@font/bmhanna"
             android:singleLine="true" />
 
-        <ImageView
+        <Button
             android:id="@+id/btnFindTextAddress"
-            android:layout_width="wrap_content"
+            android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/textAddress"
-            app:srcCompat="@drawable/btn_find_address" />
-        <ImageView
+            android:layout_marginTop="10dp"
+            android:text="@string/find_address_text"
+            android:textSize="20sp"
+            android:fontFamily="@font/bmhanna"
+            android:background="@drawable/find_address_text" />
+        <Button
             android:id="@+id/btnSearchAddress"
-            android:layout_width="wrap_content"
+            android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/btnFindTextAddress"
-            android:layout_marginStart="15dp"
-            app:srcCompat="@drawable/search_address" />
+            android:layout_marginTop="10dp"
+            android:text="@string/find_address_map"
+            android:textSize="20sp"
+            android:fontFamily="@font/bmhanna"
+            android:background="@drawable/find_address_map" />
 
-        <ImageView
+        <Button
             android:id="@+id/btnAddressDecide"
-            android:layout_width="wrap_content"
+            android:layout_width="320dp"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/btnFindTextAddress"
-            android:layout_below="@id/textAddress"
-            app:srcCompat="@drawable/btn_address_decide" />
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="30dp"
+            android:text="@string/address_decide"
+            android:textSize="30sp"
+            android:fontFamily="@font/bmhanna"
+            android:background="@drawable/address_decide" />
 
 
     </RelativeLayout>

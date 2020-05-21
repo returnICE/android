@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.capstone.androidproject.R
 import com.capstone.androidproject.Response.SellerData
 import com.capstone.androidproject.StoreInfo.StoreActivity
@@ -57,7 +58,10 @@ class StoreListRecyclerAdapter(private val items: ArrayList<SellerData>) :
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         private var view: View = v
         fun bind(listener: View.OnClickListener, item: SellerData) {
-            view.imgItem.setImageResource(R.drawable.example_img)
+
+            Glide.with(view.context).load("https://ajoucapston.s3.ap-northeast-2.amazonaws.com/1589781777229").into(view.imgItem)
+
+            //view.imgItem.setImageResource(R.drawable.example_img)
             view.imgItem.setColorFilter(R.color.imgTint,PorterDuff.Mode.DARKEN)
 
             lateinit var distance:String

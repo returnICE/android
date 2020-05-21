@@ -32,12 +32,10 @@ class ServiceActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        Log.d("test","11")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_service)
 
         val subedId = intent.getIntExtra("subedId",0)
-        Log.d("testing", "subedId?")
         val name = intent.getStringExtra("name")
 
         SEtextStoreName.setText(name)

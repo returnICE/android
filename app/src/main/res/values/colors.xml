@@ -14,7 +14,7 @@
     <color name="textPink">#F81B60</color>
     <color name="textTransparent">#00000000</color>
 
-    <color name="imgTint">#444444</color>
+    <color name="imgTint">#BDBDBD</color>
 
     <color name="bottomNavigationBackground">#E6E6E6</color>
     <color name="bottomNavigationItem">#000000</color>

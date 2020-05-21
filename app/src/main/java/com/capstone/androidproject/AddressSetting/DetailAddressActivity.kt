@@ -25,13 +25,11 @@ import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import com.capstone.androidproject.MainActivity
 import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import com.google.android.gms.maps.model.*
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_detail_address.*
-import org.jetbrains.anko.startActivity
 import java.io.IOException
 import java.util.*
 
