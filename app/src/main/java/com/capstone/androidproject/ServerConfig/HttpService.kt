@@ -78,6 +78,13 @@ interface HttpService {
             :Call<UserInfoResponse>
 
     @FormUrlEncoded
+    @PUT("users/myinfo")
+    fun putCustomerInfoRequest(@Header("x-access-token")token: String,
+                               @Field("pw")pw: String)
+            :Call<Success>
+
+
+    @FormUrlEncoded
     @POST("/search")
     fun postSellerRequest(@Field("lat")lat: Double,
                           @Field("lon")lon: Double,

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.androidproject.LoginActivity
 import com.capstone.androidproject.MainFragment.Mypage.EatenLogActivity
+import com.capstone.androidproject.MainFragment.Mypage.ModificationInfoActivity
 import com.capstone.androidproject.MainFragment.Mypage.MypageRecyclerAdapter
 import com.capstone.androidproject.R
 import com.capstone.androidproject.Response.Success
@@ -53,11 +54,18 @@ class MypageFragment() : Fragment() {
             logout(context!!.applicationContext)
         }
 
+        //승인로그 페이지
         val btnCheckEatenlog: ImageView = v.findViewById(R.id.btnCheckEatenlog)
         btnCheckEatenlog.setOnClickListener{
             activity?.startActivity<EatenLogActivity>()
-
         }
+
+        //개인정보 수정 페이지
+        val btnModificationInfo: ImageView = v.findViewById(R.id.btnModificationInfo)
+        btnModificationInfo.setOnClickListener{
+            activity?.startActivity<ModificationInfoActivity>()
+        }
+
 
 
         val _subeds = arguments?.getSerializable("subeds")!! as ArrayList<SubedItemData>

@@ -44,6 +44,9 @@
             android:name=".MainFragment.Mypage.EatenLogActivity"
             android:parentActivityName=".MainActivity" />
         <activity
+            android:name=".MainFragment.Mypage.ModificationInfoActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".AddressSetting.DetailAddressActivity"
             android:parentActivityName=".AddressSetting.MyAddressSettingActivity" />
         <activity
