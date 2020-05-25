@@ -84,6 +84,11 @@ interface HttpService {
             :Call<Success>
 
 
+    @GET("users/accept")
+    fun getEatenLogInfoRequest(@Header("x-access-token")token: String)
+            :Call<EatenLogDataResponse2>
+
+
     @FormUrlEncoded
     @POST("/search")
     fun postSellerRequest(@Field("lat")lat: Double,

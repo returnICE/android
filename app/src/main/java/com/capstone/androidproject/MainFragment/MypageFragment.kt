@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.androidproject.LoginActivity
+import com.capstone.androidproject.MainActivity
+import com.capstone.androidproject.MainFragment.Mypage.DeleteSubActivity
 import com.capstone.androidproject.MainFragment.Mypage.EatenLogActivity
 import com.capstone.androidproject.MainFragment.Mypage.ModificationInfoActivity
 import com.capstone.androidproject.MainFragment.Mypage.MypageRecyclerAdapter
@@ -35,7 +37,6 @@ class MypageFragment() : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
-
     var subeds: ArrayList<SubedItemData> = ArrayList()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +44,19 @@ class MypageFragment() : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val v:View = inflater.inflate(R.layout.fragment_mypage, container, false)
+
+
+
+        val _subeds = arguments?.getSerializable("subeds")!! as ArrayList<SubedItemData>
+        subeds = _subeds
+
+        /*
+        val bundle = Bundle()
+        bundle.putSerializable("subeds", subeds)
+
+         */
+
+        setContent(v, subeds)
 
         setActionBar()
         val customername = v.findViewById(R.id.textMypageName) as TextView
@@ -66,11 +80,15 @@ class MypageFragment() : Fragment() {
             activity?.startActivity<ModificationInfoActivity>()
         }
 
+        //구독 해지
+        val btnDelete: ImageView = v.findViewById(R.id.btnDelete)
+        btnDelete.setOnClickListener{
+            val intent = Intent(context, DeleteSubActivity::class.java)
+            intent.putExtra("test","test")
+            intent.putExtra("subeds", subeds)
+            activity?.startActivity(intent)
+        }
 
-
-        val _subeds = arguments?.getSerializable("subeds")!! as ArrayList<SubedItemData>
-        subeds = _subeds
-        setContent(v, subeds)
 
         return v
     }
