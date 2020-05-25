@@ -1,10 +1,12 @@
 package com.capstone.androidproject.AcceptRequest
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -63,7 +65,6 @@ class AcceptActivity : AppCompatActivity() {
             Callback<EatenLogDataResponse> {
             override fun onFailure(call: Call<EatenLogDataResponse>, t: Throwable) {
                 Toast.makeText(this@AcceptActivity, "승인 실패1", Toast.LENGTH_SHORT).show()
-                println(t?.message.toString())
             }
 
             override fun onResponse(
@@ -97,7 +98,8 @@ class AcceptActivity : AppCompatActivity() {
 
         //푸시에서 클릭시 전환할 생성할 intent
         val intent = Intent(this@AcceptActivity, ReviewActivity::class.java).apply{
-            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+           // flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             putExtra("eatenId",eatenId)
             Log.d("testing","eatenId in notification in AcceptActivity" + eatenId.toString())
             putExtra("menuName",menuName)
@@ -106,7 +108,7 @@ class AcceptActivity : AppCompatActivity() {
             putExtra("currentTime",currentTime)
         }
 
-        val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val fullScreenPendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
 
         //var bitmap = BitmapFactory.decodeResource(resources, R.drawable.phone)
@@ -118,10 +120,14 @@ class AcceptActivity : AppCompatActivity() {
             .setContentText(content)
             .setAutoCancel(true)
             //.setLargeIcon(bitmap)
-            .setShowWhen(true)
+            //.setShowWhen(true)
             .setColor(ContextCompat.getColor(this, R.color.colorAccent))
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setContentIntent(pendingIntent)
+            //.setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentIntent(fullScreenPendingIntent)
+            .setFullScreenIntent(fullScreenPendingIntent, true)//headup notation
+            .setDefaults(Notification.DEFAULT_ALL)
+            .setTicker("Notification")
+            .setVibrate(longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400))
 
         NotificationManagerCompat.from(this).notify(notificationId, builder.build())
 
@@ -133,9 +139,12 @@ class AcceptActivity : AppCompatActivity() {
         val CHANNEL_NAME = R.string.channel_name.toString()
         val CHANNEL_DESCRIPTION = R.string.channel_description.toString()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val importance = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance).apply {
                 description = CHANNEL_DESCRIPTION
+                enableVibration(true)
+                lightColor = Color.GREEN
+                vibrationPattern = longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400)
             }
             // Register the channel with the system
             val notificationManager: NotificationManager =

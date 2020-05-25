@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT"/>
     <application
         android:name=".SharedPreferenceConfig.App"
         android:allowBackup="true"
@@ -40,6 +40,9 @@
         <activity
             android:name=".AcceptRequest.ReviewActivity"
             android:parentActivityName=".AcceptRequest.AcceptActivity" />
+        <activity
+            android:name=".MainFragment.Mypage.DeleteSubActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MainFragment.Mypage.EatenLogActivity"
             android:parentActivityName=".MainActivity" />
@@ -102,5 +105,6 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
     </application>
+
 
 </manifest>

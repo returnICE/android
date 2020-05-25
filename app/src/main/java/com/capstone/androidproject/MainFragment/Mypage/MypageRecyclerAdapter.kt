@@ -13,14 +13,12 @@ import kotlinx.android.synthetic.main.activity_find_to_map.view.textSellerName
 import kotlinx.android.synthetic.main.item_view_mypage_subeditem.view.*
 import java.net.URL
 
-//SellerData -> SubedItemData
 class MypageRecyclerAdapter(private val items: ArrayList<SubedItemData>) :
         RecyclerView.Adapter<MypageRecyclerAdapter.ViewHolder>(){
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         private var view: View = v
 
-        //SellerData -> SubedItemData
         fun bind(listener: View.OnClickListener, item: SubedItemData) {
 
 
@@ -57,7 +55,6 @@ class MypageRecyclerAdapter(private val items: ArrayList<SubedItemData>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
         val listener = View.OnClickListener { it ->
-
             Toast.makeText(it.context, "Clicked: ${item.name}", Toast.LENGTH_SHORT).show()
         }
         holder.apply {
