@@ -2,6 +2,7 @@ package com.capstone.androidproject.MainFragment.StoreList
 
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,7 +61,14 @@ class StoreListRecyclerAdapter(private val items: ArrayList<SellerData>) :
         private var view: View = v
         fun bind(listener: View.OnClickListener, item: SellerData) {
 
-            Glide.with(view.context).load("https://ajoucapston.s3.ap-northeast-2.amazonaws.com/1589781777229").into(view.imgItem)
+            if(item.imgURL != null) {
+                Glide.with(view.context)
+                    .load(item.imgURL)
+                    .into(view.imgItem)
+            }
+            else{
+                view.imgItem.setImageResource(R.drawable.default_img)
+            }
             view.imgItem.setColorFilter(Color.parseColor("#717171"),PorterDuff.Mode.MULTIPLY)
 
             lateinit var distance:String
@@ -73,9 +81,9 @@ class StoreListRecyclerAdapter(private val items: ArrayList<SellerData>) :
                 distance = String.format("%.1f", d) + "km"
             }
             view.distanceHome.setText(distance)
-            view.subsCount.setText(item.totalSubs.toString()+"명")
+            view.subsCount.setText("구독자수 "+item.totalSubs.toString()+"명")
             view.storeName.setText(item.name)
-            view.minPrice.setText(item.minPrice.toString())
+            view.minPrice.setText(item.minPrice.toString()+"원")
 
             view.setOnClickListener(listener)
         }

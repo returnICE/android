@@ -43,6 +43,6 @@ data class SubedItemData (
     val name: String = "",
 
     @SerializedName("imgURL")
-    val imgURL: String = ""
+    val imgURL: String ?= ""
 
     ):Parcelable

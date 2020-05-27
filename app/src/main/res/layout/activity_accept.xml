@@ -85,7 +85,7 @@
                 android:id="@+id/ACbtnCertification"
                 android:layout_width="360dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_complete"
+                android:background="@drawable/btn_check"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
