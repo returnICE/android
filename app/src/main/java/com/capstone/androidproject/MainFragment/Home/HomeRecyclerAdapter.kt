@@ -1,5 +1,6 @@
 package com.capstone.androidproject.MainFragment.Home
 
+import android.graphics.Color
 import android.graphics.PorterDuff
 import android.util.Log
 import android.view.LayoutInflater
@@ -29,7 +30,15 @@ class HomeRecyclerAdapter(private val items: ArrayList<SubedItemData>) :
             view.textHomeSellerName.setText(item.name)
             view.textHomeServices.setText(item.subName)
             view.textHomeEndTime.setText("유효기한  ~" + item.endDate.substring(5))
-            view.textHomeTimes.setText(item.usedTimes.toString() + "/" + item.limitTimes.toString())
+            var restTimes = item.limitTimes - item.usedTimes
+            view.textHomeUsedTimes.setText(restTimes.toString())
+            if(restTimes <= item.limitTimes/2){
+                view.textHomeUsedTimes.setTextColor(Color.RED)
+            }
+            else{
+                view.textHomeUsedTimes.setTextColor(Color.GREEN)
+            }
+            view.textHomeLimitTimes.setText(item.limitTimes.toString())
 
             view.setOnClickListener(listener)
         }
