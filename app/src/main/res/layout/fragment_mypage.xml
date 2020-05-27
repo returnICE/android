@@ -24,6 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
+                android:layout_marginLeft="40dp"
                 android:fontFamily="@font/bmhanna"
                 android:textSize="50sp"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -35,38 +36,20 @@
                 android:layout_gravity="end|center_vertical"
                 android:id="@+id/btnModificationInfo"
                 android:layout_marginRight="16dp"
-                android:background="@drawable/btn_setup_small"
+                android:layout_marginLeft="30dp"
+                android:background="@drawable/btn_update_pw"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="비밀번호 변경 "
-                android:textSize="15sp"
-                android:fontFamily="@font/bmhanna"
-                app:layout_constraintRight_toLeftOf="@+id/btnModificationInfo"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-            />
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintLeft_toRightOf="@id/btnModificationInfo"
+                app:layout_constraintTop_toBottomOf="@id/textMypageName" />
 
             <ImageView
                 android:id="@+id/btnCheckEatenlog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
                 android:background="@drawable/btn_check_eatenlog"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/btnCheckEatenlog"
-                app:layout_constraintTop_toBottomOf="@id/textMypageName" />
-            <ImageView
-                android:id="@+id/btnCheckPaylog"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/btn_check_paylog"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintLeft_toRightOf="@id/btnCheckPaylog"
                 app:layout_constraintTop_toBottomOf="@id/textMypageName" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -95,23 +78,11 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/nameSpace" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="10dp"
-            android:fontFamily="@font/bmhanna"
-            android:text="구독 해지 "
-            android:textSize="15sp"
-            app:layout_constraintBottom_toTopOf="@id/recyclerViewMypage"
-            app:layout_constraintRight_toLeftOf="@+id/btnDelete" />
-
-
         <ImageView
             android:id="@+id/btnDelete"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/btn_setup_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_delete_sub"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="10dp"
             app:layout_constraintBottom_toTopOf="@id/recyclerViewMypage"
