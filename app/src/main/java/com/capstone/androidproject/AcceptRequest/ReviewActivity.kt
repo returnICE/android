@@ -27,43 +27,19 @@ class ReviewActivity : AppCompatActivity() {
         val menuName = intent.getStringExtra("menuName")
         val serviceName = intent.getStringExtra("serviceName")
         val sellerName = intent.getStringExtra("sellerName")
-        val currentTime = intent.getStringExtra("currentTime")
         val eatenId = intent.getIntExtra("eatenId", 0)
 
-        Log.d("testing", "eatenId in ReviewActivity" + eatenId.toString())
-        Log.d("testing", "menuName in ReviewActivity" + menuName)
-        RVtextDate.setText(currentTime)
         RVtextMenuName.setText(menuName)
         RVtextServiceName.setText(serviceName)
         RVtextStoreName.setText(sellerName)
 
-        var score = 1;
+        var score = 3
 
-        radioGroup1.setOnCheckedChangeListener { radioGroup, i ->
-            when (i) {
-                R.id.radio1 -> {
-                    score = 1
-                    Toast.makeText(this, "1점", Toast.LENGTH_SHORT).show()
-                }
-                R.id.radio2 -> {
-                    score = 2
-                    Toast.makeText(this, "2점", Toast.LENGTH_SHORT).show()
-                }
-                R.id.radio3 -> {
-                    score = 3
-                    Toast.makeText(this, "3점", Toast.LENGTH_SHORT).show()
-                }
-                R.id.radio4 -> {
-                    score = 4
-                    Toast.makeText(this, "4점", Toast.LENGTH_SHORT).show()
-                }
-                R.id.radio5 -> {
-                    score = 5
-                    Toast.makeText(this, "5점", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-        RVbtnCertification.setOnClickListener() {
+        ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser -> run{
+            score = rating.toInt()
+        } }
+
+        RVbtnCertification.setOnClickListener {
             review(App.prefs.token, eatenId, score)
         }
 

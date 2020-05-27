@@ -18,7 +18,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="3">
 
             <TextView
                 android:id="@+id/ACtextStoreName"
@@ -28,7 +28,9 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="25sp"
+                android:fontFamily="@font/bmhanna"
+                android:textSize="40sp"
+                android:textColor="@color/textBlack"
                 tools:text="가게 이름"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -36,7 +38,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="2">
 
             <TextView
                 android:id="@+id/ACtextServiceName"
@@ -46,7 +48,9 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="25sp"
+                android:fontFamily="@font/bmhanna"
+                android:textColor="@color/textPink"
+                android:textSize="35sp"
                 android:text="서비스 이름"
                 />
 
@@ -58,55 +62,25 @@
             android:layout_weight="2">
 
             <TextView
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/ACtextPrice"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:id="@+id/ACtextMenuName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
+                android:fontFamily="@font/bmhanna"
                 android:text="메뉴 이름"
-                />
-
-            <TextView
-                app:layout_constraintLeft_toRightOf="@+id/ACtextMenuName"
-                app:layout_constraintRight_toRightOf="parent"
+                android:textSize="30sp"
+                android:textColor="@color/textBlack"
+                android:layout_marginBottom="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:id="@+id/ACtextPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="가격"
-                />
-
-            <TextView
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:id="@+id/ACtextDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="결제 시간"
-                />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3"
-            android:orientation="vertical">
-
-
-        </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2">
+            android:layout_weight="3">
             <ImageView
                 android:id="@+id/ACbtnCertification"
                 android:layout_width="360dp"

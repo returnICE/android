@@ -10,6 +10,7 @@ import com.capstone.androidproject.ServerConfig.HttpService
 import com.capstone.androidproject.ServerConfig.ServerConnect
 import com.capstone.androidproject.SharedPreferenceConfig.App
 import kotlinx.android.synthetic.main.activity_login.*
+import org.jetbrains.anko.startActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -77,6 +78,7 @@ class LoginActivity : AppCompatActivity() {
                     App.prefs.name = userinfo?.name.toString()
                     App.prefs.id = userinfo?.customerId.toString()
 
+                    startActivity<MainActivity>()
                     finish()
                 }
             }

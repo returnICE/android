@@ -37,6 +37,17 @@
             android:layout_centerHorizontal="true"
             app:srcCompat="@drawable/seller_info"/>
 
+        <ImageView
+            android:id="@+id/imgSeller"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_alignStart="@id/imgTextSeller"
+            android:layout_alignTop="@id/imgTextSeller" />
+
         <TextView
             android:id="@+id/textSellerName"
             android:layout_width="wrap_content"
@@ -44,17 +55,17 @@
             android:layout_marginTop="20dp"
             android:fontFamily="@font/bmhanna"
             android:textColor="@color/textBlack"
-            android:layout_alignStart="@id/imgTextSeller"
+            android:layout_toEndOf="@id/imgSeller"
             android:layout_alignTop="@id/imgTextSeller"
             android:layout_alignEnd="@id/imgTextSeller"
             android:textSize="40sp" />
         <TextView
             android:id="@+id/textSubCount"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/bmhanna"
             android:textColor="@color/textBlack"
-            android:layout_alignStart="@id/imgTextSeller"
+            android:layout_toEndOf="@id/imgSeller"
             android:layout_alignEnd="@id/imgTextSeller"
             android:layout_below="@id/textSellerName"/>
         <TextView
@@ -63,7 +74,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/bmhanna"
             android:textColor="@color/textBlack"
-            android:layout_alignStart="@id/imgTextSeller"
+            android:layout_toEndOf="@id/imgSeller"
             android:layout_alignEnd="@id/imgTextSeller"
             android:layout_below="@id/textSubCount"
             android:textSize="20sp" />

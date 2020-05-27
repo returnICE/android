@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AndroidProject</string>
+    <string name="app_name">LetEatGo</string>
     <string name="title_activity_example">ExampleActivity</string>
     <string name="title_activity_signup">SignupActivity</string>
 

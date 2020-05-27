@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_recyclerview_sublist_color">
 
     <TextView
         android:layout_width="wrap_content"
@@ -12,6 +13,7 @@
         android:id="@+id/textServiceName"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:fontFamily="@font/bmhanna"
         android:textSize="25sp"
         tools:text="서비스 이름"
         />
@@ -20,6 +22,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textUsableTime"
         android:textSize="20sp"
+        android:fontFamily="@font/bmhanna"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textServiceName"
         tools:text="잔여횟수 : ? 회"
@@ -30,6 +33,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textEndDate"
         android:textSize="15sp"
+        android:fontFamily="@font/bmhanna"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textServiceName"
         tools:text="유효기한 ~?/?"

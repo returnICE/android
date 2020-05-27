@@ -17,7 +17,6 @@ import retrofit2.Response
 
 class SplashActivity : AppCompatActivity() {
 
-    var subeds: ArrayList<SubedItemData> = ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
