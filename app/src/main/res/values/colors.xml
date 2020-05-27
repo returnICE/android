@@ -11,10 +11,12 @@
     <color name="textWhite">#FFFFFF</color>
     <color name="textBlack">#000000</color>
     <color name="textGray">#666666</color>
-    <color name="textPink">#F81B60</color>
+    <color name="textPink">#FFBBBB</color>
     <color name="textTransparent">#00000000</color>
 
-    <color name="imgTint">#BDBDBD</color>
+    <color name="btnPink">#FFBBBB</color>
+
+    <color name="imgTint">#717171</color>
 
     <color name="bottomNavigationBackground">#E6E6E6</color>
     <color name="bottomNavigationItem">#000000</color>

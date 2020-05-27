@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.capstone.androidproject.MainFragment.Home.HomeRecyclerAdapter
 import com.capstone.androidproject.R
+import com.capstone.androidproject.RecyclerDecoration
 import com.capstone.androidproject.Response.SubedItemData
 import com.capstone.androidproject.Response.SubedItmeDataResponse
 import com.capstone.androidproject.ServerConfig.ServerConnect
@@ -55,9 +56,8 @@ class HomeFragment : Fragment() {
         val adapter = HomeRecyclerAdapter(subeds)
         rv.adapter = adapter
 
-        rv.addItemDecoration(
-            DividerItemDecoration(activity!!.applicationContext, DividerItemDecoration.VERTICAL)
-        )
+        val spaceDecoration = RecyclerDecoration(activity!!, 8)
+        rv.addItemDecoration(spaceDecoration)
 
         val lm = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv.layoutManager = lm
@@ -85,9 +85,8 @@ class HomeFragment : Fragment() {
         while (rv.getItemDecorationCount() > 0) {
             rv.removeItemDecorationAt(0)
         }
-        rv.addItemDecoration(
-            DividerItemDecoration(activity!!.applicationContext, DividerItemDecoration.VERTICAL)
-        )
+        val spaceDecoration = RecyclerDecoration(activity!!, 8)
+        rv.addItemDecoration(spaceDecoration)
         // https://codechacha.com/ko/android-recyclerview/   <- 리사이클러뷰 설명
     }
 

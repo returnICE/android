@@ -25,7 +25,7 @@ class HomeRecyclerAdapter(private val items: ArrayList<SubedItemData>) :
 
 
             view.imgHomePhoto.setImageResource(R.drawable.example_img)
-            view.imgHomePhoto.setColorFilter(R.color.imgTint,PorterDuff.Mode.DARKEN)
+            view.imgHomePhoto.setColorFilter(Color.parseColor("#717171"),PorterDuff.Mode.MULTIPLY)
 
             view.textHomeSellerName.setText(item.name)
             view.textHomeServices.setText(item.subName)

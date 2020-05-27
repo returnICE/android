@@ -1,5 +1,6 @@
 package com.capstone.androidproject.MainFragment.StoreList
 
+import android.graphics.Color
 import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
@@ -60,9 +61,7 @@ class StoreListRecyclerAdapter(private val items: ArrayList<SellerData>) :
         fun bind(listener: View.OnClickListener, item: SellerData) {
 
             Glide.with(view.context).load("https://ajoucapston.s3.ap-northeast-2.amazonaws.com/1589781777229").into(view.imgItem)
-
-            //view.imgItem.setImageResource(R.drawable.example_img)
-            view.imgItem.setColorFilter(R.color.imgTint,PorterDuff.Mode.DARKEN)
+            view.imgItem.setColorFilter(Color.parseColor("#717171"),PorterDuff.Mode.MULTIPLY)
 
             lateinit var distance:String
             if(item.distance < 10000) {
