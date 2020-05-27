@@ -519,10 +519,17 @@ class FindToMapActivity : AppCompatActivity(), OnMapReadyCallback,
         imgTextSeller.visibility = View.VISIBLE
         imgTextSeller.animate().translationY(0.toFloat())
 
-        Glide.with(this).load("https://ajoucapston.s3.ap-northeast-2.amazonaws.com/1589781777229").into(imgSeller)
+        if(seller.imgURL != null) {
+            Glide.with(this)
+                .load(seller.imgURL)
+                .into(imgSeller)
+        }
+        else{
+            imgSeller.setImageResource(R.drawable.default_img)
+        }
         textSellerName.setText(seller.name)
-        textSubCount.setText(seller.totalSubs.toString())
-        textMinPrice.setText(seller.minPrice.toString())
+        textSubCount.setText("구독자수 "+seller.totalSubs.toString())
+        textMinPrice.setText(seller.minPrice.toString()+"원")
 
         imgSeller.animate().translationY(0.toFloat())
         textSellerName.animate().translationY(0.toFloat())

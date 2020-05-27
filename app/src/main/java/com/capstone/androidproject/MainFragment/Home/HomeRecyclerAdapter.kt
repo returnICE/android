@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.capstone.androidproject.R
 import com.capstone.androidproject.Response.SubedItemData
 import com.capstone.androidproject.ServiceInfo.ServiceActivity
@@ -24,7 +25,14 @@ class HomeRecyclerAdapter(private val items: ArrayList<SubedItemData>) :
         fun bind(listener: View.OnClickListener, item: SubedItemData) {
 
 
-            view.imgHomePhoto.setImageResource(R.drawable.example_img)
+            if(item.imgURL != null) {
+                Glide.with(view.context)
+                    .load(item.imgURL)
+                    .into(view.imgHomePhoto)
+            }
+            else{
+                view.imgHomePhoto.setImageResource(R.drawable.default_img)
+            }
             view.imgHomePhoto.setColorFilter(Color.parseColor("#717171"),PorterDuff.Mode.MULTIPLY)
 
             view.textHomeSellerName.setText(item.name)

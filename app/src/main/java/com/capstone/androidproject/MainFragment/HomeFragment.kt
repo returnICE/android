@@ -130,7 +130,7 @@ class HomeFragment : Fragment() {
                                 subed.subName,
                                 subed.sellerId,
                                 subed.name,
-                                ""
+                                subed.imgURL
                             )
                         )
                     }

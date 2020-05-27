@@ -238,7 +238,7 @@ class MainActivity : AppCompatActivity() {
                                 subed.subName,
                                 subed.sellerId,
                                 subed.name,
-                                ""
+                                subed.imgURL
                             )
                         )
                     }
