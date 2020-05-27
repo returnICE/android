@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Interpolator
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -20,11 +21,13 @@ import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
 import com.capstone.androidproject.MainActivity
 import com.capstone.androidproject.R
 import com.capstone.androidproject.Response.SellerData
 import com.capstone.androidproject.Response.SellerDataResponse
 import com.capstone.androidproject.ServerConfig.ServerConnect
+import com.capstone.androidproject.SharedPreferenceConfig.App
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -109,11 +112,11 @@ class FindToMapActivity : AppCompatActivity(), OnMapReadyCallback,
         mGoogleMap = googleMap
 
         mGoogleMap?.setOnMarkerClickListener(this)
-        DEFAULT_LOCATION = LatLng(intent.getDoubleExtra("lat",37.279), intent.getDoubleExtra("lon",127.043))
+        DEFAULT_LOCATION = LatLng(App.prefs.lat.toDouble(), App.prefs.lon.toDouble())
 
         //지도의 초기위치로 이동
         setDefaultLocation()
-        imgTextSeller.visibility = View.GONE
+        imgTextSeller.visibility = View.INVISIBLE
 
         //위치 퍼미션을 가지고 있는지 체크
         val hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
@@ -157,7 +160,13 @@ class FindToMapActivity : AppCompatActivity(), OnMapReadyCallback,
                 mMoveMapByAPI = false
 
 
-                imgTextSeller.visibility = View.GONE
+                imgTextSeller.animate().translationY(imgTextSeller.height.toFloat())
+                imgSeller.animate().translationY(imgSeller.height.toFloat())
+                textSellerName.animate().translationY(textSellerName.height.toFloat())
+                textSubCount.animate().translationY(textSubCount.height.toFloat())
+                textMinPrice.animate().translationY(textMinPrice.height.toFloat())
+
+                imgSeller.setImageResource(0)
                 textSellerName.setText("")
                 textSubCount.setText("")
                 textMinPrice.setText("")
@@ -172,7 +181,6 @@ class FindToMapActivity : AppCompatActivity(), OnMapReadyCallback,
                 else {
                     mMoveMapByUser = true
                 }
-                Log.d(TAG,"Move")
             }
         })
         mGoogleMap?.setOnCameraIdleListener(object: GoogleMap.OnCameraIdleListener{
@@ -193,7 +201,6 @@ class FindToMapActivity : AppCompatActivity(), OnMapReadyCallback,
 
                     setCurrentLocation(location, markerTitle)
 
-                    Log.d(TAG, "Idle")
                 }
             }
         })
@@ -205,7 +212,10 @@ class FindToMapActivity : AppCompatActivity(), OnMapReadyCallback,
             val locationList = locationResult.getLocations()
             if (locationList.size > 0)
             {
-                _location = locationList.get(locationList.size - 1)
+                val location = Location("currentLoc")
+                location.latitude = App.prefs.lat.toDouble()
+                location.longitude = App.prefs.lon.toDouble()
+                _location=location
                 //location = locationList.get(0);
                 currentPosition = LatLng(_location.getLatitude(), _location.getLongitude())
                 val markerTitle = getCurrentAddress(currentPosition!!)
@@ -324,7 +334,6 @@ class FindToMapActivity : AppCompatActivity(), OnMapReadyCallback,
 
     fun setDefaultLocation() {
         //디폴트 위치, 마지막 위치
-        val address = getCurrentAddress(DEFAULT_LOCATION)
 
         if (currentMarker != null)
             currentMarker?.remove()
@@ -508,9 +517,17 @@ class FindToMapActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onMarkerClick(p0: Marker?): Boolean {
         val seller = p0?.tag as SellerData
         imgTextSeller.visibility = View.VISIBLE
+        imgTextSeller.animate().translationY(0.toFloat())
+
+        Glide.with(this).load("https://ajoucapston.s3.ap-northeast-2.amazonaws.com/1589781777229").into(imgSeller)
         textSellerName.setText(seller.name)
         textSubCount.setText(seller.totalSubs.toString())
         textMinPrice.setText(seller.minPrice.toString())
+
+        imgSeller.animate().translationY(0.toFloat())
+        textSellerName.animate().translationY(0.toFloat())
+        textSubCount.animate().translationY(0.toFloat())
+        textMinPrice.animate().translationY(0.toFloat())
 
         return true
     }

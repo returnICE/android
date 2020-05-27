@@ -1,9 +1,9 @@
 package com.capstone.androidproject.MainFragment
 
-import android.animation.Animator
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -51,47 +51,35 @@ class SearchFragment : Fragment() {
 
         val v:View = inflater.inflate(R.layout.fragment_search, container, false)
 
-        var mylocate = Location("cur_loc")
-        val lon = arguments?.getDouble("address_lon")
-        val lat = arguments?.getDouble("address_lat")
-        if(lon != null && lat != null){
-            mylocate.longitude = lon
-            mylocate.latitude = lat
-        }
-        else {
-            mylocate = getMyLocation()
-        } // 좌표 가져오기
-
-
         var address = App.prefs.address
         if(address == ""){
             address = "주소를 입력해주세요"
+
+            val mylocate = getMyLocation()  // 좌표 가져오기
+            App.prefs.lat = mylocate.latitude.toFloat()
+            App.prefs.lon = mylocate.longitude.toFloat()
         }
-        setActionBar(address, mylocate) // 상단바 주소 등록
+        setActionBar(address) // 상단바 주소 등록
 
         val _sellers = arguments?.getSerializable("sellers")!! as ArrayList<SellerData>
         sellers = _sellers
 
-        initRecyclerView(v,mylocate)
+        initRecyclerView(v)
         setContent()
 
         val findMap:ImageView = v.findViewById(R.id.findMap)
         findMap.setOnClickListener {
-            activity!!.startActivity<FindToMapActivity>(
-                "lat" to mylocate.latitude,
-                "lon" to mylocate.longitude)
+            activity!!.startActivity<FindToMapActivity>()
             (context as MainActivity).overridePendingTransition(R.anim.slide_up, R.anim.slide_stay)
         }
 
         return v
     }
 
-    fun setActionBar(address:String, mylocate:Location){// 액션 바 설정
+    fun setActionBar(address:String){// 액션 바 설정
         activity!!.titleText.setText(address)
         activity!!.titleText.setOnClickListener {
             val intent = Intent(context, MyAddressSettingActivity::class.java)
-            intent.putExtra("lat",mylocate.latitude)
-            intent.putExtra("lon",mylocate.longitude)
             startActivityForResult(intent, SEARCH_ADDRESS_ACTIVITY)
 
             (context as MainActivity).overridePendingTransition(R.anim.slide_up, R.anim.slide_stay)
@@ -104,6 +92,10 @@ class SearchFragment : Fragment() {
         when (requestCode) {
             SEARCH_ADDRESS_ACTIVITY ->
                 if (resultCode == AppCompatActivity.RESULT_OK) {
+                    rv.recycledViewPool.clear()
+                    getSeller(0,true)
+                    scrollListener.resetState()
+                    swipeContainer?.setRefreshing(false)
                     val data = intent?.extras!!.getString("address")
                     if (data != null) {
                         activity!!.titleText.setText(data)
@@ -113,9 +105,9 @@ class SearchFragment : Fragment() {
         }
     }
 
-    fun initRecyclerView(v:View, mylocate: Location){
+    fun initRecyclerView(v:View){
 
-        setRefreshSwipe(v,mylocate)
+        setRefreshSwipe(v)
 
         rv = v.findViewById(R.id.recyclerViewSearch)
 
@@ -144,7 +136,7 @@ class SearchFragment : Fragment() {
 
         scrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManagerWrapper) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-                getSeller(v,mylocate,page,false)
+                getSeller(page,false)
             }
         }
 
@@ -186,11 +178,11 @@ class SearchFragment : Fragment() {
         return mylocate
     }
 
-    fun setRefreshSwipe(v:View,mylocate: Location){
+    fun setRefreshSwipe(v:View){
         swipeContainer = v.findViewById(R.id.swipeContainer) as SwipeRefreshLayout
         swipeContainer?.setOnRefreshListener {
             rv.recycledViewPool.clear()
-            getSeller(v,mylocate,0,true)
+            getSeller(0,true)
             scrollListener.resetState()
             swipeContainer?.setRefreshing(false)
         }
@@ -202,9 +194,18 @@ class SearchFragment : Fragment() {
         )
     }//https://guides.codepath.com/android/Implementing-Pull-to-Refresh-Guide
 
-    fun getSeller(v:View, mylocate: Location, page: Int,fresh:Boolean) {
+    fun getSeller(page: Int,fresh:Boolean) {
         val serverConnect = ServerConnect(activity!!.applicationContext)
         val server = serverConnect.conn()
+
+        val mylocate = Location("cur_loc")
+        val lat = App.prefs.lat
+        val lon = App.prefs.lon
+        mylocate.longitude = lon.toDouble()
+        mylocate.latitude = lat.toDouble()
+
+        Log.d("locationtest",mylocate.latitude.toString())
+        Log.d("locationtest",mylocate.longitude.toString())
 
         server.postSellerRequest(mylocate.latitude, mylocate.longitude, page, -1f).enqueue(object :
             Callback<SellerDataResponse> {

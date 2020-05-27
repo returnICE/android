@@ -7,9 +7,9 @@ class UserPreference (context: Context){
     val PREFS_FILENAME = "user"
     val PREF_KEY_ID="ID"
     val PREF_KEY_NAME="name"
-    val PREF_KEY_BIRTH="birth"
     val PREF_KEY_ADDRESS="address"
-    val PREF_KEY_PHONE="PHONE"
+    val PREF_KEY_LATITUDE="latitude"
+    val PREF_KEY_LONGITUDE="longitude"
 
     val PREF_KEY_TOKEN="token"
 
@@ -27,6 +27,12 @@ class UserPreference (context: Context){
     var id: String
         get() = prefs.getString(PREF_KEY_ID,"")
         set(value) = prefs.edit().putString(PREF_KEY_ID,value).apply()
+    var lat: Float
+        get() = prefs.getFloat(PREF_KEY_LATITUDE,0.0f)
+        set(value) = prefs.edit().putFloat(PREF_KEY_LATITUDE,value).apply()
+    var lon: Float
+        get() = prefs.getFloat(PREF_KEY_LONGITUDE,0.0f)
+        set(value) = prefs.edit().putFloat(PREF_KEY_LONGITUDE,value).apply()
 
     fun clear(){
         prefs.edit().clear().apply()

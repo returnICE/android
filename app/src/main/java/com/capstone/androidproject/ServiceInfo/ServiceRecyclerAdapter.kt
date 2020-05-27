@@ -8,13 +8,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.util.keyIterator
 import androidx.recyclerview.widget.RecyclerView
-import com.capstone.androidproject.AcceptRequest.AcceptActivity
 import com.capstone.androidproject.R
-import kotlinx.android.synthetic.main.activity_service.view.*
 import kotlinx.android.synthetic.main.item_view_menu.view.*
-import kotlinx.android.synthetic.main.item_view_mypage_subeditem.view.*
 import kotlinx.android.synthetic.main.item_view_subeds.view.*
-import org.jetbrains.anko.startActivity
 
 class ServiceRecyclerAdapter(private var items: MutableList<Item>)
     : RecyclerView.Adapter<ServiceRecyclerAdapter.ViewHolder>(){
@@ -101,10 +97,8 @@ class ServiceRecyclerAdapter(private var items: MutableList<Item>)
             referalItem = item
 
             if (item.e is ServiceActivity.SubInfo) {
-                Log.d("testing", "subinfo data 확인")
 
                 var usableTimes = item.e.limitTimes - item.e.usedTimes //사용가능 횟수
-                Log.d("testing", "usableTimes 확인"+ usableTimes.toString())
                 view.textUsableTime.setText("잔여 횟수 " + usableTimes.toString() + " 회")
                 view.textServiceName.setText(item.e.subName)
                 view.textEndDate.setText("유효 기한 ~" + item.e.endDate)

@@ -51,12 +51,11 @@ class ServiceActivity : AppCompatActivity() {
                 intent.putExtra("sellerName", subItem.name)
                 intent.putExtra("serviceName", subItem.subName)
                 intent.putExtra("menuName", MenuName)
-                intent.putExtra("price", Price)
                 intent.putExtra("menuId", MenuId)
                 intent.putExtra("subedId", subItem.subedId)
 
 
-                startActivityForResult(intent, SUBED_REQ_CODE)
+                startActivity(intent)
             }
         }
 
@@ -73,13 +72,11 @@ class ServiceActivity : AppCompatActivity() {
         subinfo.price = subItem.price
         subinfo.sellerId = subItem.sellerId
         subinfo.subedId = subItem.subedId
-        Log.d("testing","subedId in ServiceActivity : " + subinfo.subedId)
         subinfo.subId = subItem.subId
         subinfo.term = subItem.term
         subinfo.name = subItem.name
         subinfo.limitTimes = subItem.limitTimes
         subinfo.subName = subItem.subName
-        Log.d("testing", "subInfo??" + subinfo.toString())
         sublist.add(ServiceRecyclerAdapter.Item(ServiceRecyclerAdapter.HEADER, subinfo))
 
         for (m in subItem.menu) {
@@ -105,7 +102,6 @@ class ServiceActivity : AppCompatActivity() {
                 Price = price.text.toString()
                 MenuName = menuName.text.toString()
                 MenuId = menuId.text.toString()
-                Log.d("testing","MenuId in ServiceActivity" + MenuId)
 
 
             }
@@ -113,32 +109,6 @@ class ServiceActivity : AppCompatActivity() {
         val lm = LinearLayoutManager(this@ServiceActivity, LinearLayoutManager.VERTICAL, false)
         rv.layoutManager = lm
     }
-
-
-    /*
-    val mViewPager: ViewPager = findViewById(R.id.SMpager_content)
-    val mContentsPagerAdapter = StoreInfoTabAdapter(
-        supportFragmentManager, mTabLayout.tabCount, sublist, menudata, sellerdetaildata.info
-    )
-    mViewPager.setAdapter(mContentsPagerAdapter)
-
-    mViewPager.addOnPageChangeListener(
-        TabLayout.TabLayoutOnPageChangeListener(mTabLayout)
-    )
-
-    mTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-        override fun onTabSelected(tab: TabLayout.Tab) {
-            mViewPager.currentItem = tab.position
-        }
-
-        override fun onTabUnselected(tab: TabLayout.Tab) {
-        }
-
-        override fun onTabReselected(tab: TabLayout.Tab) {
-        }
-    })
-
-    }*/
 
     fun getServiceInfo(subedId: Int) {
 
@@ -161,30 +131,12 @@ class ServiceActivity : AppCompatActivity() {
                     Toast.makeText(this@ServiceActivity, "정보가져오기 실패", Toast.LENGTH_SHORT).show()
                 } else {
                     subItem = subedItemInfo[0]
-                    Log.d("testing", "subItem??" + subItem.toString())
 
                     setContent()
                 }
             }
         })
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
-        super.onActivityResult(requestCode, resultCode, intent)
-
-        when (requestCode) {
-            SUBED_REQ_CODE ->
-                if (resultCode == AppCompatActivity.RESULT_OK) {
-                    val data = intent?.extras!!.getString("result")
-                    if (data != null) {
-                        val i = Intent(this, AcceptActivity::class.java)
-
-                        startActivity(i)
-                    }
-                }
-        }
-    }
-
 
     data class SubInfo(
         var endDate: String = "",

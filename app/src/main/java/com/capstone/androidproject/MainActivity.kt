@@ -84,9 +84,11 @@ class MainActivity : AppCompatActivity() {
         })
 
         var mylocate=Location("mylocate")
-        if(intent.hasExtra("address_lat")){
-            mylocate.latitude = intent.getDoubleExtra("address_lat",37.279)
-            mylocate.longitude = intent.getDoubleExtra("address_lon",127.043)
+        val lat = App.prefs.lat
+        val lon = App.prefs.lon
+        if(lon != 0.0f && lat != 0.0f){
+            mylocate.longitude = lon.toDouble()
+            mylocate.latitude = lat.toDouble()
         }
         else {
             mylocate = getMyLocation()
@@ -114,8 +116,6 @@ class MainActivity : AppCompatActivity() {
             1 -> {
                 val bundle = Bundle()
                 bundle.putSerializable("sellers", sellers)
-                bundle.putDouble("address_lat", _mylocate.latitude)
-                bundle.putDouble("address_lon", _mylocate.longitude)
 
                 frag2.arguments = bundle
 
@@ -156,6 +156,8 @@ class MainActivity : AppCompatActivity() {
         val serverConnect = ServerConnect(this)
         val server = serverConnect.conn()
 
+        Log.d("locationtest",mylocate.latitude.toString())
+        Log.d("locationtest",mylocate.longitude.toString())
         server.postSellerRequest(mylocate.latitude, mylocate.longitude, page,-1f).enqueue(object : Callback<SellerDataResponse> {
             override fun onFailure(call: Call<SellerDataResponse>?, t: Throwable?) {
                 Toast.makeText(this@MainActivity, "통신 실패", Toast.LENGTH_SHORT).show()

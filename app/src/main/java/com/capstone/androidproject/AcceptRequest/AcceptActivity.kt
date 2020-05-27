@@ -34,8 +34,6 @@ class AcceptActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_accept)
 
-        var eatenId = 0
-        val price = intent.getStringExtra("price")
         val menuName = intent.getStringExtra("menuName")
         val serviceName = intent.getStringExtra("serviceName")
         val sellerName = intent.getStringExtra("sellerName")
@@ -44,14 +42,11 @@ class AcceptActivity : AppCompatActivity() {
         val currentTime: LocalDateTime = LocalDateTime.now()
 
         ACtextMenuName.setText(menuName)
-        ACtextPrice.setText(price)
         ACtextServiceName.setText(serviceName)
         ACtextStoreName.setText(sellerName)
-        ACtextDate.setText(currentTime.toString())
 
         ACbtnCertification.setOnClickListener(){
             accept(App.prefs.token, subedId, menuId, menuName, serviceName, sellerName, currentTime.toString())
-
         }
 
     }
@@ -94,14 +89,13 @@ class AcceptActivity : AppCompatActivity() {
         val notificationId = R.integer.notification_id
         val CHANNEL_ID  = R.string.channel_id.toString()
         var title = "평점을 입력해주세요"
-        var content = menuName
+        var content = menuName+" 어떠셨나요?"
 
         //푸시에서 클릭시 전환할 생성할 intent
         val intent = Intent(this@AcceptActivity, ReviewActivity::class.java).apply{
            // flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             putExtra("eatenId",eatenId)
-            Log.d("testing","eatenId in notification in AcceptActivity" + eatenId.toString())
             putExtra("menuName",menuName)
             putExtra("serviceName",serviceName)
             putExtra("sellerName",sellerName)

@@ -25,6 +25,7 @@ import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import com.capstone.androidproject.SharedPreferenceConfig.App
 import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import com.google.android.gms.maps.model.*
@@ -80,6 +81,8 @@ class DetailAddressActivity : AppCompatActivity(), OnMapReadyCallback,
             val intent = Intent()
             extra.putString("data", result)
             intent.putExtras(extra)
+            App.prefs.lat = _location.latitude.toFloat()
+            App.prefs.lon = _location.longitude.toFloat()
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
@@ -105,7 +108,10 @@ class DetailAddressActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onMapReady(googleMap: GoogleMap) {
         mGoogleMap = googleMap
 
-        DEFAULT_LOCATION = LatLng(intent.getDoubleExtra("lat",37.279), intent.getDoubleExtra("lon",127.043))
+        mGoogleMap?.isMyLocationEnabled=true
+        mGoogleMap?.uiSettings?.isMyLocationButtonEnabled=true
+
+        DEFAULT_LOCATION = LatLng(App.prefs.lat.toDouble(), App.prefs.lon.toDouble())
 
         //지도의 초기위치로 이동
         setDefaultLocation()
@@ -156,21 +162,19 @@ class DetailAddressActivity : AppCompatActivity(), OnMapReadyCallback,
                 if(mMoveMapByAPI == true) {
                     mMoveMapByUser = false
 
-                    customMarker.visibility = View.GONE
+                    customMarker.visibility = View.VISIBLE
                 }
                 else {
                     mMoveMapByUser = true
 
-                    currentMarker?.remove()
-                    customMarker.visibility = View.VISIBLE
+                    //currentMarker?.remove()
+                    customMarker.visibility = View.GONE
                 }
-                Log.d(TAG,"Move")
             }
         })
         mGoogleMap?.setOnCameraIdleListener(object:GoogleMap.OnCameraIdleListener{
             override fun onCameraIdle() {
                 if(mMoveMapByUser == true ) {
-                    Log.d(TAG, "onCameraIdle")
                     val location_center = mGoogleMap?.cameraPosition!!.target
 
                     currentPosition = location_center
@@ -184,8 +188,6 @@ class DetailAddressActivity : AppCompatActivity(), OnMapReadyCallback,
                     val markerTitle = getCurrentAddress(currentPosition!!)
 
                     setCurrentLocation(location, markerTitle)
-
-                    Log.d(TAG, "Idle")
                 }
             }
         })
@@ -197,8 +199,11 @@ class DetailAddressActivity : AppCompatActivity(), OnMapReadyCallback,
             val locationList = locationResult.getLocations()
             if (locationList.size > 0)
             {
-                _location = locationList.get(locationList.size - 1)
-                //location = locationList.get(0);
+                val location = Location("currentLoc")
+                location.latitude = App.prefs.lat.toDouble()
+                location.longitude = App.prefs.lon.toDouble()
+                _location=location
+
                 currentPosition = LatLng(_location.getLatitude(), _location.getLongitude())
                 val markerTitle = getCurrentAddress(currentPosition!!)
                 //현재 위치에 마커 생성하고 이동
@@ -228,7 +233,7 @@ class DetailAddressActivity : AppCompatActivity(), OnMapReadyCallback,
                 .addOnSuccessListener { location : Location? ->
                     // Got last known location. In some rare situations this can be null.
                     if(location != null) {
-                        DEFAULT_LOCATION = LatLng(location.latitude,location.longitude)
+                        DEFAULT_LOCATION = LatLng(App.prefs.lat.toDouble(),App.prefs.lon.toDouble())
                     }
                 }
 
@@ -302,14 +307,14 @@ class DetailAddressActivity : AppCompatActivity(), OnMapReadyCallback,
         if (currentMarker != null)
             currentMarker?.remove()
 
-        customMarker.visibility = View.GONE
+        customMarker.visibility = View.VISIBLE
 
         val currentLatLng = LatLng(location.getLatitude(), location.getLongitude())
         val markerOptions = MarkerOptions()
         markerOptions.position(currentLatLng)
         markerOptions.draggable(true)
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-        currentMarker = mGoogleMap?.addMarker(markerOptions)
+        //currentMarker = mGoogleMap?.addMarker(markerOptions)
 
         textAddress.setText(address)
 
@@ -331,7 +336,7 @@ class DetailAddressActivity : AppCompatActivity(), OnMapReadyCallback,
         markerOptions.position(DEFAULT_LOCATION)
         markerOptions.draggable(true)
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-        currentMarker = mGoogleMap?.addMarker(markerOptions)
+        //currentMarker = mGoogleMap?.addMarker(markerOptions)
 
         Log.d("maplocation_DetailAddress",DEFAULT_LOCATION.latitude.toString())
         Log.d("maplocation_DetailAddress",DEFAULT_LOCATION.longitude.toString())

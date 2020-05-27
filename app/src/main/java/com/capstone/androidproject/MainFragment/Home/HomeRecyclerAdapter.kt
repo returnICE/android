@@ -26,18 +26,6 @@ class HomeRecyclerAdapter(private val items: ArrayList<SubedItemData>) :
             view.imgHomePhoto.setImageResource(R.drawable.example_img)
             view.imgHomePhoto.setColorFilter(R.color.imgTint,PorterDuff.Mode.DARKEN)
 
-            /*var image_mypage_subeditem: URL2Bitmap = URL2Bitmap()
-            image_mypage_subeditem = URL2Bitmap().apply {
-                url = URL(item.subId)//이미지 가져와야함
-            }
-            var bitmap: Bitmap = image_mypage_subeditem.execute().get()
-
-            view.imgMypagePhoto.setImageBitmap(bitmap)
-
-             */
-            //view.textSellerName.setText(item.subId)
-            //view.textSubedItmeName.setText(item.subedId)
-
             view.textHomeSellerName.setText(item.name)
             view.textHomeServices.setText(item.subName)
             view.textHomeEndTime.setText("유효기한  ~" + item.endDate.substring(5))
@@ -58,9 +46,7 @@ class HomeRecyclerAdapter(private val items: ArrayList<SubedItemData>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        Log.d("testing","1")
         val listener = View.OnClickListener { it ->
-            Log.d("testing",item.subedId.toString())
             it.context.startActivity<ServiceActivity>(
                 "subedId" to item.subedId,
                 "name" to item.name

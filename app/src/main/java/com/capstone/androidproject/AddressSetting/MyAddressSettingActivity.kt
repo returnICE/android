@@ -26,9 +26,6 @@ class MyAddressSettingActivity : AppCompatActivity() {
             )
         }
 
-        val lat = intent.getDoubleExtra("lat",37.279)
-        val lon = intent.getDoubleExtra("lon",127.043)
-
         btnFindTextAddress.setOnClickListener {
             val intent = Intent(this@MyAddressSettingActivity, WebViewFindTextAddressActivity::class.java)
                                     startActivityForResult(intent, SEARCH_ADDRESS_ACTIVITY)
@@ -37,8 +34,6 @@ class MyAddressSettingActivity : AppCompatActivity() {
         btnSearchAddress.setOnClickListener {
 
             val intent = Intent(this@MyAddressSettingActivity, DetailAddressActivity::class.java)
-            intent.putExtra("lat",lat)
-            intent.putExtra("lon",lon)
             startActivityForResult(intent, SEARCH_ADDRESS_ACTIVITY)
         }
 
