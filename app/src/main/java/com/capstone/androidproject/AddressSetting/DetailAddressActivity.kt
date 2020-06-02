@@ -15,6 +15,7 @@ import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
 import android.location.LocationManager
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -162,13 +163,15 @@ class DetailAddressActivity : AppCompatActivity(), OnMapReadyCallback,
                 if(mMoveMapByAPI == true) {
                     mMoveMapByUser = false
 
-                    customMarker.visibility = View.VISIBLE
+                    //customMarker.visibility = View.VISIBLE
+                    customMarker.setColorFilter(Color.parseColor("#0000FF"))
                 }
                 else {
                     mMoveMapByUser = true
 
                     //currentMarker?.remove()
-                    customMarker.visibility = View.GONE
+                    //customMarker.visibility = View.GONE
+                    customMarker.setColorFilter(Color.parseColor("#FA5858"))
                 }
             }
         })
@@ -274,15 +277,15 @@ class DetailAddressActivity : AppCompatActivity(), OnMapReadyCallback,
         } catch (ioException: IOException) {
             //네트워크 문제
             Log.d(TAG,ioException.toString())
-            Toast.makeText(this, "지오코더 서비스 사용불가 - 네트워크 에러", Toast.LENGTH_LONG).show()
+            //Toast.makeText(this, "지오코더 서비스 사용불가 - 네트워크 에러", Toast.LENGTH_LONG).show()
             return "지오코더 서비스 사용불가"
         } catch (illegalArgumentException: IllegalArgumentException) {
-            Toast.makeText(this, "잘못된 GPS 좌표", Toast.LENGTH_LONG).show()
+            //Toast.makeText(this, "잘못된 GPS 좌표", Toast.LENGTH_LONG).show()
             return "잘못된 GPS 좌표"
         }
 
         if (addresses == null || addresses.size == 0) {
-            Toast.makeText(this, "주소 미발견"+latlng.latitude.toString()+"   "+latlng.longitude.toString(), Toast.LENGTH_LONG).show()
+            //Toast.makeText(this, "주소 미발견"+latlng.latitude.toString()+"   "+latlng.longitude.toString(), Toast.LENGTH_LONG).show()
             return "주소 미발견"
         } else {
             val address = addresses.get(0).getAddressLine(0).toString().split(" ")
@@ -307,7 +310,8 @@ class DetailAddressActivity : AppCompatActivity(), OnMapReadyCallback,
         if (currentMarker != null)
             currentMarker?.remove()
 
-        customMarker.visibility = View.VISIBLE
+        //customMarker.visibility = View.VISIBLE
+        customMarker.setColorFilter(Color.parseColor("#0000FF"))
 
         val currentLatLng = LatLng(location.getLatitude(), location.getLongitude())
         val markerOptions = MarkerOptions()
@@ -330,16 +334,14 @@ class DetailAddressActivity : AppCompatActivity(), OnMapReadyCallback,
         if (currentMarker != null)
             currentMarker?.remove()
 
-        customMarker.visibility = View.GONE
+        //customMarker.visibility = View.GONE
+        customMarker.setColorFilter(Color.parseColor("#0000FF"))
 
         val markerOptions = MarkerOptions()
         markerOptions.position(DEFAULT_LOCATION)
         markerOptions.draggable(true)
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
         //currentMarker = mGoogleMap?.addMarker(markerOptions)
-
-        Log.d("maplocation_DetailAddress",DEFAULT_LOCATION.latitude.toString())
-        Log.d("maplocation_DetailAddress",DEFAULT_LOCATION.longitude.toString())
 
         textAddress.setText(address)
 

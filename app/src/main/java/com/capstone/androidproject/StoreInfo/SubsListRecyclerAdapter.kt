@@ -7,8 +7,7 @@ import android.view.ViewGroup
 import androidx.core.util.keyIterator
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.androidproject.R
-import kotlinx.android.synthetic.main.item_view_menu.view.*
-import kotlinx.android.synthetic.main.item_view_menu.view.price
+import kotlinx.android.synthetic.main.item_view_menu_unclickable.view.*
 import kotlinx.android.synthetic.main.item_view_subs.view.*
 
 
@@ -66,7 +65,7 @@ class SubsListRecyclerAdapter(private var items: MutableList<Item>) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
             ViewHolder {
         val headerInflatedView = LayoutInflater.from(parent.context).inflate(R.layout.item_view_subs, parent, false)
-        val childInflatedView = LayoutInflater.from(parent.context).inflate(R.layout.item_view_menu, parent, false)
+        val childInflatedView = LayoutInflater.from(parent.context).inflate(R.layout.item_view_menu_unclickable, parent, false)
 
         when(viewType){
             HEADER -> {
@@ -92,7 +91,7 @@ class SubsListRecyclerAdapter(private var items: MutableList<Item>) :
             if (item.e is StoreActivity.SubInfo) {
                 view.subsId.setText(item.e.subId.toString())
                 view.subsName.setText(item.e.subName)
-                view.price.setText(item.e.price.toString() + "원")
+                view.priceSubs.setText(item.e.price.toString() + "원")
             }
 
             if (item.invisibleChildren == null) {

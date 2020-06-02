@@ -66,7 +66,6 @@ class ReviewActivity : AppCompatActivity() {
                 if (success == false) {
                     Toast.makeText(this@ReviewActivity, "승인 실패2", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this@ReviewActivity, "승인 성공", Toast.LENGTH_SHORT).show()
                     val nextIntent = Intent(this@ReviewActivity, MainActivity::class.java)
                     startActivity(nextIntent)
                     finish()

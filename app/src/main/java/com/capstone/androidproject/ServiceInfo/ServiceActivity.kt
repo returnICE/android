@@ -96,9 +96,9 @@ class ServiceActivity : AppCompatActivity() {
         )
         adapter.setOnItemClickListener(object : ServiceRecyclerAdapter.OnItemClickListener{
             override fun onItemClick(v: View, pos:Int){
-                val price = v.findViewById(R.id.price) as TextView
-                val menuName = v.findViewById(R.id.menuName) as TextView
-                val menuId = v.findViewById(R.id.menuId) as TextView
+                val price = v.findViewById(R.id.priceClickable) as TextView
+                val menuName = v.findViewById(R.id.menuNameClickable) as TextView
+                val menuId = v.findViewById(R.id.menuIdClickable) as TextView
                 Price = price.text.toString()
                 MenuName = menuName.text.toString()
                 MenuId = menuId.text.toString()

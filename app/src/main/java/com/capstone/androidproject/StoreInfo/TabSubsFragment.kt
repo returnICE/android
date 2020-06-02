@@ -54,7 +54,6 @@ class TabSubsFragment(val sublist:MutableList<SubsListRecyclerAdapter.Item>) : F
                 val subid = v.findViewById(R.id.subsId) as TextView
                 subId = Integer.parseInt(subid.text.toString())
 
-                Toast.makeText(context,subid.text,Toast.LENGTH_SHORT).show()
             }
         })
         //https://thepassion.tistory.com/301

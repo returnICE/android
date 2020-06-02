@@ -4,45 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/selector_recyclerview_sublist_color">
+    android:background="@drawable/selector_service_menu">
 
     <TextView
-        android:id="@+id/subsName"
+        android:id="@+id/menuNameClickable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/textBlack"
         android:textSize="25sp"
-        tools:text="구독권 이름"
+        android:text="메뉴이름"
         android:fontFamily="@font/bmhanna"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/subsId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:fontFamily="@font/bmhanna"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/priceSubs"
+        android:id="@+id/priceClickable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/textPink"
         android:textSize="20sp"
-        tools:text="가격"
         android:fontFamily="@font/bmhanna"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/subsName"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/menuNameClickable"  />
 
-    <ImageView
-        android:id="@+id/btnExpandToggle"
+    <TextView
+        android:id="@+id/menuIdClickable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="@color/textTransparent"
+        android:textSize="20sp"
+        android:fontFamily="@font/bmhanna"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/menuNameClickable"  />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
