@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.core.util.keyIterator
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.androidproject.R
-import kotlinx.android.synthetic.main.item_view_menu.view.*
+import kotlinx.android.synthetic.main.item_view_menu_clickable.view.*
 import kotlinx.android.synthetic.main.item_view_subeds.view.*
 
 class ServiceRecyclerAdapter(private var items: MutableList<Item>)
@@ -71,7 +71,7 @@ class ServiceRecyclerAdapter(private var items: MutableList<Item>)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
             ViewHolder {
         val headerInflatedView = LayoutInflater.from(parent.context).inflate(R.layout.item_view_subeds, parent, false)
-        val childInflatedView = LayoutInflater.from(parent.context).inflate(R.layout.item_view_menu, parent, false)
+        val childInflatedView = LayoutInflater.from(parent.context).inflate(R.layout.item_view_menu_clickable, parent, false)
 
         when(viewType){
             HEADER -> {
@@ -136,9 +136,9 @@ class ServiceRecyclerAdapter(private var items: MutableList<Item>)
         }
         fun childBind(listener: View.OnClickListener, item: Item) {
             if(item.e is ServiceActivity.MenuInfo) {
-                view.menuName.setText(item.e.menuName)
-                view.price.setText(item.e.price.toString() + "원")
-                view.menuId.setText(item.e.menuId.toString())
+                view.menuNameClickable.setText(item.e.menuName)
+                view.priceClickable.setText(item.e.price.toString() + "원")
+                view.menuIdClickable.setText(item.e.menuId.toString())
                 view.setOnClickListener{ it ->
                     val pos = adapterPosition
                     if (pos != RecyclerView.NO_POSITION) {
@@ -146,19 +146,7 @@ class ServiceRecyclerAdapter(private var items: MutableList<Item>)
                     }
                     toggleItemSelected(pos)
                 }
-            /*
-            view.setOnClickListener(){ it ->
-                it.context.startActivity<AcceptActivity>(
-                    "menuName" to view.menuName.text,
-                    "price" to view.price.text,
-                    "serviceName" to ServiceActivity.SubInfo().subName,
-                    "sellerName" to ServiceActivity.SubInfo().name
-                )
-                Log.d("testing","menu click : " + view.menuName.text)
-
-             */
             }
-
         }
     } //https://dreamaz.tistory.com/223
 

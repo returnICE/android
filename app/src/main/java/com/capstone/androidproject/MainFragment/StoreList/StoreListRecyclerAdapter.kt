@@ -29,10 +29,8 @@ class StoreListRecyclerAdapter(private val items: ArrayList<SellerData>) :
         val item = items[position]
         val listener = View.OnClickListener {it ->
             it.context.startActivity<StoreActivity>(
-                "sellerId" to item.sellerId,
-                "name" to item.name
+                "sellerId" to item.sellerId
             )
-            Toast.makeText(it.context, "Clicked: ${item.type}", Toast.LENGTH_SHORT).show()
         }
         holder.apply {
             bind(listener, item)

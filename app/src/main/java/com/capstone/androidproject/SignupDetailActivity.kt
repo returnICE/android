@@ -53,7 +53,6 @@ class SignupDetailActivity : AppCompatActivity() {
         btnRegister.setOnClickListener() {
 
 
-            Log.d("taggg","t1")
             //SignupActivity에서 id,pw 가져오기
             var customerId = intent.getStringExtra("customerId")
             var pw = intent.getStringExtra("pw")
@@ -62,9 +61,7 @@ class SignupDetailActivity : AppCompatActivity() {
             var birth = textBirth.text.toString()
             var phone = textPhone.text.toString()
 
-            Log.d("taggg",customerId + pw + name + birth + phone)
             signup(customerId, pw, name, phone, birth)
-            Toast.makeText(this@SignupDetailActivity, "???", Toast.LENGTH_SHORT).show()
         }
 
     }

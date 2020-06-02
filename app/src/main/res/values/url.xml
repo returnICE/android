@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="URL">http://172.30.1.33:3000/</string>
+    <string name="URL">http://192.168.0.2:3000/</string>
 </resources>

@@ -4,17 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/selector_service_menu">
+    android:background="@color/menuBackground">
 
     <TextView
         android:id="@+id/menuName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/textBlack"
-        android:textSize="25sp"
+        android:textColor="@color/textGray"
+        android:textSize="20sp"
+        android:text="메뉴이름"
         android:fontFamily="@font/bmhanna"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/price"

@@ -203,9 +203,6 @@ class SearchFragment : Fragment() {
         mylocate.longitude = lon.toDouble()
         mylocate.latitude = lat.toDouble()
 
-        Log.d("locationtest",mylocate.latitude.toString())
-        Log.d("locationtest",mylocate.longitude.toString())
-
         server.postSellerRequest(mylocate.latitude, mylocate.longitude, page, -1f).enqueue(object :
             Callback<SellerDataResponse> {
             override fun onFailure(call: Call<SellerDataResponse>?, t: Throwable?) {

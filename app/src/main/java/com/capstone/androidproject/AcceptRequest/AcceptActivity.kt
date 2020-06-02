@@ -72,7 +72,6 @@ class AcceptActivity : AppCompatActivity() {
                 if (success == false) {
                     Toast.makeText(this@AcceptActivity, "승인 실패2", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this@AcceptActivity, "승인 성공", Toast.LENGTH_SHORT).show()
                     val eatenId = eatenLog!!.eatenId
                     notification(menuName, serviceName, sellerName, currentTime, eatenId)
                     createNotificationChannel()
@@ -113,6 +112,7 @@ class AcceptActivity : AppCompatActivity() {
             .setContentTitle(title)
             .setContentText(content)
             .setAutoCancel(true)
+            .setSmallIcon(R.drawable.alert_icon)
             //.setLargeIcon(bitmap)
             //.setShowWhen(true)
             .setColor(ContextCompat.getColor(this, R.color.colorAccent))

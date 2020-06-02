@@ -28,6 +28,7 @@ import com.capstone.androidproject.Response.SellerData
 import com.capstone.androidproject.Response.SellerDataResponse
 import com.capstone.androidproject.ServerConfig.ServerConnect
 import com.capstone.androidproject.SharedPreferenceConfig.App
+import com.capstone.androidproject.StoreInfo.StoreActivity
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -106,6 +107,13 @@ class FindToMapActivity : AppCompatActivity(), OnMapReadyCallback,
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+
+        imgTextSeller.animate().translationY(imgTextSeller.height.toFloat())
+        imgSeller.animate().translationY(imgSeller.height.toFloat())
+        textSellerName.animate().translationY(textSellerName.height.toFloat())
+        textSubCount.animate().translationY(textSubCount.height.toFloat())
+        textMinPrice.animate().translationY(textMinPrice.height.toFloat())
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -289,15 +297,15 @@ class FindToMapActivity : AppCompatActivity(), OnMapReadyCallback,
         } catch (ioException: IOException) {
             //네트워크 문제
             Log.d(TAG,ioException.toString())
-            Toast.makeText(this, "지오코더 서비스 사용불가 - 네트워크 에러", Toast.LENGTH_LONG).show()
+            //Toast.makeText(this, "지오코더 서비스 사용불가 - 네트워크 에러", Toast.LENGTH_LONG).show()
             return "지오코더 서비스 사용불가"
         } catch (illegalArgumentException: IllegalArgumentException) {
-            Toast.makeText(this, "잘못된 GPS 좌표", Toast.LENGTH_LONG).show()
+            //Toast.makeText(this, "잘못된 GPS 좌표", Toast.LENGTH_LONG).show()
             return "잘못된 GPS 좌표"
         }
 
         if (addresses == null || addresses.size == 0) {
-            Toast.makeText(this, "주소 미발견"+latlng.latitude.toString()+"   "+latlng.longitude.toString(), Toast.LENGTH_LONG).show()
+            //Toast.makeText(this, "주소 미발견"+latlng.latitude.toString()+"   "+latlng.longitude.toString(), Toast.LENGTH_LONG).show()
             return "주소 미발견"
         } else {
             val address = addresses.get(0).getAddressLine(0).toString().split(" ")
@@ -435,7 +443,6 @@ class FindToMapActivity : AppCompatActivity(), OnMapReadyCallback,
                 //사용자가 GPS 활성 시켰는지 검사
                 if (checkLocationServicesStatus()) {
                     if (checkLocationServicesStatus()) {
-                        Log.d(TAG, "onActivityResult : 퍼미션 가지고 있음")
                         needRequest = true
                         return
                     }
@@ -519,6 +526,13 @@ class FindToMapActivity : AppCompatActivity(), OnMapReadyCallback,
         imgTextSeller.visibility = View.VISIBLE
         imgTextSeller.animate().translationY(0.toFloat())
 
+        imgSeller.setOnClickListener {
+            startActivity<StoreActivity>(
+                "sellerId" to seller.sellerId
+            )
+        }
+        imgSeller.animate().translationY(0.toFloat())
+
         if(seller.imgURL != null) {
             Glide.with(this)
                 .load(seller.imgURL)
@@ -531,7 +545,6 @@ class FindToMapActivity : AppCompatActivity(), OnMapReadyCallback,
         textSubCount.setText("구독자수 "+seller.totalSubs.toString())
         textMinPrice.setText(seller.minPrice.toString()+"원")
 
-        imgSeller.animate().translationY(0.toFloat())
         textSellerName.animate().translationY(0.toFloat())
         textSubCount.animate().translationY(0.toFloat())
         textMinPrice.animate().translationY(0.toFloat())
