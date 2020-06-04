@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="140dp"
-    android:layout_height="160dp">
+    android:layout_height="180dp">
 
     <ImageView
         android:id="@+id/imgMypagePhoto"
@@ -22,7 +22,7 @@
         android:id="@+id/textSellerName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="4dp"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/imgMypagePhoto"
@@ -39,4 +39,16 @@
         app:layout_constraintRight_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textSellerName"
         tools:text="service" />
+
+
+    <TextView
+        android:id="@+id/textAutoPay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textSubedItmeName"
+        tools:text="autopay" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

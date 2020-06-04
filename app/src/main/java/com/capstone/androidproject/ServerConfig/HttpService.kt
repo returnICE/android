@@ -83,6 +83,11 @@ interface HttpService {
                                @Field("pw")pw: String)
             :Call<Success>
 
+    @PUT("users/sub/{subedId}")
+    fun putCustomerAutoPayRequest(@Header("x-access-token")token: String,
+                                  @Path("subedId")subedId: Int)
+            :Call<Success>
+
 
     @GET("users/accept")
     fun getEatenLogInfoRequest(@Header("x-access-token")token: String)

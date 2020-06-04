@@ -41,10 +41,10 @@ class MainActivity : AppCompatActivity() {
         MypageFragment()
 
     var sellers: ArrayList<SellerData> = ArrayList()
-    var subeds: ArrayList<SubedItemData> ?= ArrayList()
+    var subeds: ArrayList<SubedItemData>? = ArrayList()
     var page = 0
 
-    var _mylocate=Location("alive")
+    var _mylocate = Location("alive")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,17 +83,16 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        var mylocate=Location("mylocate")
+        var mylocate = Location("mylocate")
         val lat = App.prefs.lat
         val lon = App.prefs.lon
-        if(lon != 0.0f && lat != 0.0f){
+        if (lon != 0.0f && lat != 0.0f) {
             mylocate.longitude = lon.toDouble()
             mylocate.latitude = lat.toDouble()
-        }
-        else {
+        } else {
             mylocate = getMyLocation()
         }
-        _mylocate=mylocate
+        _mylocate = mylocate
 
         getSubedItem()
 
@@ -137,7 +136,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun getMyLocation():Location {
+    fun getMyLocation(): Location {
         val gpsTracker: GpsTracker
         gpsTracker = GpsTracker(this)
 
@@ -156,54 +155,58 @@ class MainActivity : AppCompatActivity() {
         val serverConnect = ServerConnect(this)
         val server = serverConnect.conn()
 
-        Log.d("locationtest",mylocate.latitude.toString())
-        Log.d("locationtest",mylocate.longitude.toString())
-        server.postSellerRequest(mylocate.latitude, mylocate.longitude, page,-1f).enqueue(object : Callback<SellerDataResponse> {
-            override fun onFailure(call: Call<SellerDataResponse>?, t: Throwable?) {
-                Toast.makeText(this@MainActivity, "통신 실패", Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onResponse(call: Call<SellerDataResponse>, response: Response<SellerDataResponse>) {
-                val success = response.body()!!.success
-                val sellerdata = response.body()!!.sellerdata
-
-                if (!success) {
-                    Toast.makeText(this@MainActivity, "목록가져오기 실패", Toast.LENGTH_SHORT).show()
-                } else {
-                    for (seller in sellerdata) {
-                        val sellerlocate = Location("myLoc")
-                        sellerlocate.longitude = seller.lon
-                        sellerlocate.latitude = seller.lat
-                        val distance = mylocate.distanceTo(sellerlocate).toDouble()
-
-                        sellers.add(
-                            SellerData(
-                                seller.sellerId,
-                                seller.name,
-                                "",
-                                "",
-                                seller.totalSubs,
-                                seller.lat,
-                                seller.lon,
-                                distance,
-                                seller.imgURL,
-                                "hihi",
-                                seller.type,
-                                seller.minPrice
-                            )
-                        )
-                    }
-                    sellers.sortWith(compareBy({ it.distance }))
+        Log.d("locationtest", mylocate.latitude.toString())
+        Log.d("locationtest", mylocate.longitude.toString())
+        server.postSellerRequest(mylocate.latitude, mylocate.longitude, page, -1f)
+            .enqueue(object : Callback<SellerDataResponse> {
+                override fun onFailure(call: Call<SellerDataResponse>?, t: Throwable?) {
+                    Toast.makeText(this@MainActivity, "통신 실패", Toast.LENGTH_SHORT).show()
                 }
-            }
-        })
+
+                override fun onResponse(
+                    call: Call<SellerDataResponse>,
+                    response: Response<SellerDataResponse>
+                ) {
+                    val success = response.body()!!.success
+                    val sellerdata = response.body()!!.sellerdata
+
+                    if (!success) {
+                        Toast.makeText(this@MainActivity, "목록가져오기 실패", Toast.LENGTH_SHORT).show()
+                    } else {
+                        for (seller in sellerdata) {
+                            val sellerlocate = Location("myLoc")
+                            sellerlocate.longitude = seller.lon
+                            sellerlocate.latitude = seller.lat
+                            val distance = mylocate.distanceTo(sellerlocate).toDouble()
+
+                            sellers.add(
+                                SellerData(
+                                    seller.sellerId,
+                                    seller.name,
+                                    "",
+                                    "",
+                                    seller.totalSubs,
+                                    seller.lat,
+                                    seller.lon,
+                                    distance,
+                                    seller.imgURL,
+                                    "hihi",
+                                    seller.type,
+                                    seller.minPrice
+                                )
+                            )
+                        }
+                        sellers.sortWith(compareBy({ it.distance }))
+                    }
+                }
+            })
     }
 
-    fun getSubedItem(){
+    fun getSubedItem() {
         val serverConnect = ServerConnect(this)
         val server = serverConnect.conn()
 
-        server.getSubedItemRequest(App.prefs.token).enqueue(object:
+        server.getSubedItemRequest(App.prefs.token).enqueue(object :
             Callback<SubedItmeDataResponse> {
             override fun onFailure(call: Call<SubedItmeDataResponse>, t: Throwable) {
                 Toast.makeText(this@MainActivity, "통신 실패", Toast.LENGTH_SHORT).show()
@@ -216,13 +219,12 @@ class MainActivity : AppCompatActivity() {
                 val success = response.body()!!.success
                 val subdata = response.body()!!.subdata
 
-                if(!success){
+                if (!success) {
                     Toast.makeText(this@MainActivity, "목록가져오기 실패", Toast.LENGTH_SHORT).show()
-                }
-                else{
+                } else {
                     subeds?.clear()
                     for (subed in subdata) {
-                        if(subedCheck(subed))
+                        if (subedCheck(subed))
                             continue
                         subeds?.add(
                             SubedItemData(
@@ -248,9 +250,9 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    fun subedCheck(sub:SubedItemData):Boolean{
-        for(s in subeds!!.iterator()){
-            if(s.name == sub.name)
+    fun subedCheck(sub: SubedItemData): Boolean {
+        for (s in subeds!!.iterator()) {
+            if (s.name == sub.name)
                 return true
         }
         return false

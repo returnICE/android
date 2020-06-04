@@ -4,11 +4,14 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.os.IBinder
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -29,6 +32,22 @@ import java.time.LocalDateTime
 
 class AcceptActivity : AppCompatActivity() {
 
+    private lateinit var mService : ReviewService
+    private var mBound : Boolean = false
+
+    private val connection = object : ServiceConnection{
+        override fun onServiceDisconnected(name: ComponentName?) {
+            Log.d("testing","service disconnected")
+            mBound = false
+        }
+
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            Log.d("testing","service connected")
+            val binder = service as ReviewService.LocalBinder
+            mService = binder.getService()
+            mBound = true
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -48,7 +67,12 @@ class AcceptActivity : AppCompatActivity() {
         ACbtnCertification.setOnClickListener(){
             accept(App.prefs.token, subedId, menuId, menuName, serviceName, sellerName, currentTime.toString())
         }
+    }
 
+    override fun onStop() {
+        super.onStop()
+        unbindService(connection)
+        mBound = false
     }
 
     fun accept(token: String, subedId: Int, menuId: Int, menuName:String, serviceName:String, sellerName:String, currentTime:String) {
@@ -74,9 +98,12 @@ class AcceptActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(this@AcceptActivity, "승인 성공", Toast.LENGTH_SHORT).show()
                     val eatenId = eatenLog!!.eatenId
-                    notification(menuName, serviceName, sellerName, currentTime, eatenId)
-                    createNotificationChannel()
+                    //notification(menuName, serviceName, sellerName, currentTime, eatenId)
+                    //createNotificationChannel()
                     val nextIntent = Intent(this@AcceptActivity, MainActivity::class.java)
+                    val nextService = Intent(this@AcceptActivity, ReviewService::class.java).also{ intent ->
+                        bindService(intent, connection, Context.BIND_AUTO_CREATE)
+                    }
                     startActivity(nextIntent)
                     finishAffinity()
                 }

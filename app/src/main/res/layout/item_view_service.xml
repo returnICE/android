@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_service_menu">
 
 
     <TextView
@@ -14,7 +14,6 @@
         android:fontFamily="@font/bmhanna"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:background="#FFFFFF"
         android:text="가게 이름"
         android:textSize="15sp" />
 
@@ -26,7 +25,6 @@
         android:layout_marginLeft="10dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/IVSsellerName"
-        android:background="#FFFFFF"
         android:text="구독권 이름"
         android:textSize="15sp" />
 
@@ -37,8 +35,17 @@
         android:fontFamily="@font/bmhanna"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:background="#FFFFFF"
         android:text="마감일"
         android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/IVSsubedId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:textSize="15sp"
+        android:textColor="@color/textTransparent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

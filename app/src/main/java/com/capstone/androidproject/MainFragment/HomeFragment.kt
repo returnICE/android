@@ -25,6 +25,7 @@ import retrofit2.Response
 
 class HomeFragment : Fragment() {
 
+
     private var swipeContainer: SwipeRefreshLayout? = null
     lateinit var rv : RecyclerView
     var subeds: ArrayList<SubedItemData> = ArrayList()

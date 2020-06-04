@@ -38,14 +38,14 @@ class MypageFragment() : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
+
     var subeds: ArrayList<SubedItemData> = ArrayList()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val v:View = inflater.inflate(R.layout.fragment_mypage, container, false)
-
+        val v: View = inflater.inflate(R.layout.fragment_mypage, container, false)
 
 
         val _subeds = arguments?.getSerializable("subeds")!! as ArrayList<SubedItemData>
@@ -71,35 +71,40 @@ class MypageFragment() : Fragment() {
 
         //승인로그 페이지
         val btnCheckEatenlog: ImageView = v.findViewById(R.id.btnCheckEatenlog)
-        btnCheckEatenlog.setOnClickListener{
+        btnCheckEatenlog.setOnClickListener {
             activity?.startActivity<EatenLogActivity>()
         }
 
         //개인정보 수정 페이지
         val btnModificationInfo: ImageView = v.findViewById(R.id.btnModificationInfo)
-        btnModificationInfo.setOnClickListener{
+        btnModificationInfo.setOnClickListener {
             activity?.startActivity<ModificationInfoActivity>()
         }
 
         //구독 해지
         val btnDelete: ImageView = v.findViewById(R.id.btnDelete)
-        btnDelete.setOnClickListener{
-            val intent = Intent(context, DeleteSubActivity::class.java)
-            intent.putExtra("test","test")
-            intent.putExtra("subeds", subeds)
-            activity?.startActivity(intent)
+        btnDelete.setOnClickListener {
+            if(checkDeletable(subeds) == 1) {
+                val intent = Intent(context, DeleteSubActivity::class.java)
+                intent.putExtra("test", "test")
+                intent.putExtra("subeds", subeds)
+                activity?.startActivity(intent)
+            }
+            else{
+                Toast.makeText(context, "해지할 구독 서비스가 없습니다", Toast.LENGTH_SHORT).show()
+            }
         }
 
 
         return v
     }
 
-    fun setActionBar(){// 액션 바 설정
+    fun setActionBar() {// 액션 바 설정
         activity!!.titleText.setText("마이페이지")
         activity!!.titleText.isClickable = false
     }
 
-    fun logout(ctx:Context) {
+    fun logout(ctx: Context) {
         val serverConnect = ServerConnect(ctx)
         val server = serverConnect.conn()
 
@@ -123,7 +128,7 @@ class MypageFragment() : Fragment() {
     }
 
 
-    fun setContent(v:View, subeds:ArrayList<SubedItemData>) {
+    fun setContent(v: View, subeds: ArrayList<SubedItemData>) {
 
         val adapter = MypageRecyclerAdapter(subeds)
         val rv: RecyclerView = v.findViewById(R.id.recyclerViewMypage)
@@ -133,5 +138,14 @@ class MypageFragment() : Fragment() {
         )
         val lm = LinearLayoutManager(context, HORIZONTAL, false)
         rv.layoutManager = lm
+    }
+
+    fun checkDeletable(subeds: ArrayList<SubedItemData>) : Int {
+        for (subed in subeds){
+            if (subed.autoPay == 1){
+                return 1
+            }
+        }
+        return 0
     }
 }
