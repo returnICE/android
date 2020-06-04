@@ -49,7 +49,6 @@ class LoginActivity : AppCompatActivity() {
                 if (success == false) {
                     Toast.makeText(this@LoginActivity, "로그인 실패2", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this@LoginActivity, "로그인 성공", Toast.LENGTH_SHORT).show()
                     App.prefs.token = token.toString()// 로그인 성공하면 shared_Preference에 유저정보 저장
 
                     getUserInfo(server, token)
@@ -73,8 +72,6 @@ class LoginActivity : AppCompatActivity() {
                 if (succ == false) {
                     Toast.makeText(this@LoginActivity, "사용자 이름 받아오기 실패 2", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this@LoginActivity, "사용자 이름 받아오기 성공", Toast.LENGTH_SHORT).show()
-
                     App.prefs.name = userinfo?.name.toString()
                     App.prefs.id = userinfo?.customerId.toString()
 

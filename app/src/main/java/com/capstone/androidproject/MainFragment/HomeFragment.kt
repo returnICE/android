@@ -52,6 +52,7 @@ class HomeFragment : Fragment() {
     fun initRecyclerView(v:View, subeds:ArrayList<SubedItemData>) {
 
         setRefreshSwipe(v)
+        getSubedItem()
 
         rv = v.findViewById(R.id.recyclerViewHome)
         val adapter = HomeRecyclerAdapter(subeds)

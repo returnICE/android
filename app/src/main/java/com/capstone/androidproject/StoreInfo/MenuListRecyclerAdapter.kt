@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.androidproject.R
 import com.capstone.androidproject.Response.MenuData
-import kotlinx.android.synthetic.main.item_view_menu.view.*
+import kotlinx.android.synthetic.main.item_view_menu_unclickable.view.*
 
 class MenuListRecyclerAdapter(private val items: ArrayList<MenuData>) :
     RecyclerView.Adapter<MenuListRecyclerAdapter.ViewHolder>() {
@@ -22,7 +22,6 @@ class MenuListRecyclerAdapter(private val items: ArrayList<MenuData>) :
         val item = items[position]
         val listener = View.OnClickListener { it ->
 
-            Toast.makeText(it.context, "Clicked: ${item.menuName}", Toast.LENGTH_SHORT).show()
         }
         holder.apply {
             bind(listener, item)
@@ -36,7 +35,7 @@ class MenuListRecyclerAdapter(private val items: ArrayList<MenuData>) :
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
             ViewHolder {
-        val inflatedView = LayoutInflater.from(parent.context).inflate(R.layout.item_view_menu, parent, false)
+        val inflatedView = LayoutInflater.from(parent.context).inflate(R.layout.item_view_menu_unclickable, parent, false)
 
         return ViewHolder(inflatedView)
     }

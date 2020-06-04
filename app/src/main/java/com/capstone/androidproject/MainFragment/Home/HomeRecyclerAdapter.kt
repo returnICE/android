@@ -68,7 +68,6 @@ class HomeRecyclerAdapter(private val items: ArrayList<SubedItemData>) :
                 "subedId" to item.subedId,
                 "name" to item.name
             )
-            Toast.makeText(it.context, "Clicked: ${item.name}", Toast.LENGTH_SHORT).show()
         }
         holder.apply {
             bind(listener, item)

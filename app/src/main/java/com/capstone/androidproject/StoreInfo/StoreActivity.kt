@@ -1,14 +1,13 @@
 package com.capstone.androidproject.StoreInfo
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.viewpager.widget.ViewPager
 import com.capstone.androidproject.R
 import com.capstone.androidproject.Response.*
 import com.capstone.androidproject.ServerConfig.ServerConnect
-import com.capstone.androidproject.SubPayActivity
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_store.*
 import retrofit2.Call
@@ -26,11 +25,7 @@ class StoreActivity : AppCompatActivity() {
         setContentView(R.layout.activity_store)
 
         val sellerId = intent.getStringExtra("sellerId")
-        val name = intent.getStringExtra("name")
-
         getSellerInfo(sellerId)
-
-
     }
 
     fun setContent(){
