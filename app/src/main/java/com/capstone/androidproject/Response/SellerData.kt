@@ -31,7 +31,7 @@ data class SellerData (
     val distance: Double = 0.0,
 
     @SerializedName("imgURL")
-    val imgURL : String? = "",
+    var imgURL : String? = "",
 
     @SerializedName("info")
     val info : String? = "",

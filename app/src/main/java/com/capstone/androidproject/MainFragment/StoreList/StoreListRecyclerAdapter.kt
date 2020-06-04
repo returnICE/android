@@ -14,6 +14,8 @@ import com.capstone.androidproject.Response.SellerData
 import com.capstone.androidproject.StoreInfo.StoreActivity
 import kotlinx.android.synthetic.main.item_view_seller.view.*
 import org.jetbrains.anko.startActivity
+import java.util.*
+import kotlin.collections.ArrayList
 
 class StoreListRecyclerAdapter(private val items: ArrayList<SellerData>) :
     RecyclerView.Adapter<StoreListRecyclerAdapter.ViewHolder>() {
@@ -27,7 +29,7 @@ class StoreListRecyclerAdapter(private val items: ArrayList<SellerData>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        val listener = View.OnClickListener {it ->
+        val listener = View.OnClickListener { it ->
             it.context.startActivity<StoreActivity>(
                 "sellerId" to item.sellerId
             )
@@ -45,7 +47,8 @@ class StoreListRecyclerAdapter(private val items: ArrayList<SellerData>) :
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
             ViewHolder {
-        val inflatedView = LayoutInflater.from(parent.context).inflate(R.layout.item_view_seller, parent, false)
+        val inflatedView =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_view_seller, parent, false)
 
         return ViewHolder(
             inflatedView
@@ -59,29 +62,29 @@ class StoreListRecyclerAdapter(private val items: ArrayList<SellerData>) :
         private var view: View = v
         fun bind(listener: View.OnClickListener, item: SellerData) {
 
-            if(item.imgURL != null) {
+            if (item.imgURL != null && item.imgURL != "cheked") {
                 Glide.with(view.context)
                     .load(item.imgURL)
                     .into(view.imgItem)
-            }
-            else{
+
+            } else {
+                item.imgURL
                 view.imgItem.setImageResource(R.drawable.default_img)
             }
-            view.imgItem.setColorFilter(Color.parseColor("#717171"),PorterDuff.Mode.MULTIPLY)
+            view.imgItem.setColorFilter(Color.parseColor("#717171"), PorterDuff.Mode.MULTIPLY)
 
-            lateinit var distance:String
-            if(item.distance < 10000) {
-                val d = (item.distance/10).toInt()
+            lateinit var distance: String
+            if (item.distance < 10000) {
+                val d = (item.distance / 10).toInt()
                 distance = d.toString() + "m"
-            }
-            else {
+            } else {
                 val d = item.distance / 10000.0
                 distance = String.format("%.1f", d) + "km"
             }
             view.distanceHome.setText(distance)
-            view.subsCount.setText("구독자수 "+item.totalSubs.toString()+"명")
+            view.subsCount.setText("구독자수 " + item.totalSubs.toString() + "명")
             view.storeName.setText(item.name)
-            view.minPrice.setText(item.minPrice.toString()+"원")
+            view.minPrice.setText(item.minPrice.toString() + "원")
 
             view.setOnClickListener(listener)
         }

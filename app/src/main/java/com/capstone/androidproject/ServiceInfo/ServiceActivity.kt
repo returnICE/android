@@ -102,8 +102,6 @@ class ServiceActivity : AppCompatActivity() {
                 Price = price.text.toString()
                 MenuName = menuName.text.toString()
                 MenuId = menuId.text.toString()
-
-
             }
         })
         val lm = LinearLayoutManager(this@ServiceActivity, LinearLayoutManager.VERTICAL, false)

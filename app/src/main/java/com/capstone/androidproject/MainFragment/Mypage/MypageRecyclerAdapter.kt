@@ -38,7 +38,15 @@ class MypageRecyclerAdapter(private val items: ArrayList<SubedItemData>) :
             //view.textSubedItmeName.setText(item.subedId)
             view.textSellerName.setText(item.name)
             view.textSubedItmeName.setText(item.subName)
-
+            val autopay = item.autoPay
+            var autopayText = ""
+            if(autopay == 1){
+                autopayText = "on"
+            }
+            else{
+                autopayText = "off"
+            }
+            view.textAutoPay.setText("자동결제 : " + autopayText)
             view.setOnClickListener(listener)
         }
     }

@@ -12,23 +12,42 @@ import com.capstone.androidproject.Response.SubedItemData
 import kotlinx.android.synthetic.main.item_view_eatenlog.view.*
 import kotlinx.android.synthetic.main.item_view_service.view.*
 
-class DeleteSubRecyclerAdapter(private val items: ArrayList<SubedItemData>) :
-    RecyclerView.Adapter<DeleteSubRecyclerAdapter.ViewHolder>(){
 
-    class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+class DeleteSubRecyclerAdapter(private val items: ArrayList<SubedItemData>) :
+    RecyclerView.Adapter<DeleteSubRecyclerAdapter.ViewHolder>() {
+
+    interface OnItemClickListener {
+        fun onItemClick(v: View, pos: Int)
+    }
+
+    private var mListener: OnItemClickListener? = null
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        mListener = listener
+    }
+
+    inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         private var view: View = v
 
         fun bind(listener: View.OnClickListener, item: SubedItemData) {
+
             Log.d("testing", "subedItem :: " + item)
             view.IVSsubName.setText(item.subName)
             view.IVSendDate.setText(item.endDate)
             view.IVSsellerName.setText(item.name)
-            view.setOnClickListener(listener)
+            view.IVSsubedId.setText(item.subedId.toString())
+            view.setOnClickListener { it ->
+                val posi = adapterPosition
+                if (posi != RecyclerView.NO_POSITION) {
+                    mListener?.onItemClick(it, posi)
+                }
+            }
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_view_service, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_view_service, parent, false)
         return ViewHolder(view)
     }
 
@@ -41,13 +60,12 @@ class DeleteSubRecyclerAdapter(private val items: ArrayList<SubedItemData>) :
         val listener = View.OnClickListener { it ->
             Toast.makeText(it.context, "Clicked: ${item.name}", Toast.LENGTH_SHORT).show()
         }
+
         holder.apply {
-            bind(listener, item)
+            if(item.autoPay == 1) {
+                bind(listener, item)
+            }
             itemView.tag = item
         }
-
-
-
     }
-
 }
