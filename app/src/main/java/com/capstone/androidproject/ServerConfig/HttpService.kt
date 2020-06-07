@@ -52,6 +52,13 @@ interface HttpService {
     fun postItemImgRequest(@Field("imgFile")imgFile: String)
             :Call<Success>
 
+    @FormUrlEncoded
+    @POST("/users/enterprise")
+    fun postEnterpriseCodeRequest(@Header("x-access-token")token: String,
+                                  @Field("enterpriseCode")enterpriseCode: String)
+            :Call<Success>
+
+
     @GET("/users/:id")
     fun getRetrieveRequest():Call<Success>
 
