@@ -18,10 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.androidproject.LoginActivity
 import com.capstone.androidproject.MainActivity
-import com.capstone.androidproject.MainFragment.Mypage.DeleteSubActivity
-import com.capstone.androidproject.MainFragment.Mypage.EatenLogActivity
-import com.capstone.androidproject.MainFragment.Mypage.ModificationInfoActivity
-import com.capstone.androidproject.MainFragment.Mypage.MypageRecyclerAdapter
+import com.capstone.androidproject.MainFragment.Mypage.*
 import com.capstone.androidproject.R
 import com.capstone.androidproject.Response.Success
 import com.capstone.androidproject.ServerConfig.ServerConnect
@@ -63,6 +60,7 @@ class MypageFragment() : Fragment() {
         val customername = v.findViewById(R.id.textMypageName) as TextView
         customername.setText(App.prefs.name + "님")
 
+        //로그아웃
         val btnlogout: ImageView = v.findViewById(R.id.btnLogout)
         btnlogout.setOnClickListener {
             App.prefs.clear()
@@ -79,6 +77,12 @@ class MypageFragment() : Fragment() {
         val btnModificationInfo: ImageView = v.findViewById(R.id.btnModificationInfo)
         btnModificationInfo.setOnClickListener {
             activity?.startActivity<ModificationInfoActivity>()
+        }
+
+        //개인정보 수정 페이지
+        val btnEnterpriseCode: ImageView = v.findViewById(R.id.btnEnterpriseCode)
+        btnEnterpriseCode.setOnClickListener {
+            activity?.startActivity<EnterpriseCodeActivity>()
         }
 
         //구독 해지
