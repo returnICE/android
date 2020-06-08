@@ -35,6 +35,9 @@
             android:name=".ServiceInfo.ServiceActivity"
             android:parentActivityName=".MainActivity" />
         <activity
+            android:name=".ServiceInfo.B2BActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".AcceptRequest.AcceptActivity"
             android:parentActivityName=".ServiceInfo.ServiceActivity" />
         <activity

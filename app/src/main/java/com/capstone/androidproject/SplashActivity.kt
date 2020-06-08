@@ -3,8 +3,10 @@ package com.capstone.androidproject
 import android.content.Intent
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.capstone.androidproject.Response.EnterpriseDataResponse
 import com.capstone.androidproject.Response.SubedItemData
 import com.capstone.androidproject.Response.SubedItmeDataResponse
 import com.capstone.androidproject.Response.UserInfoResponse
@@ -52,6 +54,40 @@ class SplashActivity : AppCompatActivity() {
 
                     startActivity<MainActivity>()
                     finish()
+                }
+            }
+        })
+    }
+
+
+
+    fun getEnterprise(token: String) {
+        val serverConnect = ServerConnect(this)
+        val server = serverConnect.conn()
+
+        server.getEnterpriseDataRequest(token).enqueue(object:
+
+            Callback<EnterpriseDataResponse> {
+            override fun onFailure(call: Call<EnterpriseDataResponse>, t: Throwable) {
+                Toast.makeText(this@SplashActivity, "받아오기 실패1", Toast.LENGTH_SHORT).show()
+                Log.d("testing","err msg : " + t?.message.toString())
+            }
+            override fun onResponse(
+                call: Call<EnterpriseDataResponse>,
+                response: Response<EnterpriseDataResponse>
+            ) {
+                val success = response?.body()?.success
+                val enterdata = response?.body()?.enterprisedata
+                if (success == false) {
+                    Toast.makeText(this@SplashActivity, "받아오기 실패2", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this@SplashActivity, "받아오기 성공", Toast.LENGTH_SHORT).show()
+                    Log.d("testing", "enterpriseId : " + enterdata?.enterpriseId)
+                    Log.d("testing", "enterpriseApproval : " + enterdata?.approval)
+                    if(enterdata?.approval == 1){
+                        App.prefs.enterpriseId = enterdata?.enterpriseId
+                        App.prefs.enterprisedApproval = enterdata?.approval
+                    }
                 }
             }
         })
@@ -272,6 +308,7 @@ class SplashActivity : AppCompatActivity() {
             override fun onStateChange(i: Int) {
                 if (i == State.FINISHED) {
                     if (App.prefs.token != "") {
+                        getEnterprise(App.prefs.token)
                         login(App.prefs.token)
                         SystemClock.sleep(300)
                     }

@@ -83,4 +83,16 @@
         app:layout_constraintBottom_toBottomOf="parent" />
 
 
+    <TextView
+        android:id="@+id/textB2B"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/textWhite"
+        android:textSize="20sp"
+        android:fontFamily="@font/bmhanna"
+        tools:text = "B2B"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

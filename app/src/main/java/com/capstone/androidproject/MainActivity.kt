@@ -8,8 +8,6 @@ import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 import com.capstone.androidproject.AddressSetting.GpsTracker
 import com.capstone.androidproject.MainFragment.*
-import com.capstone.androidproject.Response.SellerData
-import com.capstone.androidproject.Response.SellerDataResponse
 import com.capstone.androidproject.ServerConfig.ServerConnect
 import com.capstone.androidproject.SharedPreferenceConfig.App
 import com.google.android.gms.tasks.OnCompleteListener
@@ -17,16 +15,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.activity_main.*
 import android.widget.Toast
-import com.capstone.androidproject.Response.SubedItemData
-import com.capstone.androidproject.Response.SubedItmeDataResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import androidx.core.os.HandlerCompat.postDelayed
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.os.Handler
+import com.capstone.androidproject.Response.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -42,6 +34,7 @@ class MainActivity : AppCompatActivity() {
 
     var sellers: ArrayList<SellerData> = ArrayList()
     var subeds: ArrayList<SubedItemData>? = ArrayList()
+    var b2bs: ArrayList<B2BData>? = ArrayList()
     var page = 0
 
     var _mylocate = Location("alive")
@@ -94,6 +87,7 @@ class MainActivity : AppCompatActivity() {
         }
         _mylocate = mylocate
 
+        getb2bdata()
         getSubedItem()
 
         getSeller(mylocate, page)
@@ -107,6 +101,7 @@ class MainActivity : AppCompatActivity() {
             0 -> {
                 val bundle = Bundle()
                 bundle.putSerializable("subeds", subeds)
+                bundle.putSerializable("b2bs", b2bs)
                 frag1.arguments = bundle
                 ft.replace(R.id.Main_Frame, frag1)
                 ft.commit()
@@ -157,6 +152,7 @@ class MainActivity : AppCompatActivity() {
 
         Log.d("locationtest", mylocate.latitude.toString())
         Log.d("locationtest", mylocate.longitude.toString())
+
         server.postSellerRequest(mylocate.latitude, mylocate.longitude, page, -1f)
             .enqueue(object : Callback<SellerDataResponse> {
                 override fun onFailure(call: Call<SellerDataResponse>?, t: Throwable?) {
@@ -256,5 +252,52 @@ class MainActivity : AppCompatActivity() {
                 return true
         }
         return false
+    }
+
+    fun b2bCheck(b2b: B2BData): Boolean {
+        for (s in b2bs!!.iterator()) {
+            if (s.name == b2b.name)
+                return true
+        }
+        return false
+    }
+
+
+    fun getb2bdata() {
+        val serverConnect = ServerConnect(this)
+        val server = serverConnect.conn()
+
+        server.getB2BdataRequest(App.prefs.enterpriseId).enqueue(object :
+            Callback<B2BDataResponse> {
+            override fun onFailure(call: Call<B2BDataResponse>, t: Throwable) {
+                Toast.makeText(this@MainActivity, "통신 실패", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onResponse(
+                call: Call<B2BDataResponse>,
+                response: Response<B2BDataResponse>
+            ) {
+                val success = response.body()!!.success
+                val b2bdata = response.body()!!.b2bdata
+
+                if (!success) {
+                    Toast.makeText(this@MainActivity, "목록가져오기 실패", Toast.LENGTH_SHORT).show()
+                } else {
+                    b2bs?.clear()
+                    for (b2b in b2bdata) {
+                        if ((b2bCheck(b2b)))
+                            continue
+                        b2bs?.add(
+                            B2BData(
+                                b2b.sellerId,
+                                b2b.name,
+                                b2b.minPrice,
+                                b2b.imgURL
+                            )
+                        )
+                    }
+                }
+            }
+        })
     }
 }
