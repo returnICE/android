@@ -20,8 +20,16 @@ class PushAlertService : FirebaseMessagingService() {
             val messageBody:String = remoteMessage.notification!!.body.toString()
             val messageTitle:String = remoteMessage.notification!!.title.toString()
 
-            val intent: Intent = Intent(this,MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            val messageSellerName:String ?= remoteMessage.data["sellername"]
+            val messageTime:String ?= remoteMessage.data["sendtime"]
+
+            val intent: Intent = Intent(this,CampaignActivity::class.java)
+            intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK)     //Intent.FLAG_ACTIVITY_CLEAR_TOP  +    Intent.FLAG_ACTIVITY_SINGLE_TOP
+            intent.putExtra("pushTitle",messageTitle)
+            intent.putExtra("pushBody",messageBody)
+            intent.putExtra("pushSellerName",messageSellerName)
+            intent.putExtra("pushTime",messageTime)
+
             val pendingIntent: PendingIntent =
                 PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_ONE_SHOT)
 
@@ -29,7 +37,7 @@ class PushAlertService : FirebaseMessagingService() {
             val defaultSoundUri: Uri =
                 RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
             val notificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(this,channelId)
-                .setSmallIcon(R.drawable.ic_add_shopping_cart_black_24dp)
+                .setSmallIcon(R.drawable.logo_transparent)
                 .setContentTitle(messageTitle)
                 .setContentText(messageBody)
                 .setAutoCancel(true)

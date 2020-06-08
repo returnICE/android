@@ -145,6 +145,7 @@ class SearchFragment : Fragment() {
         val adapter =
             StoreListRecyclerAdapter(sellers)
         rv.adapter = adapter
+        rv.adapter?.notifyDataSetChanged()
 
         val spaceDecoration = RecyclerDecoration(activity!!, 8)
         rv.addItemDecoration(spaceDecoration)

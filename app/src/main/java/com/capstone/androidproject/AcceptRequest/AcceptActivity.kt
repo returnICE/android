@@ -104,8 +104,9 @@ class AcceptActivity : AppCompatActivity() {
                     val nextService = Intent(this@AcceptActivity, ReviewService::class.java).also{ intent ->
                         bindService(intent, connection, Context.BIND_AUTO_CREATE)
                     }
+                    nextIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     startActivity(nextIntent)
-                    finishAffinity()
+                    //finishAffinity()
                 }
             }
         })

@@ -1,5 +1,6 @@
 package com.capstone.androidproject
 
+import android.content.Intent
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -35,6 +36,8 @@ class MainActivity : AppCompatActivity() {
     var sellers: ArrayList<SellerData> = ArrayList()
     var subeds: ArrayList<SubedItemData>? = ArrayList()
     var b2bs: ArrayList<B2BData>? = ArrayList()
+    var alerts:ArrayList<CampaignData> ?= ArrayList()
+
     var page = 0
 
     var _mylocate = Location("alive")
@@ -48,15 +51,21 @@ class MainActivity : AppCompatActivity() {
                 if (!task.isSuccessful) {
                     return@OnCompleteListener
                 }
-                // Get new Instance ID token
+
                 val token = task.getResult()!!.getToken()
+                Log.d("test1_fcmtoken",token) // firebase 토큰 확인
+                sendFCMToken(token)
+                // Get new Instance ID token
             })
         // https://blog.naver.com/ndb796/221553341369
         // https://blog.work6.kr/332
         // 푸시알람
+        Log.d("test1_logintoken",App.prefs.token) // firebase 토큰 확인
 
-//        val token =  FirebaseInstanceId.getInstance().getInstanceId()
-//        Log.d("test1",token.toString()) // firebase 토큰 확인
+        if(intent.hasExtra("pushSellerName")){
+            Log.d("pushtest",intent.getStringExtra("pushSellerName"))
+            setFrag(2)
+        }
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -89,6 +98,7 @@ class MainActivity : AppCompatActivity() {
 
         getb2bdata()
         getSubedItem()
+        getCampaignItem()
 
         getSeller(mylocate, page)
 
@@ -117,6 +127,10 @@ class MainActivity : AppCompatActivity() {
                 ft.commit()
             }
             2 -> {
+                val bundle = Bundle()
+                bundle.putSerializable("alerts", alerts)
+                frag3.arguments = bundle
+
                 ft.replace(R.id.Main_Frame, frag3)
                 ft.commit()
             }
@@ -150,15 +164,10 @@ class MainActivity : AppCompatActivity() {
         val serverConnect = ServerConnect(this)
         val server = serverConnect.conn()
 
-        Log.d("locationtest", mylocate.latitude.toString())
-        Log.d("locationtest", mylocate.longitude.toString())
-
-        server.postSellerRequest(mylocate.latitude, mylocate.longitude, page, -1f)
-            .enqueue(object : Callback<SellerDataResponse> {
-                override fun onFailure(call: Call<SellerDataResponse>?, t: Throwable?) {
-                    Toast.makeText(this@MainActivity, "통신 실패", Toast.LENGTH_SHORT).show()
-                }
-
+        server.postSellerRequest(mylocate.latitude, mylocate.longitude, page,-1f).enqueue(object : Callback<SellerDataResponse> {
+            override fun onFailure(call: Call<SellerDataResponse>?, t: Throwable?) {
+                Toast.makeText(this@MainActivity, "통신 실패", Toast.LENGTH_SHORT).show()
+            }
                 override fun onResponse(
                     call: Call<SellerDataResponse>,
                     response: Response<SellerDataResponse>
@@ -246,9 +255,66 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    fun subedCheck(sub: SubedItemData): Boolean {
-        for (s in subeds!!.iterator()) {
-            if (s.name == sub.name)
+    fun sendFCMToken(fcmtoken:String){
+        val serverConnect = ServerConnect(this)
+        val server = serverConnect.conn()
+
+        val token=App.prefs.token
+        server.postRegisterFCMTokenRequest(token,fcmtoken).enqueue(object: Callback<Success> {
+            override fun onFailure(call: Call<Success>, t: Throwable) {
+                Toast.makeText(this@MainActivity, "통신 실패", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onResponse(call: Call<Success>,response: Response<Success>) {
+                val success = response.body()!!.success
+
+                if(!success){
+                    Toast.makeText(this@MainActivity, "FCM Token 등록 실패", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+    }
+
+    fun getCampaignItem(){
+        val serverConnect = ServerConnect(this)
+        val server = serverConnect.conn()
+
+        server.getCampaignItemRequest(App.prefs.token).enqueue(object:
+            Callback<CampaignDataResponse> {
+            override fun onFailure(call: Call<CampaignDataResponse>, t: Throwable) {
+                Toast.makeText(this@MainActivity, "통신 실패", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onResponse(
+                call: Call<CampaignDataResponse>,
+                response: Response<CampaignDataResponse>) {
+                val success = response.body()!!.success
+                val campaignlist = response.body()!!.campaign
+
+                if(!success){
+                    Toast.makeText(this@MainActivity, "목록가져오기 실패", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    alerts?.clear()
+                    for (alert in campaignlist) {
+                        alerts?.add(
+                            CampaignData(
+                                alert.customerId,
+                                alert.campaignId,
+                                alert.ccId,
+                                alert.campaign
+                            )
+                        )
+                    }
+                    alerts?.sortWith(compareBy({it.campaign.transmitDate}))
+                }
+            }
+        })
+    }
+
+    fun subedCheck(sub:SubedItemData):Boolean{
+        for(s in subeds!!.iterator()){
+            if(s.name == sub.name)
                 return true
         }
         return false
