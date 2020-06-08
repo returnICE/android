@@ -10,6 +10,8 @@ class UserPreference (context: Context){
     val PREF_KEY_ADDRESS="address"
     val PREF_KEY_LATITUDE="latitude"
     val PREF_KEY_LONGITUDE="longitude"
+    val PREF_KEY_ENTERPRISEID="enterpriseId"
+    val PREF_KEY_ENTERPRISEAPPROVAL="enterpriseApproval"
 
     val PREF_KEY_TOKEN="token"
 
@@ -33,6 +35,12 @@ class UserPreference (context: Context){
     var lon: Float
         get() = prefs.getFloat(PREF_KEY_LONGITUDE,0.0f)
         set(value) = prefs.edit().putFloat(PREF_KEY_LONGITUDE,value).apply()
+    var enterpriseId: String
+        get() = prefs.getString(PREF_KEY_ENTERPRISEID,"")
+        set(value) = prefs.edit().putString(PREF_KEY_ENTERPRISEID,value).apply()
+    var enterprisedApproval: Int
+        get() = prefs.getInt(PREF_KEY_ENTERPRISEAPPROVAL,0)
+        set(value) = prefs.edit().putInt(PREF_KEY_ENTERPRISEAPPROVAL,value).apply()
 
     fun clear(){
         prefs.edit().clear().apply()

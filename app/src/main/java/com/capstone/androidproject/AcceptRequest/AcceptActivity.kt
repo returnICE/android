@@ -65,6 +65,7 @@ class AcceptActivity : AppCompatActivity() {
         ACtextStoreName.setText(sellerName)
 
         ACbtnCertification.setOnClickListener(){
+
             accept(App.prefs.token, subedId, menuId, menuName, serviceName, sellerName, currentTime.toString())
         }
     }

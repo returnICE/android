@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.capstone.androidproject.MainActivity
 import com.capstone.androidproject.R
+import com.capstone.androidproject.Response.EnterpriseDataResponse
 import com.capstone.androidproject.Response.Success
 import com.capstone.androidproject.ServerConfig.ServerConnect
 import com.capstone.androidproject.SharedPreferenceConfig.App
@@ -22,8 +23,14 @@ class EnterpriseCodeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_enterprise_code)
 
         ECbtnRegister.setOnClickListener {
-
-            registerCode(App.prefs.token, ECtextName.text.toString())
+            if(App.prefs.enterprisedApproval == 0){
+                registerCode(App.prefs.token, ECtextName.text.toString())
+                val nextIntent = Intent(this@EnterpriseCodeActivity, MainActivity::class.java)
+                startActivity(nextIntent)
+            }
+            else if(App.prefs.enterprisedApproval == 1){
+                Toast.makeText(this@EnterpriseCodeActivity, "이미 등록 되어있습니다", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -38,7 +45,6 @@ class EnterpriseCodeActivity : AppCompatActivity() {
                 : Callback<Success> {
                 override fun onFailure(call: Call<Success>, t: Throwable) {
                     Toast.makeText(this@EnterpriseCodeActivity, "코드 등록 실패1", Toast.LENGTH_SHORT).show()
-                    println(t?.message.toString())
                 }
                 override fun onResponse(call: Call<Success>, response: Response<Success>) {
                     val succ = response?.body()
@@ -48,13 +54,10 @@ class EnterpriseCodeActivity : AppCompatActivity() {
                     } else {
                         Toast.makeText(this@EnterpriseCodeActivity, "코드 등록 성공", Toast.LENGTH_SHORT).show()
                         Log.d("testing", "enterpriseCode : " + enterpriseCode)
-                        val nextIntent = Intent(this@EnterpriseCodeActivity, MainActivity::class.java)
-                        startActivity(nextIntent)
                     }
                 }
             })
         }
     }
-
 
 }

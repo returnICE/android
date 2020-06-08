@@ -50,8 +50,40 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this@LoginActivity, "로그인 실패2", Toast.LENGTH_SHORT).show()
                 } else {
                     App.prefs.token = token.toString()// 로그인 성공하면 shared_Preference에 유저정보 저장
-
+                    getEnterprise(token)
                     getUserInfo(server, token)
+                }
+            }
+        })
+    }
+
+    fun getEnterprise(token: String) {
+        val serverConnect = ServerConnect(this)
+        val server = serverConnect.conn()
+
+        server.getEnterpriseDataRequest(token).enqueue(object:
+
+            Callback<EnterpriseDataResponse> {
+            override fun onFailure(call: Call<EnterpriseDataResponse>, t: Throwable) {
+                Toast.makeText(this@LoginActivity, "받아오기 실패1", Toast.LENGTH_SHORT).show()
+                Log.d("testing","err msg : " + t?.message.toString())
+            }
+            override fun onResponse(
+                call: Call<EnterpriseDataResponse>,
+                response: Response<EnterpriseDataResponse>
+            ) {
+                val success = response?.body()?.success
+                val enterdata = response?.body()?.enterprisedata
+                if (success == false) {
+                    Toast.makeText(this@LoginActivity, "받아오기 실패2", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this@LoginActivity, "받아오기 성공", Toast.LENGTH_SHORT).show()
+                    Log.d("testing", "enterpriseId : " + enterdata?.enterpriseId)
+                    Log.d("testing", "enterpriseApproval : " + enterdata?.approval)
+                    if(enterdata?.approval == 1){
+                        App.prefs.enterpriseId = enterdata?.enterpriseId
+                        App.prefs.enterprisedApproval = enterdata?.approval
+                    }
                 }
             }
         })
@@ -74,6 +106,7 @@ class LoginActivity : AppCompatActivity() {
                 } else {
                     App.prefs.name = userinfo?.name.toString()
                     App.prefs.id = userinfo?.customerId.toString()
+                    Log.d("testing","name : " + userinfo?.name.toString())
 
                     startActivity<MainActivity>()
                     finish()

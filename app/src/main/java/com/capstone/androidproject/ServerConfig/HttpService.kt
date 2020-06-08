@@ -58,6 +58,14 @@ interface HttpService {
                                   @Field("enterpriseCode")enterpriseCode: String)
             :Call<Success>
 
+    @GET("/users/enterprise")
+    fun getEnterpriseDataRequest(@Header("x-access-token")token: String)
+            :Call<EnterpriseDataResponse>
+
+
+    @GET("/users/enterprise/{enterpriseId}")
+    fun getB2BdataRequest(@Path("enterpriseId")enterpriseId:String)
+            :Call<B2BDataResponse>
 
     @GET("/users/:id")
     fun getRetrieveRequest():Call<Success>
@@ -69,6 +77,11 @@ interface HttpService {
     @GET("/users/sub/{subedId}")
     fun getServiceRequest(@Path("subedId")subedId:Int)
             :Call<ServiceDataResponse>
+
+    @GET("/users/menu/{serllerId}")
+    fun getMenuRequest(@Path("serllerId")serllerId:String)
+            :Call<MenuDataResponse>
+
 
     @GET("/users/check")
     fun getCheckRequest(@Query("ID")ID: String):Call<Success>
