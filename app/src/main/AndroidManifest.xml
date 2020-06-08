@@ -7,7 +7,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT"/>
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+
     <application
         android:name=".SharedPreferenceConfig.App"
         android:allowBackup="true"
@@ -17,6 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".CampaignActivity"></activity>
         <activity android:name=".SubPayActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -64,8 +66,7 @@
         <activity
             android:name=".AddressSetting.MyAddressSettingActivity"
             android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".SplashActivity">
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -99,7 +100,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:host="main" android:scheme="leteatgo" />
+                <data
+                    android:host="main"
+                    android:scheme="leteatgo" />
             </intent-filter>
         </activity>
 
@@ -111,6 +114,5 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
     </application>
-
 
 </manifest>

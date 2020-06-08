@@ -61,6 +61,8 @@ class SignupDetailActivity : AppCompatActivity() {
             var birth = textBirth.text.toString()
             var phone = textPhone.text.toString()
 
+
+
             signup(customerId, pw, name, phone, birth)
         }
 

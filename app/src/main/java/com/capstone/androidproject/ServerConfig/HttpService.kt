@@ -4,8 +4,6 @@ import com.capstone.androidproject.Response.*
 import retrofit2.Call
 import retrofit2.http.*
 
-data class ResponseEX(val result:String? = null)
-
 interface HttpService {
 
     @FormUrlEncoded
@@ -37,17 +35,6 @@ interface HttpService {
             :Call<SignupResponse>
 
     @FormUrlEncoded
-    @POST("/items")
-    fun postItemRegisterRequest(@Field("manufactdate")manufactdate: String,
-                                @Field("expirationdate")expirationdate: String,
-                                @Field("type")type: String,
-                                @Field("information")information: String,
-                                @Field("originprice")originprice: String,
-                                @Field("saleprice")saleprice: String
-    )
-            :Call<SignupResponse>
-
-    @FormUrlEncoded
     @POST("/upload")
     fun postItemImgRequest(@Field("imgFile")imgFile: String)
             :Call<Success>
@@ -67,12 +54,13 @@ interface HttpService {
     fun getB2BdataRequest(@Path("enterpriseId")enterpriseId:String)
             :Call<B2BDataResponse>
 
-    @GET("/users/:id")
-    fun getRetrieveRequest():Call<Success>
-
     @GET("users/sub")
     fun getSubedItemRequest(@Header("x-access-token")token: String)
             : Call<SubedItmeDataResponse>
+
+    @GET("users/campaign")
+    fun getCampaignItemRequest(@Header("x-access-token")token: String)
+            :Call<CampaignDataResponse>
 
     @GET("/users/sub/{subedId}")
     fun getServiceRequest(@Path("subedId")subedId:Int)
@@ -88,10 +76,6 @@ interface HttpService {
 
     @GET("/login/logout")
     fun getLogoutRequest():Call<Success>
-
-    @GET("/login")
-    fun getGetUserRequest(@Header("x-access-token")token: String): Call<LoginResponse>
-
 
     @GET("users/myinfo")
     fun getCustomerInfoRequest(@Header("x-access-token")customerId: String)
@@ -126,7 +110,10 @@ interface HttpService {
     fun getSellerInfoRequest(@Path("sellerId")sellerId:String)
             :Call<SellerInfoResponse>
 
-
+    @FormUrlEncoded
+    @POST("/users/campaign")
+    fun postRegisterFCMTokenRequest(@Header("x-access-token")token: String,
+                          @Field("fcmtoken")fcmtoken: String): Call<Success>
     /*
     @GET("/경로")
     fun getRequest(@Query("name")name: String):Call<ResponseEX>
