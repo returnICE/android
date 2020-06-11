@@ -1,50 +1,56 @@
-package com.capstone.androidproject.MainFragment.Mypage
+package com.capstone.androidproject.ServiceInfo
 
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.util.Log
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.util.keyIterator
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.capstone.androidproject.R
-import com.capstone.androidproject.Response.EatenLogData
+import com.capstone.androidproject.Response.B2BData
+import com.capstone.androidproject.Response.MenuData
 import com.capstone.androidproject.Response.SubedItemData
-import kotlinx.android.synthetic.main.item_view_eatenlog.view.*
-import kotlinx.android.synthetic.main.item_view_service.view.*
+import com.capstone.androidproject.ServiceInfo.B2BActivity
+import com.capstone.androidproject.ServiceInfo.ServiceActivity
+import kotlinx.android.synthetic.main.item_view_home.view.*
+import kotlinx.android.synthetic.main.item_view_menu_clickable.view.*
+import kotlinx.android.synthetic.main.item_view_mypage_subeditem.view.*
+import org.jetbrains.anko.startActivity
 
-
-class DeleteSubRecyclerAdapter(private val items: ArrayList<SubedItemData>) :
-    RecyclerView.Adapter<DeleteSubRecyclerAdapter.ViewHolder>() {
+class B2BRecyclerAdapter(private val items: ArrayList<MenuData>) :
+        RecyclerView.Adapter<B2BRecyclerAdapter.ViewHolder>(){
 
     interface OnItemClickListener {
         fun onItemClick(v: View, pos: Int)
     }
+
+    private var mSelectedItems: SparseBooleanArray = SparseBooleanArray(0)
 
     private var mListener: OnItemClickListener? = null
     fun setOnItemClickListener(listener: OnItemClickListener) {
         mListener = listener
     }
 
-    private var mSelectedItems: SparseBooleanArray = SparseBooleanArray(0)
-
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         private var view: View = v
 
-        fun bind(listener: View.OnClickListener, item: SubedItemData) {
+        fun bind(listener: View.OnClickListener, item: MenuData) {
 
-            Log.d("testing", "subedItem :: " + item)
-            view.IVSsubName.setText(item.subName)
-            view.IVSendDate.setText(item.endDate)
-            view.IVSsellerName.setText(item.name)
-            view.IVSsubedId.setText(item.subedId.toString())
+            view.menuNameClickable.setText(item.menuName)
+            view.priceClickable.setText(item.price.toString())
+            view.menuIdClickable.setText(item.menuId.toString())
             view.setOnClickListener { it ->
-                val posi = adapterPosition
-                if (posi != RecyclerView.NO_POSITION) {
-                    mListener?.onItemClick(it, posi)
+                val pos = adapterPosition
+                if (pos != RecyclerView.NO_POSITION) {
+                    mListener?.onItemClick(it, pos)
                 }
-                toggleItemSelected(posi)
+                toggleItemSelected(pos)
             }
         }
 
@@ -52,7 +58,7 @@ class DeleteSubRecyclerAdapter(private val items: ArrayList<SubedItemData>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_view_service, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_view_menu_clickable, parent, false)
         return ViewHolder(view)
     }
 
@@ -63,17 +69,16 @@ class DeleteSubRecyclerAdapter(private val items: ArrayList<SubedItemData>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
         val listener = View.OnClickListener { it ->
-            Toast.makeText(it.context, "Clicked: ${item.name}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(it.context, "Clicked: ${item.menuName}", Toast.LENGTH_SHORT).show()
         }
 
         holder.apply {
-            if(item.autoPay == 1) {
-                bind(listener, item)
-            }
+            bind(listener, item)
             itemView.tag = item
             itemView.isSelected = isItemSelected(position)
         }
     }
+
     private fun isItemSelected(position:Int):Boolean {
         return mSelectedItems.get(position, false)
     }
@@ -101,5 +106,6 @@ class DeleteSubRecyclerAdapter(private val items: ArrayList<SubedItemData>) :
 
         mSelectedItems.clear()
     }
+
 
 }

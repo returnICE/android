@@ -12,6 +12,11 @@ class UserPreference (context: Context){
     val PREF_KEY_LONGITUDE="longitude"
     val PREF_KEY_ENTERPRISEID="enterpriseId"
     val PREF_KEY_ENTERPRISEAPPROVAL="enterpriseApproval"
+    val PREF_KEY_AMOUNTPERDAY="AmountPerDay"
+    val PREF_KEY_AMOUNTPERMONTH="AmountPerMonth"
+    val PREF_KEY_USEDAMOUNTPERDAY="usedAmountPerDay"
+    val PREF_KEY_USEDAMOUNTPERMONTH="usedAmountPerMonth"
+    val PREF_KEY_RESETDATE="resetDate"
 
     val PREF_KEY_TOKEN="token"
 
@@ -38,9 +43,24 @@ class UserPreference (context: Context){
     var enterpriseId: String
         get() = prefs.getString(PREF_KEY_ENTERPRISEID,"")
         set(value) = prefs.edit().putString(PREF_KEY_ENTERPRISEID,value).apply()
-    var enterprisedApproval: Int
+    var enterpriseApproval: Int
         get() = prefs.getInt(PREF_KEY_ENTERPRISEAPPROVAL,0)
         set(value) = prefs.edit().putInt(PREF_KEY_ENTERPRISEAPPROVAL,value).apply()
+    var usedAmountPerDay: Int
+        get() = prefs.getInt(PREF_KEY_USEDAMOUNTPERDAY,0)
+        set(value) = prefs.edit().putInt(PREF_KEY_USEDAMOUNTPERDAY,value).apply()
+    var usedAmountPerMonth: Int
+        get() = prefs.getInt(PREF_KEY_USEDAMOUNTPERMONTH,0)
+        set(value) = prefs.edit().putInt(PREF_KEY_USEDAMOUNTPERMONTH,value).apply()
+    var amountPerDay: Int
+        get() = prefs.getInt(PREF_KEY_AMOUNTPERDAY,0)
+        set(value) = prefs.edit().putInt(PREF_KEY_AMOUNTPERDAY,value).apply()
+    var amountPerMonth: Int
+        get() = prefs.getInt(PREF_KEY_AMOUNTPERMONTH,0)
+        set(value) = prefs.edit().putInt(PREF_KEY_AMOUNTPERMONTH,value).apply()
+    var resetDate: String
+        get() = prefs.getString(PREF_KEY_RESETDATE,"")
+        set(value) = prefs.edit().putString(PREF_KEY_RESETDATE,value).apply()
 
     fun clear(){
         prefs.edit().clear().apply()

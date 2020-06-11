@@ -13,6 +13,13 @@ interface HttpService {
                           @Field("menuId")menuId: Int): Call<EatenLogDataResponse>
 
     @FormUrlEncoded
+    @POST("/accepts/enterprise")
+    fun postEnterpriseAcceptRequest(@Header("x-access-token")token: String,
+                          @Field("price")price: Int,
+                          @Field("menuId")menuId: Int): Call<EatenLogDataResponse>
+
+
+    @FormUrlEncoded
     @POST("/accepts/score")
     fun postReviewRequest(@Header("x-access-token")token: String,
                           @Field("eatenId")eatenId: Int,
@@ -46,11 +53,14 @@ interface HttpService {
             :Call<Success>
 
     @GET("/users/enterprise")
-    fun getEnterpriseDataRequest(@Header("x-access-token")token: String)
-            :Call<EnterpriseDataResponse>
-
+    fun getMemberDataRequest(@Header("x-access-token")token: String)
+            :Call<MemberDataResponse>
 
     @GET("/users/enterprise/{enterpriseId}")
+    fun getEnterpriseDataRequest(@Path("enterpriseId")enterpriseId:String)
+            :Call<EnterpriseDataResponse>
+
+    @GET("/users/enterprise/seller/{enterpriseId}")
     fun getB2BdataRequest(@Path("enterpriseId")enterpriseId:String)
             :Call<B2BDataResponse>
 
