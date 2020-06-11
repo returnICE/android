@@ -13,24 +13,23 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.androidproject.AcceptRequest.AcceptActivity
 import com.capstone.androidproject.R
+import com.capstone.androidproject.Response.B2BData
 import com.capstone.androidproject.Response.MenuData
 import com.capstone.androidproject.Response.MenuDataResponse
-import com.capstone.androidproject.Response.ServiceData
-import com.capstone.androidproject.Response.ServiceDataResponse
 import com.capstone.androidproject.ServerConfig.ServerConnect
+import com.capstone.androidproject.SharedPreferenceConfig.App
 import kotlinx.android.synthetic.main.activity_b2bservice.*
-import kotlinx.android.synthetic.main.activity_service.*
-import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.db.INTEGER
+import org.jetbrains.anko.db.IntParser
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class B2BActivity : AppCompatActivity() {
 
-/*
     var menus: ArrayList<MenuData> = ArrayList()
     var MenuName: String = ""
-    var Price: String = ""
+    var Price: Int = 0
     var MenuId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,36 +41,46 @@ class B2BActivity : AppCompatActivity() {
         val name = intent.getStringExtra("name")
 
         BStextStoreName.setText(name)
-
+        val restAmountPerDay = App.prefs.amountPerDay - App.prefs.usedAmountPerDay
+        val restAmountPerMonth = App.prefs.amountPerMonth - App.prefs.usedAmountPerMonth
+        Log.d("testing", "apd in b2bactivity : " + restAmountPerDay.toString())
+        BSrestAmountPerDay.setText("오늘 남은 잔액 : " + restAmountPerDay.toString())
+        BSrestAmountPerMonth.setText("이번 달 남은 잔액 : " + restAmountPerMonth.toString())
+        BSresetDate.setText("초기화 날짜 : " + App.prefs.resetDate)
         getMenuInfo(sellerId)
 
         BSbtnCertification.setOnClickListener() {
-            val intent = Intent(this, AcceptActivity::class.java)
-            intent.putExtra("sellerName", "")
-            intent.putExtra("serviceName", "")
-            intent.putExtra("menuName", MenuName)
-            intent.putExtra("menuId", MenuId)
-            intent.putExtra("subedId", 0)
-
-
-            startActivity(intent)
+            if(restAmountPerDay > Price && restAmountPerMonth > Price) {
+                val intent = Intent(this, AcceptActivity::class.java)
+                intent.putExtra("sellerName", name)
+                intent.putExtra("serviceName", "")
+                intent.putExtra("menuName", MenuName)
+                intent.putExtra("menuId", MenuId)
+                intent.putExtra("subedId", 0)
+                intent.putExtra("isB2B", 1)
+                intent.putExtra("price", Price)
+                startActivity(intent)
+            }
+            else{
+                Toast.makeText(this@B2BActivity, "잔액이 없습니다.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
 
     fun setContent() {
-        val adapter = ServiceRecyclerAdapter(menus)
-        val rv: RecyclerView = this.findViewById(R.id.recyclerViewService)
+        val adapter = B2BRecyclerAdapter(menus)
+        val rv: RecyclerView = this.findViewById(R.id.recyclerViewB2B)
         rv.adapter = adapter
         rv.addItemDecoration(
             DividerItemDecoration(this!!.applicationContext, DividerItemDecoration.VERTICAL)
         )
-        adapter.setOnItemClickListener(object : ServiceRecyclerAdapter.OnItemClickListener {
+        adapter.setOnItemClickListener(object : B2BRecyclerAdapter.OnItemClickListener {
             override fun onItemClick(v: View, pos: Int) {
                 val price = v.findViewById(R.id.priceClickable) as TextView
                 val menuName = v.findViewById(R.id.menuNameClickable) as TextView
                 val menuId = v.findViewById(R.id.menuIdClickable) as TextView
-                Price = price.text.toString()
+                Price = Integer.parseInt(price.text.toString())
                 MenuName = menuName.text.toString()
                 MenuId = menuId.text.toString()
             }
@@ -87,7 +96,7 @@ class B2BActivity : AppCompatActivity() {
 
         server.getMenuRequest(sellerId).enqueue(object : Callback<MenuDataResponse> {
             override fun onFailure(call: Call<MenuDataResponse>?, t: Throwable?) {
-                Toast.makeText(this@B2BActivity, "통신 실패", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@B2BActivity, "getMenuInfo 통신 실패", Toast.LENGTH_SHORT).show()
             }
 
             override fun onResponse(
@@ -98,7 +107,7 @@ class B2BActivity : AppCompatActivity() {
                 val menuItem = response.body()!!.menuItem
 
                 if (!success) {
-                    Toast.makeText(this@B2BActivity, "정보가져오기 실패", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@B2BActivity, "getMenuInfo 정보가져오기 실패", Toast.LENGTH_SHORT).show()
                 } else {
                     menus.clear()
                     for (menu in menuItem) {
@@ -118,7 +127,13 @@ class B2BActivity : AppCompatActivity() {
             }
         })
     }
-*/
+    data class MenuInfo(
+        var menuName: String = "",
+        var price: Int = 0,
+        var avgScore: Double = 0.0,
+        var menuId: Int = 0
+    )
+
 }
 
 

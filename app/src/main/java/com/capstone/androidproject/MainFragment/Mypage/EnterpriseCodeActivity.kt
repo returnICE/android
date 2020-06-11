@@ -7,7 +7,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.capstone.androidproject.MainActivity
 import com.capstone.androidproject.R
-import com.capstone.androidproject.Response.EnterpriseDataResponse
 import com.capstone.androidproject.Response.Success
 import com.capstone.androidproject.ServerConfig.ServerConnect
 import com.capstone.androidproject.SharedPreferenceConfig.App
@@ -23,12 +22,12 @@ class EnterpriseCodeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_enterprise_code)
 
         ECbtnRegister.setOnClickListener {
-            if(App.prefs.enterprisedApproval == 0){
+            if(App.prefs.enterpriseApproval == 0){
                 registerCode(App.prefs.token, ECtextName.text.toString())
                 val nextIntent = Intent(this@EnterpriseCodeActivity, MainActivity::class.java)
                 startActivity(nextIntent)
             }
-            else if(App.prefs.enterprisedApproval == 1){
+            else if(App.prefs.enterpriseApproval == 1){
                 Toast.makeText(this@EnterpriseCodeActivity, "이미 등록 되어있습니다", Toast.LENGTH_SHORT).show()
             }
         }

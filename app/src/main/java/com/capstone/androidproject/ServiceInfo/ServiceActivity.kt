@@ -115,7 +115,7 @@ class ServiceActivity : AppCompatActivity() {
 
         server.getServiceRequest(subedId).enqueue(object : Callback<ServiceDataResponse> {
             override fun onFailure(call: Call<ServiceDataResponse>?, t: Throwable?) {
-                Toast.makeText(this@ServiceActivity, "통신 실패", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ServiceActivity, "getServiceRequest 통신 실패", Toast.LENGTH_SHORT).show()
             }
 
             override fun onResponse(
@@ -126,7 +126,7 @@ class ServiceActivity : AppCompatActivity() {
                 val subedItemInfo = response.body()!!.subedItem
 
                 if (!success) {
-                    Toast.makeText(this@ServiceActivity, "정보가져오기 실패", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ServiceActivity, "getServiceRequest 정보가져오기 실패", Toast.LENGTH_SHORT).show()
                 } else {
                     subItem = subedItemInfo[0]
 

@@ -1,14 +1,12 @@
 package com.capstone.androidproject
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.capstone.androidproject.Response.EnterpriseDataResponse
-import com.capstone.androidproject.Response.SubedItemData
-import com.capstone.androidproject.Response.SubedItmeDataResponse
+import com.capstone.androidproject.Response.MemberDataResponse
 import com.capstone.androidproject.Response.UserInfoResponse
 import com.capstone.androidproject.ServerConfig.ServerConnect
 import com.capstone.androidproject.SharedPreferenceConfig.App
@@ -61,15 +59,50 @@ class SplashActivity : AppCompatActivity() {
 
 
 
-    fun getEnterprise(token: String) {
+    fun getMember(token: String) {
         val serverConnect = ServerConnect(this)
         val server = serverConnect.conn()
 
-        server.getEnterpriseDataRequest(token).enqueue(object:
+        server.getMemberDataRequest(token).enqueue(object:
+
+            Callback<MemberDataResponse> {
+            override fun onFailure(call: Call<MemberDataResponse>, t: Throwable) {
+                Toast.makeText(this@SplashActivity, "member 받아오기 실패1", Toast.LENGTH_SHORT).show()
+                Log.d("testing","err msg : " + t?.message.toString())
+            }
+            override fun onResponse(
+                call: Call<MemberDataResponse>,
+                response: Response<MemberDataResponse>
+            ) {
+                val success = response?.body()?.success
+                val memberdata = response?.body()?.memberdata
+                if (success == false) {
+                    Toast.makeText(this@SplashActivity, "member 받아오기 실패2", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this@SplashActivity, "받아오기 성공", Toast.LENGTH_SHORT).show()
+                    if(memberdata?.approval == 1){
+                        App.prefs.enterpriseId = memberdata?.enterpriseId
+                        App.prefs.enterpriseApproval = memberdata?.approval
+                        App.prefs.usedAmountPerDay = memberdata?.amountPerDay
+                        App.prefs.usedAmountPerMonth = memberdata?.amountPerMonth
+                        App.prefs.resetDate = memberdata?.resetDate
+
+                        Log.d("testing", "resetDate : " + memberdata?.resetDate)
+
+                    }
+                }
+            }
+        })
+    }
+    fun getEnterprise(enterpriseId : String) {
+        val serverConnect = ServerConnect(this)
+        val server = serverConnect.conn()
+
+        server.getEnterpriseDataRequest(enterpriseId).enqueue(object:
 
             Callback<EnterpriseDataResponse> {
             override fun onFailure(call: Call<EnterpriseDataResponse>, t: Throwable) {
-                Toast.makeText(this@SplashActivity, "받아오기 실패1", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@SplashActivity, "enterprise 받아오기 실패1", Toast.LENGTH_SHORT).show()
                 Log.d("testing","err msg : " + t?.message.toString())
             }
             override fun onResponse(
@@ -79,14 +112,16 @@ class SplashActivity : AppCompatActivity() {
                 val success = response?.body()?.success
                 val enterdata = response?.body()?.enterprisedata
                 if (success == false) {
-                    Toast.makeText(this@SplashActivity, "받아오기 실패2", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@SplashActivity, "enterprise 받아오기 실패2", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this@SplashActivity, "받아오기 성공", Toast.LENGTH_SHORT).show()
-                    Log.d("testing", "enterpriseId : " + enterdata?.enterpriseId)
-                    Log.d("testing", "enterpriseApproval : " + enterdata?.approval)
-                    if(enterdata?.approval == 1){
-                        App.prefs.enterpriseId = enterdata?.enterpriseId
-                        App.prefs.enterprisedApproval = enterdata?.approval
+                    if(App.prefs.enterpriseApproval == 1){
+                        App.prefs.amountPerDay = enterdata!!.amountPerDay
+                        App.prefs.amountPerMonth = enterdata?.amountPerMonth
+
+                        Log.d("testing", "amountPerDay : " + App.prefs.amountPerDay.toString())
+                        Log.d("testing", "usedamountPerDay : " + App.prefs.usedAmountPerDay.toString())
+
                     }
                 }
             }
@@ -308,7 +343,9 @@ class SplashActivity : AppCompatActivity() {
             override fun onStateChange(i: Int) {
                 if (i == State.FINISHED) {
                     if (App.prefs.token != "") {
-                        getEnterprise(App.prefs.token)
+                        getMember(App.prefs.token)
+                        Log.d("testing", "enterprseId in SplashActivity : " + App.prefs.enterpriseId)
+                        getEnterprise(App.prefs.enterpriseId)
                         login(App.prefs.token)
                         SystemClock.sleep(300)
                     }

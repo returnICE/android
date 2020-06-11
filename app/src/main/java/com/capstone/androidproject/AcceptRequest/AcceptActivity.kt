@@ -1,9 +1,6 @@
 package com.capstone.androidproject.AcceptRequest
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
+import android.app.*
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -13,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
@@ -29,6 +27,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.system.measureTimeMillis
 
 class AcceptActivity : AppCompatActivity() {
 
@@ -53,29 +55,128 @@ class AcceptActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_accept)
 
+        val isB2B = intent.getIntExtra("isB2B", 0)
         val menuName = intent.getStringExtra("menuName")
-        val serviceName = intent.getStringExtra("serviceName")
+        var serviceName = intent.getStringExtra("serviceName")
         val sellerName = intent.getStringExtra("sellerName")
+        val price = intent.getIntExtra("price",0)
         val subedId = intent.getIntExtra("subedId",0)
         val menuId = Integer.parseInt(intent.getStringExtra("menuId"))
         val currentTime: LocalDateTime = LocalDateTime.now()
 
-        ACtextMenuName.setText(menuName)
-        ACtextServiceName.setText(serviceName)
-        ACtextStoreName.setText(sellerName)
+        if(isB2B == 0) {
+            ACtextMenuName.setText(menuName)
+            ACtextServiceName.setText(serviceName)
+            ACtextStoreName.setText(sellerName)
+        }
+        else{
+            ACtextMenuName.setText(price.toString() + "원")
+            ACtextServiceName.setText(menuName)
+            ACtextStoreName.setText(sellerName)
+        }
+
 
         ACbtnCertification.setOnClickListener(){
-
-            accept(App.prefs.token, subedId, menuId, menuName, serviceName, sellerName, currentTime.toString())
+            if(isB2B==0) {
+                accept(
+                    App.prefs.token,
+                    subedId,
+                    menuId,
+                    menuName,
+                    serviceName,
+                    sellerName,
+                    currentTime.toString()
+                )
+            }
+            else{
+                b2baccept(
+                    App.prefs.token,
+                    price,
+                    menuId,
+                    menuName,
+                    sellerName,
+                    currentTime.toString()
+                )
+            }
         }
     }
 
+    /*
     override fun onStop() {
         super.onStop()
-        unbindService(connection)
+        //unbindService(connection)
         mBound = false
     }
+    fun showTimerPickerFragment(view: View){
+        val timePickerFragment = TimePickerFragment()
+        timePickerFragment.show(supportFragmentManager, "time_picker")
+    }
 
+     */
+
+    fun cancelAlarm(view: View){
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, AlarmReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
+        alarmManager.cancel(pendingIntent)
+
+    }
+
+    private fun startAlarm(eatenId : Int, menuName : String, serviceName : String, sellerName : String, currentTime : String){
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, AlarmReceiver::class.java)
+        val cal = Calendar.getInstance()
+        cal.time = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant())
+        cal.add(Calendar.SECOND, 10)
+        intent.putExtra("eatenId",eatenId)
+        intent.putExtra("menuName",menuName)
+        intent.putExtra("serviceName",serviceName)
+        intent.putExtra("sellerName",sellerName)
+        intent.putExtra("currentTime",currentTime)
+        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis,pendingIntent)
+
+    }
+
+    fun b2baccept(token: String, price: Int, menuId: Int, menuName: String, sellerName: String, currentTime: String){
+        val serverConnect = ServerConnect(this)
+        val server = serverConnect.conn()
+
+        server.postEnterpriseAcceptRequest(token, price, menuId).enqueue(object:
+
+            Callback<EatenLogDataResponse> {
+            override fun onFailure(call: Call<EatenLogDataResponse>, t: Throwable) {
+                Toast.makeText(this@AcceptActivity, "승인 실패1", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onResponse(
+                call: Call<EatenLogDataResponse>,
+                response: Response<EatenLogDataResponse>
+            ) {
+                val success = response?.body()?.success
+                val eatenLog = response?.body()?.data
+
+                if (success == false) {
+                    Toast.makeText(this@AcceptActivity, "승인 실패2", Toast.LENGTH_SHORT).show()
+                } else {
+                    val eatenId = eatenLog!!.eatenId
+                    //notification(menuName, serviceName, sellerName, currentTime, eatenId)
+                    //createNotificationChannel()
+                    /*val nextService = Intent(this@AcceptActivity, ReviewService::class.java).also{ intent ->
+                        startForegroundService(intent)
+                        //bindService(intent, connection, Context.BIND_AUTO_CREATE)
+                    }*/
+
+                    startAlarm(eatenId, menuName, "", sellerName, currentTime)
+                    val nextIntent = Intent(this@AcceptActivity, MainActivity::class.java)
+                    nextIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivity(nextIntent)
+
+                    //finishAffinity()
+                }
+            }
+        })
+    }
     fun accept(token: String, subedId: Int, menuId: Int, menuName:String, serviceName:String, sellerName:String, currentTime:String) {
         val serverConnect = ServerConnect(this)
         val server = serverConnect.conn()
@@ -100,81 +201,20 @@ class AcceptActivity : AppCompatActivity() {
                     val eatenId = eatenLog!!.eatenId
                     //notification(menuName, serviceName, sellerName, currentTime, eatenId)
                     //createNotificationChannel()
+                    /*val nextService = Intent(this@AcceptActivity, ReviewService::class.java).also{ intent ->
+                        startForegroundService(intent)
+                        //bindService(intent, connection, Context.BIND_AUTO_CREATE)
+                    }*/
+
+                    startAlarm(eatenId, menuName, serviceName, sellerName, currentTime)
                     val nextIntent = Intent(this@AcceptActivity, MainActivity::class.java)
-                    val nextService = Intent(this@AcceptActivity, ReviewService::class.java).also{ intent ->
-                        bindService(intent, connection, Context.BIND_AUTO_CREATE)
-                    }
                     nextIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     startActivity(nextIntent)
+
                     //finishAffinity()
                 }
             }
         })
     }
-
-    //알림
-    fun notification(menuName:String, serviceName:String, sellerName:String, currentTime:String, eatenId: Int){
-        val notificationId = R.integer.notification_id
-        val CHANNEL_ID  = R.string.channel_id.toString()
-        var title = "평점을 입력해주세요"
-        var content = menuName+" 어떠셨나요?"
-
-        //푸시에서 클릭시 전환할 생성할 intent
-        val intent = Intent(this@AcceptActivity, ReviewActivity::class.java).apply{
-           // flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            putExtra("eatenId",eatenId)
-            putExtra("menuName",menuName)
-            putExtra("serviceName",serviceName)
-            putExtra("sellerName",sellerName)
-            putExtra("currentTime",currentTime)
-        }
-
-        val fullScreenPendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-
-
-        //var bitmap = BitmapFactory.decodeResource(resources, R.drawable.phone)
-
-        // 알림 생성
-        var builder = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentTitle(title)
-            .setContentText(content)
-            .setAutoCancel(true)
-            .setSmallIcon(R.drawable.alert_icon)
-            //.setLargeIcon(bitmap)
-            //.setShowWhen(true)
-            .setColor(ContextCompat.getColor(this, R.color.colorAccent))
-            //.setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setContentIntent(fullScreenPendingIntent)
-            .setFullScreenIntent(fullScreenPendingIntent, true)//headup notation
-            .setDefaults(Notification.DEFAULT_ALL)
-            .setTicker("Notification")
-            .setVibrate(longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400))
-
-        NotificationManagerCompat.from(this).notify(notificationId, builder.build())
-
-    }
-
-    //알림 채널 생성
-    private fun createNotificationChannel(){
-        val CHANNEL_ID = R.string.channel_id.toString()
-        val CHANNEL_NAME = R.string.channel_name.toString()
-        val CHANNEL_DESCRIPTION = R.string.channel_description.toString()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance).apply {
-                description = CHANNEL_DESCRIPTION
-                enableVibration(true)
-                lightColor = Color.GREEN
-                vibrationPattern = longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400)
-            }
-            // Register the channel with the system
-            val notificationManager: NotificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
-    }
-
 
 }

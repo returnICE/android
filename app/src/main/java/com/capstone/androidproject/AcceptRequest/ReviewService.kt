@@ -20,8 +20,9 @@ class ReviewService : Service() {
     inner class LocalBinder : Binder(){
         fun getService(): ReviewService = this@ReviewService
     }
-    override fun onBind(intent: Intent?): IBinder? {
-        Log.d("testing", "start onBInd on ReviewService")
+
+    override fun onCreate() {
+        super.onCreate()
         val menuName = "testmenu"
         val serviceName = "servicename"
         val sellerName = "test"
@@ -29,11 +30,28 @@ class ReviewService : Service() {
         val eatenId = 22
         Handler().postDelayed(
             {
-                notification(menuName, serviceName, sellerName, currentTime, eatenId)
+                startForegroundService(menuName, serviceName, sellerName, currentTime, eatenId)
                 createNotificationChannel()
 
             },
-            10000
+            10000//1000 : 1초
+        )
+    }
+    override fun onBind(intent: Intent?): IBinder? {
+        Log.d("testing", "start onBInd on ReviewService")
+        val menuName = "testmenu"
+        val serviceName = "servicename"
+        val sellerName = "test"
+        val currentTime = "test"
+        val eatenId = 22
+        startForegroundService(menuName, serviceName, sellerName, currentTime, eatenId)
+
+        Handler().postDelayed(
+            {
+                createNotificationChannel()
+
+            },
+            10000//1000 : 1초
         )
         Log.d("testing", "Handler finished")
         return binder
@@ -43,7 +61,7 @@ class ReviewService : Service() {
         return super.onStartCommand(intent, flags, startId)
     }
     //알림
-    fun notification(menuName:String, serviceName:String, sellerName:String, currentTime:String, eatenId: Int){
+    fun startForegroundService(menuName:String, serviceName:String, sellerName:String, currentTime:String, eatenId: Int){
         val notificationId = R.integer.notification_id
         val CHANNEL_ID  = R.string.channel_id.toString()
         var title = "평점을 입력해주세요"
@@ -66,6 +84,7 @@ class ReviewService : Service() {
         //var bitmap = BitmapFactory.decodeResource(resources, R.drawable.phone)
 
         // 알림 생성
+
         var builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle(title)
@@ -80,9 +99,28 @@ class ReviewService : Service() {
             .setDefaults(Notification.DEFAULT_ALL)
             .setTicker("Notification")
             .setVibrate(longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400))
+/*
+        val notification: Notification = Notification.Builder(this)
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContentTitle(title)
+            .setContentText(content)
+            .setAutoCancel(true)
+            //.setLargeIcon(bitmap)
+            //.setShowWhen(true)
+            .setColor(ContextCompat.getColor(this, R.color.colorAccent))
+            //.setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentIntent(fullScreenPendingIntent)
+            .setFullScreenIntent(fullScreenPendingIntent, true)//headup notation
+            .setDefaults(Notification.DEFAULT_ALL)
+            .setTicker("Notification")
+            .setVibrate(longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400))
+            .build()
 
+ */
+        startForeground(notificationId, builder.build())
+        //NotificationManagerCompat.from(this).notify(notificationId, notification)
         NotificationManagerCompat.from(this).notify(notificationId, builder.build())
-
+        stopSelf()
     }
 
     //알림 채널 생성

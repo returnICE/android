@@ -57,9 +57,10 @@ class HomeFragment : Fragment() {
     fun initRecyclerView(v:View, subeds:ArrayList<SubedItemData>, b2bs:ArrayList<B2BData>) {
 
         setRefreshSwipe(v)
-
-        getb2bdata()
-        Log.d("testing", "b2bdata in? : " + b2bs)
+        if(App.prefs.enterpriseApproval == 1){
+            getb2bdata()
+            Log.d("testing", "b2bdata in? : " + b2bs)
+        }
         getSubedItem()
         Log.d("testing", "subeddata in? : " + subeds)
 
@@ -78,7 +79,9 @@ class HomeFragment : Fragment() {
         swipeContainer = v.findViewById(R.id.swipeContainer) as SwipeRefreshLayout
         swipeContainer?.setOnRefreshListener {
             rv.recycledViewPool.clear()
-            getb2bdata()
+            if(App.prefs.enterpriseApproval == 1){
+                getb2bdata()
+            }
             getSubedItem()
             swipeContainer?.setRefreshing(false)
         }

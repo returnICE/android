@@ -61,19 +61,19 @@ class LoginActivity : AppCompatActivity() {
         val serverConnect = ServerConnect(this)
         val server = serverConnect.conn()
 
-        server.getEnterpriseDataRequest(token).enqueue(object:
+        server.getMemberDataRequest(token).enqueue(object:
 
-            Callback<EnterpriseDataResponse> {
-            override fun onFailure(call: Call<EnterpriseDataResponse>, t: Throwable) {
+            Callback<MemberDataResponse> {
+            override fun onFailure(call: Call<MemberDataResponse>, t: Throwable) {
                 Toast.makeText(this@LoginActivity, "받아오기 실패1", Toast.LENGTH_SHORT).show()
                 Log.d("testing","err msg : " + t?.message.toString())
             }
             override fun onResponse(
-                call: Call<EnterpriseDataResponse>,
-                response: Response<EnterpriseDataResponse>
+                call: Call<MemberDataResponse>,
+                response: Response<MemberDataResponse>
             ) {
                 val success = response?.body()?.success
-                val enterdata = response?.body()?.enterprisedata
+                val enterdata = response?.body()?.memberdata
                 if (success == false) {
                     Toast.makeText(this@LoginActivity, "받아오기 실패2", Toast.LENGTH_SHORT).show()
                 } else {
@@ -82,7 +82,7 @@ class LoginActivity : AppCompatActivity() {
                     Log.d("testing", "enterpriseApproval : " + enterdata?.approval)
                     if(enterdata?.approval == 1){
                         App.prefs.enterpriseId = enterdata?.enterpriseId
-                        App.prefs.enterprisedApproval = enterdata?.approval
+                        App.prefs.enterpriseApproval = enterdata?.approval
                     }
                 }
             }

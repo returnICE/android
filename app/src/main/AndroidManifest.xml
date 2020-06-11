@@ -91,6 +91,11 @@
         </service>
         <service android:name=".AcceptRequest.ReviewService"/>
 
+        <receiver
+            android:name=".AcceptRequest.AlarmReceiver"
+            android:enabled="true"
+            android:exported="false" />
+
         <activity android:name=".SignupDetailActivity" />
         <activity android:name=".ItemRegisterActivity" />
         <activity android:name=".MainActivity">
