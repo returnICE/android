@@ -9,10 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.androidproject.R
 import com.capstone.androidproject.Response.EatenLogData
-import com.capstone.androidproject.Response.EatenLogDataResponse
 import com.capstone.androidproject.Response.EatenLogDataResponse2
 import com.capstone.androidproject.ServerConfig.ServerConnect
-import com.capstone.androidproject.ServiceInfo.ServiceRecyclerAdapter
 import com.capstone.androidproject.SharedPreferenceConfig.App
 import retrofit2.Call
 import retrofit2.Callback
@@ -38,7 +36,6 @@ class EatenLogActivity: AppCompatActivity() {
         val lm = LinearLayoutManager(this@EatenLogActivity, LinearLayoutManager.VERTICAL, false)
         rv.layoutManager = lm
 
-        Log.d("testing","EatenLogActivity - recycler test")
     }
 
     fun getLog(){
@@ -58,7 +55,6 @@ class EatenLogActivity: AppCompatActivity() {
                     Toast.makeText(this@EatenLogActivity, "목록 가져오기 실패2", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this@EatenLogActivity, "목록 가져오기 성공", Toast.LENGTH_SHORT).show()
-                    Log.d("testing","EatenLogActivity - recycler test2")
                     for (eatenLog in logData) {
                         eatenLogs.add(
                             EatenLogData(

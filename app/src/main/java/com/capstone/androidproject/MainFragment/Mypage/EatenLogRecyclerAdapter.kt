@@ -17,14 +17,14 @@ class EatenLogRecyclerAdapter(private val items: ArrayList<EatenLogData>) :
         private var view: View = v
         fun bind(listener: View.OnClickListener, item: EatenLogData) {
 
-            Log.d("testing","price in EatenLogRecyclerAdapter : " + item.price.toString())
-            var score = item.score.toString()
-            view.ELdate.setText("승인 날짜 : " + item.eatenDate)
+            var year = item.eatenDate.slice(IntRange(0,3))
+            var month = item.eatenDate.slice(IntRange(5,6))
+            var day = item.eatenDate.slice(IntRange(8,9))
+            var hour = item.eatenDate.slice(IntRange(11,12))
+            var minute = item.eatenDate.slice(IntRange(14,15))
+            view.ELdate.setText("승인 날짜 : " + year + "년 " + month + "월 " +day + "일 " +hour + "시 " +minute + "분")
             view.ELmenuName.setText(item.menuName)
-            view.ELprice.setText("가격 : " + item.price.toString())
-            if(score  != "null"){
-                view.ELscore.setText("평점 : " + score)
-            }
+            view.ELprice.setText("가격 : " + item.price.toString() + " 원")
 
             view.setOnClickListener(listener)
         }
@@ -36,7 +36,6 @@ class EatenLogRecyclerAdapter(private val items: ArrayList<EatenLogData>) :
     }
 
     override fun getItemCount(): Int {
-        Log.d("testing","items.size in EatenLogRecyclerAdapter : " + items.size.toString())
         return items.size
      }
 

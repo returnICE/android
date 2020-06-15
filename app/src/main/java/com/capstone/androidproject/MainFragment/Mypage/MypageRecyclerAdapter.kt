@@ -25,17 +25,14 @@ class MypageRecyclerAdapter(private val items: ArrayList<SubedItemData>) :
             view.imgMypagePhoto.setImageResource(R.drawable.example_img)
             view.imgMypagePhoto.setColorFilter(R.color.imgTint, PorterDuff.Mode.DARKEN)
 
-            /*var image_mypage_subeditem: URL2Bitmap = URL2Bitmap()
+            var image_mypage_subeditem: URL2Bitmap = URL2Bitmap()
             image_mypage_subeditem = URL2Bitmap().apply {
-                url = URL(item.subId)//이미지 가져와야함
+                url = URL(item.imgURL)//이미지 가져와야함
             }
             var bitmap: Bitmap = image_mypage_subeditem.execute().get()
 
             view.imgMypagePhoto.setImageBitmap(bitmap)
 
-             */
-            //view.textSellerName.setText(item.subId)
-            //view.textSubedItmeName.setText(item.subedId)
             view.textSellerName.setText(item.name)
             view.textSubedItmeName.setText(item.subName)
             val autopay = item.autoPay
