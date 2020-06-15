@@ -48,4 +48,14 @@
         android:textColor="@color/textTransparent"
         />
 
+
+    <TextView
+        android:id="@+id/IVSautoPay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:textSize="15sp"
+        android:textColor="@color/textTransparent"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
