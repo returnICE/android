@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -58,8 +59,8 @@ class AlertFragment : Fragment() {
         val adapter = AlertRecyclerAdapter(subeds)
         rv.adapter = adapter
 
-        val spaceDecoration = RecyclerDecoration(activity!!, 8)
-        rv.addItemDecoration(spaceDecoration)
+        //val spaceDecoration = RecyclerDecoration(activity!!, 8)
+        rv.addItemDecoration(object: DividerItemDecoration(v.context,1){})
 
         val lm = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv.layoutManager = lm
@@ -87,8 +88,8 @@ class AlertFragment : Fragment() {
         while (rv.getItemDecorationCount() > 0) {
             rv.removeItemDecorationAt(0)
         }
-        val spaceDecoration = RecyclerDecoration(activity!!, 8)
-        rv.addItemDecoration(spaceDecoration)
+        //val spaceDecoration = RecyclerDecoration(activity!!, 8)
+        rv.addItemDecoration(object: DividerItemDecoration(context,1){})
         // https://codechacha.com/ko/android-recyclerview/   <- 리사이클러뷰 설명
     }
 

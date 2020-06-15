@@ -77,17 +77,14 @@ class SplashActivity : AppCompatActivity() {
                 val success = response?.body()?.success
                 val memberdata = response?.body()?.memberdata
                 if (success == false) {
-                    Toast.makeText(this@SplashActivity, "member 받아오기 실패2", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this@SplashActivity, "member 받아오기 실패2", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this@SplashActivity, "받아오기 성공", Toast.LENGTH_SHORT).show()
                     if(memberdata?.approval == 1){
                         App.prefs.enterpriseId = memberdata?.enterpriseId
                         App.prefs.enterpriseApproval = memberdata?.approval
                         App.prefs.usedAmountPerDay = memberdata?.amountPerDay
                         App.prefs.usedAmountPerMonth = memberdata?.amountPerMonth
                         App.prefs.resetDate = memberdata?.resetDate
-
-                        Log.d("testing", "resetDate : " + memberdata?.resetDate)
 
                     }
                 }
@@ -112,9 +109,8 @@ class SplashActivity : AppCompatActivity() {
                 val success = response?.body()?.success
                 val enterdata = response?.body()?.enterprisedata
                 if (success == false) {
-                    Toast.makeText(this@SplashActivity, "enterprise 받아오기 실패2", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this@SplashActivity, "enterprise 받아오기 실패2", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this@SplashActivity, "받아오기 성공", Toast.LENGTH_SHORT).show()
                     if(App.prefs.enterpriseApproval == 1){
                         App.prefs.amountPerDay = enterdata!!.amountPerDay
                         App.prefs.amountPerMonth = enterdata?.amountPerMonth
@@ -344,7 +340,6 @@ class SplashActivity : AppCompatActivity() {
                 if (i == State.FINISHED) {
                     if (App.prefs.token != "") {
                         getMember(App.prefs.token)
-                        Log.d("testing", "enterprseId in SplashActivity : " + App.prefs.enterpriseId)
                         getEnterprise(App.prefs.enterpriseId)
                         login(App.prefs.token)
                         SystemClock.sleep(300)

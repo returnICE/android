@@ -63,7 +63,6 @@ class MainActivity : AppCompatActivity() {
         Log.d("test1_logintoken",App.prefs.token) // firebase 토큰 확인
 
         if(intent.hasExtra("pushSellerName")){
-            Log.d("pushtest",intent.getStringExtra("pushSellerName"))
             setFrag(2)
         }
 
@@ -227,7 +226,7 @@ class MainActivity : AppCompatActivity() {
                 val subdata = response.body()!!.subdata
 
                 if (!success) {
-                    Toast.makeText(this@MainActivity, "getSubedItem 목록가져오기 실패", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this@MainActivity, "getSubedItem 목록가져오기 실패", Toast.LENGTH_SHORT).show()
                 } else {
                     subeds?.clear()
                     for (subed in subdata) {
@@ -294,7 +293,7 @@ class MainActivity : AppCompatActivity() {
                 val campaignlist = response.body()!!.campaign
 
                 if(!success){
-                    Toast.makeText(this@MainActivity, "campaign 목록가져오기 실패", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this@MainActivity, "campaign 목록가져오기 실패", Toast.LENGTH_SHORT).show()
                 }
                 else{
                     alerts?.clear()
@@ -339,7 +338,6 @@ class MainActivity : AppCompatActivity() {
             Callback<MemberDataResponse> {
             override fun onFailure(call: Call<MemberDataResponse>, t: Throwable) {
                 Toast.makeText(this@MainActivity, "member 받아오기 실패1", Toast.LENGTH_SHORT).show()
-                Log.d("testing","err msg : " + t?.message.toString())
             }
             override fun onResponse(
                 call: Call<MemberDataResponse>,
@@ -348,9 +346,8 @@ class MainActivity : AppCompatActivity() {
                 val success = response?.body()?.success
                 val memberdata = response?.body()?.memberdata
                 if (success == false) {
-                    Toast.makeText(this@MainActivity, "member 받아오기 실패2", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this@MainActivity, "member 받아오기 실패2", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this@MainActivity, "받아오기 성공", Toast.LENGTH_SHORT).show()
                     if(memberdata?.approval == 1){
                         App.prefs.enterpriseId = memberdata?.enterpriseId
                         App.prefs.enterpriseApproval = memberdata?.approval
@@ -372,7 +369,6 @@ class MainActivity : AppCompatActivity() {
             Callback<EnterpriseDataResponse> {
             override fun onFailure(call: Call<EnterpriseDataResponse>, t: Throwable) {
                 Toast.makeText(this@MainActivity, "enterprise 받아오기 실패1", Toast.LENGTH_SHORT).show()
-                Log.d("testing","err msg : " + t?.message.toString())
             }
             override fun onResponse(
                 call: Call<EnterpriseDataResponse>,
@@ -381,12 +377,10 @@ class MainActivity : AppCompatActivity() {
                 val success = response?.body()?.success
                 val enterdata = response?.body()?.enterprisedata
                 if (success == false) {
-                    Toast.makeText(this@MainActivity, "enterprise 받아오기 실패2", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this@MainActivity, "enterprise 받아오기 실패2", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this@MainActivity, "받아오기 성공", Toast.LENGTH_SHORT).show()
                     if(App.prefs.enterpriseApproval == 1){
 
-                        Log.d("testing", "amountPerDay : " + enterdata!!.amountPerDay.toString())
                         App.prefs.amountPerDay = enterdata!!.amountPerDay
                         App.prefs.amountPerMonth = enterdata?.amountPerMonth
                     }
@@ -414,7 +408,7 @@ class MainActivity : AppCompatActivity() {
                 val b2bdata = response.body()!!.b2bdata
 
                 if (!success) {
-                    Toast.makeText(this@MainActivity, "getb2bdata 목록가져오기 실패", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this@MainActivity, "getb2bdata 목록가져오기 실패", Toast.LENGTH_SHORT).show()
                 } else {
                     b2bs?.clear()
                     for (b2b in b2bdata) {

@@ -59,10 +59,8 @@ class HomeFragment : Fragment() {
         setRefreshSwipe(v)
         if(App.prefs.enterpriseApproval == 1){
             getb2bdata()
-            Log.d("testing", "b2bdata in? : " + b2bs)
         }
         getSubedItem()
-        Log.d("testing", "subeddata in? : " + subeds)
 
         rv = v.findViewById(R.id.recyclerViewHome)
         val adapter = HomeRecyclerAdapter(subeds, b2bs)
@@ -124,7 +122,7 @@ class HomeFragment : Fragment() {
                 val subdata = response.body()!!.b2bdata
 
                 if(!success){
-                    Toast.makeText(activity, "목록가져오기 실패", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(activity, "목록가져오기 실패", Toast.LENGTH_SHORT).show()
                 }
                 else{
                     b2bs.clear()
@@ -164,7 +162,7 @@ class HomeFragment : Fragment() {
                 val subdata = response.body()!!.subdata
 
                 if(!success){
-                    Toast.makeText(activity, "목록가져오기 실패", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(activity, "목록가져오기 실패", Toast.LENGTH_SHORT).show()
                 }
                 else{
                     subeds.clear()

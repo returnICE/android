@@ -77,9 +77,6 @@ class LoginActivity : AppCompatActivity() {
                 if (success == false) {
                     Toast.makeText(this@LoginActivity, "받아오기 실패2", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this@LoginActivity, "받아오기 성공", Toast.LENGTH_SHORT).show()
-                    Log.d("testing", "enterpriseId : " + enterdata?.enterpriseId)
-                    Log.d("testing", "enterpriseApproval : " + enterdata?.approval)
                     if(enterdata?.approval == 1){
                         App.prefs.enterpriseId = enterdata?.enterpriseId
                         App.prefs.enterpriseApproval = enterdata?.approval
