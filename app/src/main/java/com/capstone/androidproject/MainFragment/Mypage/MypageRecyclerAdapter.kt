@@ -1,12 +1,14 @@
 package com.capstone.androidproject.MainFragment.Mypage
 
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.capstone.androidproject.R
 import com.capstone.androidproject.Response.SubedItemData
 import kotlinx.android.synthetic.main.activity_find_to_map.view.textSellerName
@@ -22,8 +24,15 @@ class MypageRecyclerAdapter(private val items: ArrayList<SubedItemData>) :
         fun bind(listener: View.OnClickListener, item: SubedItemData) {
 
 
-            view.imgMypagePhoto.setImageResource(R.drawable.example_img)
-            view.imgMypagePhoto.setColorFilter(R.color.imgTint, PorterDuff.Mode.DARKEN)
+            if(item.imgURL != null) {
+                Glide.with(view.context)
+                    .load(item.imgURL)
+                    .into(view.imgMypagePhoto)
+            }
+            else{
+                view.imgMypagePhoto.setImageResource(R.drawable.default_img)
+            }
+            view.imgMypagePhoto.setColorFilter(Color.parseColor("#717171"),PorterDuff.Mode.MULTIPLY)
 
             var image_mypage_subeditem: URL2Bitmap = URL2Bitmap()
             image_mypage_subeditem = URL2Bitmap().apply {
