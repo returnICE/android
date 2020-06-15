@@ -18,6 +18,8 @@ import com.capstone.androidproject.ServerConfig.ServerConnect
 import com.capstone.androidproject.ServiceInfo.ServiceRecyclerAdapter
 import com.capstone.androidproject.SharedPreferenceConfig.App
 import kotlinx.android.synthetic.main.activity_delete_sub.*
+import kotlinx.android.synthetic.main.item_view_mypage_subeditem.*
+import kotlinx.android.synthetic.main.item_view_service.*
 import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,6 +29,7 @@ class DeleteSubActivity: AppCompatActivity() {
 
     var subeds: ArrayList<SubedItemData> = ArrayList()
     var SubedId : String = ""
+    var AutoPay : String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -51,7 +54,9 @@ class DeleteSubActivity: AppCompatActivity() {
         adapter.setOnItemClickListener(object: DeleteSubRecyclerAdapter.OnItemClickListener{
             override fun onItemClick(v: View, pos: Int) {
                 val subedId = v.findViewById(R.id.IVSsubedId) as TextView
+                val autoPay = v.findViewById(R.id.IVSautoPay) as TextView
                 SubedId = subedId.text.toString()
+                AutoPay = autoPay.text.toString()
                 Log.d("testing", "SubedId in DSA : " + SubedId)
             }
         })
@@ -59,8 +64,13 @@ class DeleteSubActivity: AppCompatActivity() {
         rv.layoutManager = lm
 
         ADSbtnCertification.setOnClickListener(){
-            Log.d("testing", "SubedId in DSA2 : " + Integer.parseInt(SubedId).toString())
-            updateAutoPay(App.prefs.token, Integer.parseInt(SubedId))
+            if(AutoPay == "1"){
+                Log.d("testing", "SubedId in DSA2 : " + Integer.parseInt(SubedId).toString())
+                updateAutoPay(App.prefs.token, Integer.parseInt(SubedId))
+            }
+            else{
+                Toast.makeText(this@DeleteSubActivity, "해지할 서비스를 선택해주세요", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

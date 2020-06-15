@@ -1,11 +1,13 @@
 package com.capstone.androidproject.MainFragment.Mypage
 
+import android.content.Context
 import android.util.Log
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.util.keyIterator
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.androidproject.R
@@ -33,10 +35,14 @@ class DeleteSubRecyclerAdapter(private val items: ArrayList<SubedItemData>) :
         private var view: View = v
 
         fun bind(listener: View.OnClickListener, item: SubedItemData) {
-
+            val context:Context
             Log.d("testing", "subedItem :: " + item)
             view.IVSsubName.setText(item.subName)
             view.IVSendDate.setText(item.endDate)
+            view.IVSautoPay.setText(item.autoPay.toString())
+            if(item.autoPay == 0){
+                view.setBackgroundColor(ContextCompat.getColor(view.context, R.color.textGray))
+            }
             view.IVSsellerName.setText(item.name)
             view.IVSsubedId.setText(item.subedId.toString())
             view.setOnClickListener { it ->
@@ -67,9 +73,7 @@ class DeleteSubRecyclerAdapter(private val items: ArrayList<SubedItemData>) :
         }
 
         holder.apply {
-            if(item.autoPay == 1) {
-                bind(listener, item)
-            }
+            bind(listener, item)
             itemView.tag = item
             itemView.isSelected = isItemSelected(position)
         }
