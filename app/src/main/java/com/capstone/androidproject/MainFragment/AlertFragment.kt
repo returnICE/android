@@ -89,7 +89,9 @@ class AlertFragment : Fragment() {
             rv.removeItemDecorationAt(0)
         }
         //val spaceDecoration = RecyclerDecoration(activity!!, 8)
-        rv.addItemDecoration(object: DividerItemDecoration(context,1){})
+        if(context != null) {
+            rv.addItemDecoration(object : DividerItemDecoration(context, 1) {})
+        }
         // https://codechacha.com/ko/android-recyclerview/   <- 리사이클러뷰 설명
     }
 
