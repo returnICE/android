@@ -394,7 +394,7 @@ class MainActivity : AppCompatActivity() {
         val serverConnect = ServerConnect(this)
         val server = serverConnect.conn()
 
-        server.getB2BdataRequest(App.prefs.enterpriseId).enqueue(object :
+        server.postB2BdataRequest(App.prefs.token).enqueue(object :
             Callback<B2BDataResponse> {
             override fun onFailure(call: Call<B2BDataResponse>, t: Throwable) {
                 Toast.makeText(this@MainActivity, "getb2bdata 통신 실패", Toast.LENGTH_SHORT).show()

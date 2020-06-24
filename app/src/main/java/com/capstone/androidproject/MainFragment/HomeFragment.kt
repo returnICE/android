@@ -1,6 +1,5 @@
 package com.capstone.androidproject.MainFragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,7 +10,6 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.capstone.androidproject.MainActivity
 import com.capstone.androidproject.MainFragment.Home.HomeRecyclerAdapter
 import com.capstone.androidproject.R
 import com.capstone.androidproject.RecyclerDecoration
@@ -35,6 +33,10 @@ class HomeFragment : Fragment() {
     lateinit var rv : RecyclerView
     var subeds: ArrayList<SubedItemData> = ArrayList()
     var b2bs: ArrayList<B2BData> = ArrayList()
+
+
+    var subedlist:MutableList<HomeRecyclerAdapter.Item> = ArrayList()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,24 +51,36 @@ class HomeFragment : Fragment() {
         subeds = _subeds
         val _b2bs = arguments?.getSerializable("b2bs")!! as ArrayList<B2BData>
         b2bs = _b2bs
-        initRecyclerView(v, subeds, b2bs)
+
+        initSubedList()
+
+        initRecyclerView(v)
         return v
+    }
+    fun initSubedList(){
+        subedlist.clear()
+        for(b in b2bs){
+            subedlist.add(HomeRecyclerAdapter.Item(HomeRecyclerAdapter.ENTERPRISE,b))
+        }
+        for(s in subeds){
+            subedlist.add(HomeRecyclerAdapter.Item(HomeRecyclerAdapter.SUBED,s))
+        }
     }
 
     fun setActionBar(){// 액션 바 설정
         activity!!.titleText.setText("구독 목록")
         activity!!.titleText.isClickable = false
     }
-    fun initRecyclerView(v:View, subeds:ArrayList<SubedItemData>, b2bs:ArrayList<B2BData>) {
+    fun initRecyclerView(v:View) {
 
         setRefreshSwipe(v)
-        if(App.prefs.enterpriseApproval == 1){
-            getb2bdata()
-        }
+
+        getb2bdata()
         getSubedItem()
+        initSubedList()
 
         rv = v.findViewById(R.id.recyclerViewHome)
-        val adapter = HomeRecyclerAdapter(subeds, b2bs)
+        val adapter = HomeRecyclerAdapter(subedlist)
         rv.adapter = adapter
 
         val spaceDecoration = RecyclerDecoration(activity!!, 8)
@@ -82,6 +96,7 @@ class HomeFragment : Fragment() {
             rv.recycledViewPool.clear()
             getb2bdata()
             getSubedItem()
+            initSubedList()
 
             swipeContainer?.setRefreshing(false)
         }
@@ -112,7 +127,7 @@ class HomeFragment : Fragment() {
         val serverConnect = ServerConnect(activity!!.applicationContext)
         val server = serverConnect.conn()
 
-        server.getB2BdataRequest(App.prefs.enterpriseId).enqueue(object:
+        server.postB2BdataRequest(App.prefs.token).enqueue(object:
             Callback<B2BDataResponse> {
             override fun onFailure(call: Call<B2BDataResponse>, t: Throwable) {
                 Toast.makeText(activity, "통신 실패", Toast.LENGTH_SHORT).show()

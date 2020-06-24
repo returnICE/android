@@ -18,15 +18,17 @@ import kotlinx.android.synthetic.main.item_view_home.view.*
 import kotlinx.android.synthetic.main.item_view_mypage_subeditem.view.*
 import org.jetbrains.anko.startActivity
 
-class HomeRecyclerAdapter(private val items: ArrayList<SubedItemData>, private val b2bitems: ArrayList<B2BData>) :
+class HomeRecyclerAdapter(private val items: MutableList<Item>) :
         RecyclerView.Adapter<HomeRecyclerAdapter.ViewHolder>(){
 
+    companion object {
+        val SUBED = 0
+        val ENTERPRISE = 1
+    }
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         private var view: View = v
 
         fun bind(listener: View.OnClickListener, item: SubedItemData) {
-
-
             if(item.imgURL != null) {
                 Glide.with(view.context)
                     .load(item.imgURL)
@@ -54,8 +56,6 @@ class HomeRecyclerAdapter(private val items: ArrayList<SubedItemData>, private v
         }
 
         fun b2bBind(listener: View.OnClickListener, item: B2BData) {
-
-
             if(item.imgURL != null) {
                 Glide.with(view.context)
                     .load(item.imgURL)
@@ -78,42 +78,43 @@ class HomeRecyclerAdapter(private val items: ArrayList<SubedItemData>, private v
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int {
-        return items.size + b2bitems.size
-     }
+    override fun getItemCount() = items.size
+    override fun getItemViewType(position: Int) = items.get(position).type
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if(position < b2bitems.size){ //B2B 식당 목록
-            val b2bitem = b2bitems[position]
-            val listener = View.OnClickListener { it ->
-                it.context.startActivity<B2BActivity>(
-                    "name" to b2bitem.name,
-                    "sellerId" to b2bitem.sellerId
-
-                )
+        val item = items[position]
+        when(item.type){
+            ENTERPRISE->{
+                if(item.e is B2BData) {
+                    val listener = View.OnClickListener { it ->
+                        it.context.startActivity<B2BActivity>(
+                            "name" to item.e.name,
+                            "sellerId" to item.e.sellerId
+                        )
+                    }
+                    holder.apply {
+                        b2bBind(listener, item.e)
+                        itemView.tag = item.e
+                    }
+                }
             }
-            holder.apply {
-                b2bBind(listener, b2bitem)
-                itemView.tag = b2bitem
+            SUBED->{
+                if(item.e is SubedItemData) {
+                    val listener = View.OnClickListener { it ->
+                        it.context.startActivity<ServiceActivity>(
+                            "subedId" to item.e.subedId,
+                            "name" to item.e.name
+                        )
+                    }
+                    holder.apply {
+                        bind(listener, item.e)
+                        itemView.tag = item.e
+                    }
+                }
             }
         }
-        else{ // 구독한 식당 목록
-            val item = items[position - b2bitems.size]
-
-            val listener = View.OnClickListener { it ->
-                it.context.startActivity<ServiceActivity>(
-                    "subedId" to item.subedId,
-                    "name" to item.name
-                )
-            }
-            holder.apply {
-                bind(listener, item)
-                itemView.tag = item
-            }
-        }
-
-
-
     }
 
+    class Item(val type:Int,val e:Any){
+    }
 }

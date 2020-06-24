@@ -60,8 +60,8 @@ interface HttpService {
     fun getEnterpriseDataRequest(@Path("enterpriseId")enterpriseId:String)
             :Call<EnterpriseDataResponse>
 
-    @GET("users/enterprise/seller/{enterpriseId}")
-    fun getB2BdataRequest(@Path("enterpriseId")enterpriseId:String)
+    @POST("users/enterprise/seller/")
+    fun postB2BdataRequest(@Header("x-access-token")token: String)
             :Call<B2BDataResponse>
 
     @GET("users/sub")
