@@ -158,8 +158,10 @@ class SearchFragment : Fragment() {
         while (rv.getItemDecorationCount() > 0) {
             rv.removeItemDecorationAt(0)
         }
-        val spaceDecoration = RecyclerDecoration(activity!!, 8)
-        rv.addItemDecoration(spaceDecoration)
+        if(activity != null) {
+            val spaceDecoration = RecyclerDecoration(activity!!, 8)
+            rv.addItemDecoration(spaceDecoration)
+        }
         // https://codechacha.com/ko/android-recyclerview/   <- 리사이클러뷰 설명
     }
 //https://youngest-programming.tistory.com/209?category=898095 리사이클러뷰 스크롤

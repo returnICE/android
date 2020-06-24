@@ -1,6 +1,8 @@
 package com.capstone.androidproject.AddressSetting;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
@@ -9,6 +11,10 @@ import android.webkit.WebViewClient;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.capstone.androidproject.R;
+import com.capstone.androidproject.SharedPreferenceConfig.App;
+
+import java.io.IOException;
+import java.util.List;
 
 public class WebViewFindTextAddressActivity extends AppCompatActivity {
 
@@ -24,6 +30,19 @@ public class WebViewFindTextAddressActivity extends AppCompatActivity {
             Intent intent = new Intent();
             extra.putString("data", data);
             intent.putExtras(extra);
+
+            Geocoder mGeoCoder = new Geocoder(getBaseContext());
+            try{
+                List<Address> mResultLocation =
+                        mGeoCoder.getFromLocationName(data,1);
+                float mLat = (float)mResultLocation.get(0).getLatitude();
+                float mLng = (float)mResultLocation.get(0).getLongitude();
+                App.prefs.setLat(mLat);
+                App.prefs.setLon(mLng);
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+
             setResult(RESULT_OK, intent);
             finish();
 

@@ -7,32 +7,32 @@ import retrofit2.http.*
 interface HttpService {
 
     @FormUrlEncoded
-    @POST("/accepts/customer")
+    @POST("accepts/customer")
     fun postAcceptRequest(@Header("x-access-token")token: String,
                           @Field("subedId")subedId: Int,
                           @Field("menuId")menuId: Int): Call<EatenLogDataResponse>
 
     @FormUrlEncoded
-    @POST("/accepts/enterprise")
+    @POST("accepts/enterprise")
     fun postEnterpriseAcceptRequest(@Header("x-access-token")token: String,
                           @Field("price")price: Int,
                           @Field("menuId")menuId: Int): Call<EatenLogDataResponse>
 
 
     @FormUrlEncoded
-    @POST("/accepts/score")
+    @POST("accepts/score")
     fun postReviewRequest(@Header("x-access-token")token: String,
                           @Field("eatenId")eatenId: Int,
                           @Field("score")score: Int): Call<Success>
 
     @FormUrlEncoded
-    @POST("/users/login")
+    @POST("users/login")
     fun postLoginRequest(@Field("customerId")customerId: String,
                         @Field("pw")pw: String)
             :Call<TokenResponse>
 
     @FormUrlEncoded
-    @POST("/users")
+    @POST("users")
     fun postSignupRequest(@Field("customerId")customerId: String,
                           @Field("pw")pw: String,
                           @Field("name")name: String,
@@ -42,25 +42,25 @@ interface HttpService {
             :Call<SignupResponse>
 
     @FormUrlEncoded
-    @POST("/upload")
+    @POST("upload")
     fun postItemImgRequest(@Field("imgFile")imgFile: String)
             :Call<Success>
 
     @FormUrlEncoded
-    @POST("/users/enterprise")
+    @POST("users/enterprise")
     fun postEnterpriseCodeRequest(@Header("x-access-token")token: String,
                                   @Field("enterpriseCode")enterpriseCode: String)
             :Call<Success>
 
-    @GET("/users/enterprise")
+    @GET("users/enterprise")
     fun getMemberDataRequest(@Header("x-access-token")token: String)
             :Call<MemberDataResponse>
 
-    @GET("/users/enterprise/{enterpriseId}")
+    @GET("users/enterprise/{enterpriseId}")
     fun getEnterpriseDataRequest(@Path("enterpriseId")enterpriseId:String)
             :Call<EnterpriseDataResponse>
 
-    @GET("/users/enterprise/seller/{enterpriseId}")
+    @GET("users/enterprise/seller/{enterpriseId}")
     fun getB2BdataRequest(@Path("enterpriseId")enterpriseId:String)
             :Call<B2BDataResponse>
 
@@ -72,19 +72,19 @@ interface HttpService {
     fun getCampaignItemRequest(@Header("x-access-token")token: String)
             :Call<CampaignDataResponse>
 
-    @GET("/users/sub/{subedId}")
+    @GET("users/sub/{subedId}")
     fun getServiceRequest(@Path("subedId")subedId:Int)
             :Call<ServiceDataResponse>
 
-    @GET("/users/menu/{serllerId}")
+    @GET("users/menu/{serllerId}")
     fun getMenuRequest(@Path("serllerId")serllerId:String)
             :Call<MenuDataResponse>
 
 
-    @GET("/users/check")
+    @GET("users/checkid")
     fun getCheckRequest(@Query("ID")ID: String):Call<Success>
 
-    @GET("/login/logout")
+    @GET("login/logout")
     fun getLogoutRequest():Call<Success>
 
     @GET("users/myinfo")
@@ -109,19 +109,19 @@ interface HttpService {
 
 
     @FormUrlEncoded
-    @POST("/search")
+    @POST("search")
     fun postSellerRequest(@Field("lat")lat: Double,
                           @Field("lon")lon: Double,
                           @Field("page")page: Int,
                           @Field("zoom")zoom: Float)
             : Call<SellerDataResponse>
 
-    @GET("/search/{sellerId}")
+    @GET("search/{sellerId}")
     fun getSellerInfoRequest(@Path("sellerId")sellerId:String)
             :Call<SellerInfoResponse>
 
     @FormUrlEncoded
-    @POST("/users/campaign")
+    @POST("users/campaign")
     fun postRegisterFCMTokenRequest(@Header("x-access-token")token: String,
                           @Field("fcmtoken")fcmtoken: String): Call<Success>
     /*

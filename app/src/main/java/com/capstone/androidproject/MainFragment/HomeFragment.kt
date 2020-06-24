@@ -80,9 +80,7 @@ class HomeFragment : Fragment() {
         swipeContainer = v.findViewById(R.id.swipeContainer) as SwipeRefreshLayout
         swipeContainer?.setOnRefreshListener {
             rv.recycledViewPool.clear()
-            if(App.prefs.enterpriseApproval == 1){
-                getb2bdata()
-            }
+            getb2bdata()
             getSubedItem()
 
             swipeContainer?.setRefreshing(false)
@@ -102,8 +100,10 @@ class HomeFragment : Fragment() {
         while (rv.getItemDecorationCount() > 0) {
             rv.removeItemDecorationAt(0)
         }
-        val spaceDecoration = RecyclerDecoration(activity!!, 8)
-        rv.addItemDecoration(spaceDecoration)
+        if(activity != null) {
+            val spaceDecoration = RecyclerDecoration(activity!!, 8)
+            rv.addItemDecoration(spaceDecoration)
+        }
         // https://codechacha.com/ko/android-recyclerview/   <- 리사이클러뷰 설명
     }
 

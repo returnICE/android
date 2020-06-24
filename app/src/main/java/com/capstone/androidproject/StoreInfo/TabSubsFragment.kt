@@ -72,7 +72,7 @@ class TabSubsFragment(val sublist:MutableList<SubsListRecyclerAdapter.Item>) : F
                     val data = intent?.extras!!.getString("result")
                     if (data != null) {
                         val i = Intent(context, MainActivity::class.java)
-
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                         startActivity(i)
                     }
                 }

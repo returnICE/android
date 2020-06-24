@@ -49,7 +49,7 @@ class SubPayActivity : AppCompatActivity() {
 
         if (intentData == null) {
             val url: String = this.getString(R.string.URL)
-            mWebView.loadUrl(url+"pay?subId="+subId + "&customerId="+ App.prefs.id)
+            mWebView.loadUrl(url+"pay/customer?subId="+subId + "&customerId="+ App.prefs.id)
         } else {
             //isp 인증 후 복귀했을 때 결제 후속조치
             val url = intentData.toString()
