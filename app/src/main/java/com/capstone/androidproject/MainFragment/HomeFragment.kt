@@ -80,9 +80,7 @@ class HomeFragment : Fragment() {
         swipeContainer = v.findViewById(R.id.swipeContainer) as SwipeRefreshLayout
         swipeContainer?.setOnRefreshListener {
             rv.recycledViewPool.clear()
-            if(App.prefs.enterpriseApproval == 1){
-                getb2bdata()
-            }
+            getb2bdata()
             getSubedItem()
 
             swipeContainer?.setRefreshing(false)
