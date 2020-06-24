@@ -27,20 +27,28 @@ class SignupActivity : AppCompatActivity() {
 
             var customerId = textId.text.toString()
             var pw = textPassword.text.toString()
+            var pwConfirm = textPasswordConfirm.text.toString()
             val nextIntent = Intent(this@SignupActivity, SignupDetailActivity::class.java)
 
-            //다음 activity로 id, pw 전송
-            nextIntent.putExtra("customerId", customerId)
-            nextIntent.putExtra("pw", pw)
-            startActivity(nextIntent)
+            if(pw == pwConfirm) {
+                //다음 activity로 id, pw 전송
+                nextIntent.putExtra("customerId", customerId)
+                nextIntent.putExtra("pw", pw)
+                startActivity(nextIntent)
+            }
+            else{
+                Toast.makeText(this@SignupActivity, "비밀번호를 다시 확인해주세요", Toast.LENGTH_SHORT).show()
+            }
         }
+        /*
         btnCheckId.setOnClickListener(){
             var customerId = textId.text.toString()
             checkId(customerId)
         }
+         */
     }
 
-
+/*
     fun checkId(customerId: String){
         val serverConnect = ServerConnect(this)
         val server = serverConnect.conn()
@@ -72,5 +80,5 @@ class SignupActivity : AppCompatActivity() {
         }
     }
 
-
+*/
 }

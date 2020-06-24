@@ -17,7 +17,6 @@ import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
 
-    var subeds: ArrayList<SubedItemData> = ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
