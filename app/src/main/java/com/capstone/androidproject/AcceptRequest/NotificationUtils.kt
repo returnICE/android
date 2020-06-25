@@ -20,6 +20,7 @@ class NotificationUtils(base: Context) : ContextWrapper(base) {
     fun notification(menuName:String, serviceName:String, sellerName:String, currentTime:String, eatenId: Int){
         val notificationId = R.integer.notification_id
         val CHANNEL_ID  = R.string.channel_id.toString()
+        var icon = R.drawable.logo_transparent
         var title = "평점을 입력해주세요"
         var content = menuName+" 어떠셨나요?"
 
@@ -45,7 +46,7 @@ class NotificationUtils(base: Context) : ContextWrapper(base) {
             .setContentTitle(title)
             .setContentText(content)
             .setAutoCancel(true)
-            .setSmallIcon(R.drawable.alert_icon)
+            .setSmallIcon(icon)
             //.setLargeIcon(bitmap)
             //.setShowWhen(true)
             .setColor(ContextCompat.getColor(this, R.color.colorAccent))

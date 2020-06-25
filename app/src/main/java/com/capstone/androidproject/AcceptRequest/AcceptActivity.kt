@@ -146,7 +146,7 @@ class AcceptActivity : AppCompatActivity() {
 
             Callback<EatenLogDataResponse> {
             override fun onFailure(call: Call<EatenLogDataResponse>, t: Throwable) {
-                Toast.makeText(this@AcceptActivity, "승인 실패1", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@AcceptActivity, "b2baccept 승인 실패1", Toast.LENGTH_SHORT).show()
             }
 
             override fun onResponse(
@@ -157,7 +157,7 @@ class AcceptActivity : AppCompatActivity() {
                 val eatenLog = response?.body()?.data
 
                 if (success == false) {
-                    Toast.makeText(this@AcceptActivity, "승인 실패2", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@AcceptActivity, "b2baccept 승인 실패2", Toast.LENGTH_SHORT).show()
                 } else {
                     val eatenId = eatenLog!!.eatenId
                     //notification(menuName, serviceName, sellerName, currentTime, eatenId)

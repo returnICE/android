@@ -43,14 +43,17 @@ class B2BActivity : AppCompatActivity() {
         BStextStoreName.setText(name)
         val restAmountPerDay = App.prefs.amountPerDay - App.prefs.usedAmountPerDay
         val restAmountPerMonth = App.prefs.amountPerMonth - App.prefs.usedAmountPerMonth
-        Log.d("testing", "apd in b2bactivity : " + restAmountPerDay.toString())
+
+        Log.d("testing", "amounPerDay in b2bactivity : " +  App.prefs.amountPerDay.toString())
+        Log.d("testing", "usedAmountPerDay in b2bactivity : " + App.prefs.usedAmountPerDay.toString())
+        Log.d("testing", "rapd in b2bactivity : " + restAmountPerDay.toString())
         BSrestAmountPerDay.setText("오늘 남은 잔액 : " + restAmountPerDay.toString())
         BSrestAmountPerMonth.setText("이번 달 남은 잔액 : " + restAmountPerMonth.toString())
         BSresetDate.setText("초기화 날짜 : " + App.prefs.resetDate)
         getMenuInfo(sellerId)
 
         BSbtnCertification.setOnClickListener() {
-            if(restAmountPerDay > Price && restAmountPerMonth > Price) {
+            if(restAmountPerDay >= Price && restAmountPerMonth >= Price) {
                 val intent = Intent(this, AcceptActivity::class.java)
                 intent.putExtra("sellerName", name)
                 intent.putExtra("serviceName", "")
