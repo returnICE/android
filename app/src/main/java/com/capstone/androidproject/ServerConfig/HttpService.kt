@@ -42,11 +42,6 @@ interface HttpService {
             :Call<SignupResponse>
 
     @FormUrlEncoded
-    @POST("upload")
-    fun postItemImgRequest(@Field("imgFile")imgFile: String)
-            :Call<Success>
-
-    @FormUrlEncoded
     @POST("users/enterprise")
     fun postEnterpriseCodeRequest(@Header("x-access-token")token: String,
                                   @Field("enterpriseCode")enterpriseCode: String)
@@ -81,8 +76,9 @@ interface HttpService {
             :Call<MenuDataResponse>
 
 
-    @GET("users/checkid")
-    fun getCheckRequest(@Query("ID")ID: String):Call<Success>
+    @FormUrlEncoded
+    @POST("users/checkid")
+    fun postCheckRequest(@Field("customerId")customerId: String):Call<Success>
 
     @GET("login/logout")
     fun getLogoutRequest():Call<Success>

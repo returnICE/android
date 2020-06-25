@@ -33,7 +33,7 @@ class SplashActivity : AppCompatActivity() {
 
         server.getCustomerInfoRequest(token).enqueue(object : Callback<UserInfoResponse> {
             override fun onFailure(call: Call<UserInfoResponse>?, t: Throwable?) {
-                Toast.makeText(this@SplashActivity, "로그인 실패1", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this@SplashActivity, "로그인 실패1", Toast.LENGTH_SHORT).show()
                 startActivity<LoginActivity>()
                 finish()
             }
@@ -43,7 +43,7 @@ class SplashActivity : AppCompatActivity() {
                 val userinfo = response?.body()?.data
 
                 if (success == false) {
-                    Toast.makeText(this@SplashActivity, "로그인 실패2", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this@SplashActivity, "로그인 실패2", Toast.LENGTH_SHORT).show()
                     startActivity<LoginActivity>()
                     finish()
                 } else {
