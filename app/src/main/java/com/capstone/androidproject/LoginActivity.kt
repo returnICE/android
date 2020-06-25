@@ -38,7 +38,7 @@ class LoginActivity : AppCompatActivity() {
 
         server.postLoginRequest(customerId, pw).enqueue(object : Callback<TokenResponse> {
             override fun onFailure(call: Call<TokenResponse>?, t: Throwable?) {
-                //Toast.makeText(this@LoginActivity, "로그인 실패1", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@LoginActivity, "로그인 실패1", Toast.LENGTH_SHORT).show()
             }
 
             override fun onResponse(call: Call<TokenResponse>?, response: Response<TokenResponse>) {
@@ -46,7 +46,7 @@ class LoginActivity : AppCompatActivity() {
                 val token = response.body()!!.data
 
                 if (success == false) {
-                    //Toast.makeText(this@LoginActivity, "로그인 실패2", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginActivity, "로그인 실패2", Toast.LENGTH_SHORT).show()
                 } else {
                     App.prefs.token = token.toString()// 로그인 성공하면 shared_Preference에 유저정보 저장
                     getEnterprise(token)
